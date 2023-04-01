@@ -14,39 +14,32 @@ protocol CalendarManagerDelegate {
 }
 
 struct CalendarManager {
+    private var eventStore: EKEventStore
     var delegate: CalendarManagerDelegate?
     
-    var currYear: Int {
+    private var currYear: Int {
         return Date().getCurrYear()
     }
     
-    var currMonth: Int {
+    private var currMonth: Int {
         return Date().getCurrMonth()
     }
     
-    var currMonthStart: Date {
+    private var currMonthStart: Date {
         return Date().getStartOfCurrMonth()
     }
     
-    var currMonthEnd: Date {
+    private var currMonthEnd: Date {
         return Date().getEndOfCurrMonth()
     }
     
-    var userTimeZoneIdentifier: String {
+    private var userTimeZoneIdentifier: String {
         return TimeZone.current.identifier
     }
     
-    var userWorkCalendar: String? {
-        let store = EKEventStore()
-        
-        store.requestAccess(to: .event) { granted, error in
-            if error != nil {
-                self.delegate?.didFailWhileFetching(error!)
-                return
-            }
-        }
-        
-        let calendars = store.calendars(for: .event)
+    // TODO: handle scenario when work calendar doesn't exist, e.g. create new calendar or use defaultCalendarForNewEvents
+    private var userWorkCalendar: String? {
+        let calendars = eventStore.calendars(for: .event)
         for calendar in calendars {
             if calendar.title == K.workCalendarName {
                 return calendar.calendarIdentifier
@@ -56,23 +49,26 @@ struct CalendarManager {
         return nil
     }
     
-    func fetchWorkHours() {
-        var amount: Int = 0
-        let store = EKEventStore()
-        
-        store.requestAccess(to: .event) { granted, error in
+    // TODO: handle errors
+    init() {
+        eventStore = EKEventStore()
+        eventStore.requestAccess(to: .event) { granted, error in
             if error != nil {
-                self.delegate?.didFailWhileFetching(error!)
+                print(error as Any)
                 return
             }
         }
+    }
+    
+    func fetchWorkHours() {
+        var amount: Int = 0
         
-        let calendars = store.calendars(for: .event)
+        let calendars = eventStore.calendars(for: .event)
         for calendar in calendars {
             if calendar.title == K.workCalendarName {
-                let predicate = store.predicateForEvents(withStart: currMonthStart, end: currMonthEnd, calendars: [calendar])
+                let predicate = eventStore.predicateForEvents(withStart: currMonthStart, end: currMonthEnd, calendars: [calendar])
                 
-                let events = store.events(matching: predicate)
+                let events = eventStore.events(matching: predicate)
                 
                 for event in events {
                     let eventStartDate = event.startDate
@@ -87,16 +83,7 @@ struct CalendarManager {
     }
     
     func createEvent(day: Int, startHour: Int, endHour: Int) {
-        let store = EKEventStore()
-        
-        store.requestAccess(to: .event) { granted, error in
-            if error != nil {
-                self.delegate?.didFailWhileFetching(error!)
-                return
-            }
-        }
-        
-        let newEvent = EKEvent(eventStore: store)
+        let newEvent = EKEvent(eventStore: eventStore)
         let userCalendar = Calendar.current
         var dateComponents = DateComponents()
         
@@ -112,10 +99,10 @@ struct CalendarManager {
         
         dateComponents.hour = endHour
         newEvent.endDate = userCalendar.date(from: dateComponents)
-        newEvent.calendar = store.calendar(withIdentifier: userWorkCalendar!)
+        newEvent.calendar = eventStore.calendar(withIdentifier: userWorkCalendar!)
         
         do {
-            try store.save(newEvent, span: .thisEvent)
+            try eventStore.save(newEvent, span: .thisEvent)
             print("Event saved in calendar")
         } catch let error {
             print(error)
@@ -126,15 +113,7 @@ struct CalendarManager {
     func fetchUserCalendars() -> [String: CGColor] {
         var calendarColorDict: [String: CGColor] = [:]
         
-        let store = EKEventStore()
-        store.requestAccess(to: .event) { granted, error in
-            if error != nil {
-                self.delegate?.didFailWhileFetching(error!)
-                return
-            }
-        }
-        
-        let calendars = store.calendars(for: .event)
+        let calendars = eventStore.calendars(for: .event)
         for calendar in calendars {
             calendarColorDict[calendar.title] = calendar.cgColor
         }
