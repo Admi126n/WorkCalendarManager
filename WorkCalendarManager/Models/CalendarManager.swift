@@ -132,7 +132,7 @@ struct CalendarManager {
         let calendars = eventStore.calendars(for: .event)
         var eventsInHour: [EKEvent]
         
-    hoursLoop: for hour in endHour...15 {
+    hoursLoop: for hour in endHour...20 {
         eventsInHour = []
         
     calendarsLoop: for calendar in calendars {
@@ -140,15 +140,19 @@ struct CalendarManager {
         
         eventsInHour += eventStore.events(matching: predicate)
     }
-        print(eventsInHour)
         if eventsInHour.isEmpty {
             endHour = hour
         } else {
+            // TODO: instead of -= 2 get event start hour and calculate good value
+            endHour -= 2
             break hoursLoop
         }
     }
+        if endHour - startHour > 8 {
+            endHour -= (endHour - startHour - 8)
+        }
         
-        print(endHour)
+        createEvent(day: day, startHour: startHour, endHour: endHour)
     }
 }
 
