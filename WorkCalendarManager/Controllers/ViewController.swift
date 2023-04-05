@@ -20,12 +20,16 @@ class ViewController: UIViewController {
         calendarManager.fetchWorkHours()
     }
     
+    @IBAction func calendarManagerTest(_ sender: UIButton) {
+        calendarManager.iterateOverDays()
+        calendarManager.fetchWorkHours()
+    }
     
 }
 
 extension ViewController: CalendarManagerDelegate {
     func didFetchWork(hours: Int) {
-        workHoursLabel.text = "\(hours)"
+        workHoursLabel.text = "Work hours in this month: \(hours)"
     }
     
     func didFailWhileFetching(_ error: Error) {

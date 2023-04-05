@@ -33,11 +33,15 @@ struct CalendarManager {
         return Date().getEndOfCurrMonth()
     }
     
+    private var currMonthLastDay: Int {
+        let lastDay = Calendar.current.date(byAdding: .day, value: -1, to: currMonthEnd)
+        return Calendar.current.component(.day, from: lastDay!)
+    }
+    
     private var userTimeZoneIdentifier: String {
         return TimeZone.current.identifier
     }
     
-    // TODO: handle scenario when work calendar doesn't exist, e.g. create new calendar or use defaultCalendarForNewEvents
     private var userWorkCalendar: String? {
         let calendars = eventStore.calendars(for: .event)
         for calendar in calendars {
@@ -46,7 +50,8 @@ struct CalendarManager {
             }
         }
         
-        return nil
+        // TODO: Create new calendar instead of using default calendar
+        return eventStore.defaultCalendarForNewEvents?.calendarIdentifier
     }
     
     // TODO: handle errors
@@ -65,19 +70,18 @@ struct CalendarManager {
         
         let calendars = eventStore.calendars(for: .event)
         for calendar in calendars {
-            if calendar.title == K.workCalendarName {
-                let predicate = eventStore.predicateForEvents(withStart: currMonthStart, end: currMonthEnd, calendars: [calendar])
-                
-                let events = eventStore.events(matching: predicate)
-                
-                for event in events {
-                    let eventStartDate = event.startDate
-                    let eventEndDate = event.endDate
-                    let eventDuration = eventEndDate!.timeIntervalSinceReferenceDate - eventStartDate!.timeIntervalSinceReferenceDate
-                    amount += Int(eventDuration / 3600.0)
-                }
-                break
+            if calendar.title != K.workCalendarName { continue }
+            
+            let predicate = eventStore.predicateForEvents(withStart: currMonthStart, end: currMonthEnd, calendars: [calendar])
+            let events = eventStore.events(matching: predicate)
+            
+            for event in events {
+                let eventStartDate = event.startDate
+                let eventEndDate = event.endDate
+                let eventDuration = eventEndDate!.timeIntervalSinceReferenceDate - eventStartDate!.timeIntervalSinceReferenceDate
+                amount += Int(eventDuration / 3600.0)
             }
+            break
         }
         delegate?.didFetchWork(hours: amount)
     }
@@ -124,9 +128,21 @@ struct CalendarManager {
         return userCalendar.date(from: dateComponents)
     }
     
+    func iterateOverDays() {
+        for day in 1...currMonthLastDay {
+            let tempDate = createDateObject(day: day, hour: 10)!
+            let tempWeekday = Calendar.current.component(.weekday, from: tempDate)
+            
+            if tempWeekday == 1 || tempWeekday == 7 {
+                continue  // ignore saturdays and sundays
+            }
+            
+            iterateOverHours(day: day)
+        }
+    }
+    
     // MARK: first sketch of function adding events to empty slots in calendar
-    func test() {
-        let day = 5
+    func iterateOverHours(day: Int) {
         let startHour = 7
         var endHour = 8
         let calendars = eventStore.calendars(for: .event)
@@ -155,9 +171,3 @@ struct CalendarManager {
         createEvent(day: day, startHour: startHour, endHour: endHour)
     }
 }
-
-/*
- May be useful:
- - weekday property
- - predicateForEvents(withStart: Date, end: Date, calendars: [EKCalendar]?) -> NSPredicate function
- */
