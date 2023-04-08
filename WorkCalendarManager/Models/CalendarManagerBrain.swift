@@ -9,71 +9,62 @@ import Foundation
 import EventKit
 
 struct CalendarManagerBrain {
-    /*
-     scenariusze:
-     - wolne od 7:00 do godziny x
-     - wolne od godzuny x do 18:00
-     - wolne od godziny x do godziny y
-     - brak wolnego czasu
-     */
     private let cM: CalendarManager = CalendarManager()
+    private var availabilityDict: [Date: Bool] = [:]
     
-    func iterateOverDays() {
+    mutating func iterateOverDays() {
         for day in 1...cM.currMonthLastDay {
-            let tempDate = cM.createDateObject(day: day, hour: 10)
+            let tempDate = cM.createDateObject(day: day)
             let tempWeekday = Calendar.current.component(.weekday, from: tempDate)
             
             if tempWeekday == 1 || tempWeekday == 7 {
                 continue  // ignore saturdays and sundays
             }
             
-            iterateOverHours(day: day)
+            iterateOverAvailabilityDict(on: day)
         }
     }
     
-    // MARK: first sketch of function adding events to empty slots in calendar
-    func iterateOverHours(day: Int) {
-        // TODO: refactoring using new method getAvailabilityDict
-        let startHour: Date = cM.createDateObject(day: day, hour: 7)
-        var endHour: Date = cM.createDateObject(day: day, hour: 10)
-        let calendars = cM.eventStore.calendars(for: .event)
-        var eventsInHour: [EKEvent]
+    mutating func iterateOverAvailabilityDict(on day: Int) {
+        // TODO: work duration has to be full hours
+        // TODO: work duration has to be smaller or equal to K.workMaxDuration
+        var slotIsEmpty = false
+        var startDate: Date = Date()
+        var endDate: Date = Date()
         
-    hoursLoop: for hour in 10...20 {
-        eventsInHour = []
+        fillAvailabilityDict(for: day)
         
-    calendarsLoop: for calendar in calendars {
-        let predicate = cM.eventStore.predicateForEvents(withStart: startHour, end: endHour, calendars: [calendar])
-        
-        eventsInHour += cM.eventStore.events(matching: predicate)
-    }
-        if eventsInHour.isEmpty {
-            endHour = cM.createDateObject(day: day, hour: hour)
-        } else {
-            // TODO: instead of -= 2 get event start hour and calculate good value
-            endHour -= 2
-            break hoursLoop
+        for (key, value) in availabilityDict.sorted(by: { $0.0 < $1.0 }) {
+            if value {
+                if !slotIsEmpty {
+                    startDate = key
+                }
+                slotIsEmpty = true
+                endDate = Calendar.current.date(byAdding: .minute, value: 15, to: key)!
+            } else {
+                if slotIsEmpty {
+                    let duration = startDate.distance(to: endDate) / 3600
+                    
+                    if duration >= Double(K.workMinDuration) {
+                        cM.createEvent(startHour: startDate, endHour: endDate)
+                    }
+                    
+                    print(startDate, endDate)
+                }
+                slotIsEmpty = false
+            }
         }
-    }
-        let duration = startHour.distance(to: endHour) / 3600
-        print(duration)
-        
-        //        if endHour.distance(to: startHour) > 8 {
-        //            endHour -= (endHour - startHour - 8)
-        //        }
-        
-        //        cM.createEvent(day: day, startHour: startHour, endHour: endHour)
     }
     
     /// Checks all events in given day in 15 minutes intervals
     /// - Parameter d: number of day in month
-    /// - Returns: dictionary [startDate: value], where value means if given slot is empty
-    func getAvailabilityDict(day d: Int) -> [Date: Bool] {
+    mutating func fillAvailabilityDict(for day: Int) {
+        availabilityDict = [:]
+        
         // FIXME: make some refactoring because it looks terrible
-        var startDate = cM.createDateObject(day: d, hour: 7)
+        var startDate = cM.createDateObject(day: day, hour: 7)
         var endDate = Calendar.current.date(byAdding: .minute, value: 15, to: startDate)!
-        let maxEndDate = cM.createDateObject(day: d, hour: 20)
-        var availabilityDict: [Date: Bool] = [:]
+        let maxEndDate = cM.createDateObject(day: day, hour: 20)
         let calendars = cM.eventStore.calendars(for: .event)
         var eventsList: [EKEvent] = []
         
@@ -83,41 +74,32 @@ struct CalendarManagerBrain {
                 if K.ignoredCalendars.contains(calendar.title) { continue }
                 
                 let predicate = cM.eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: [calendar])
-                
                 eventsList += cM.eventStore.events(matching: predicate)
             }
             
             if eventsList.isEmpty {
-                if let _ = availabilityDict[startDate] {
-                    // do nothing
-                } else {
+                if availabilityDict[startDate] == nil {
                     availabilityDict[startDate] = true
                 }
             } else {
                 availabilityDict[startDate] = false
                 
-                // block time 1 hour before calendar event
-                availabilityDict[Calendar.current.date(byAdding: .minute, value: -15, to: startDate)!] = false
-                availabilityDict[Calendar.current.date(byAdding: .minute, value: -30, to: startDate)!] = false
-                availabilityDict[Calendar.current.date(byAdding: .minute, value: -45, to: startDate)!] = false
-                availabilityDict[Calendar.current.date(byAdding: .minute, value: -60, to: startDate)!] = false
-                
-                // block time 1 hour after calendar event
-                availabilityDict[Calendar.current.date(byAdding: .minute, value: 15, to: startDate)!] = false
-                availabilityDict[Calendar.current.date(byAdding: .minute, value: 30, to: startDate)!] = false
-                availabilityDict[Calendar.current.date(byAdding: .minute, value: 45, to: startDate)!] = false
-                availabilityDict[Calendar.current.date(byAdding: .minute, value: 60, to: startDate)!] = false
-                
+                blockAvailability(for: -4, from: startDate)  // block time 1 hour before calendar event
+                blockAvailability(for: 4, from: startDate)  // block time 1 hour after calendar event
             }
             
             startDate = Calendar.current.date(byAdding: .minute, value: 15, to: startDate)!
             endDate = Calendar.current.date(byAdding: .minute, value: 15, to: endDate)!
             
             eventsList = []
-            
         } while endDate <= maxEndDate
-        
-        return availabilityDict
+    }
+    
+    private mutating func blockAvailability(for quaters: Int, from date: Date) {
+        for i in 1...abs(quaters) {
+            let dist = 15 * i * quaters.signum()
+            availabilityDict[Calendar.current.date(byAdding: .minute, value: dist, to: date)!] = false
+        }
     }
     
 }

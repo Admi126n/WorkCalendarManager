@@ -87,13 +87,13 @@ struct CalendarManager {
         delegate?.didFetchWork(hours: amount)
     }
     
-    func createEvent(day: Int, startHour: Int, endHour: Int) {
+    func createEvent(startHour: Date, endHour: Date) {
         let newEvent = EKEvent(eventStore: eventStore)
         
         newEvent.title = K.workCalendarName
         newEvent.notes = K.eventNote
-        newEvent.startDate = createDateObject(day: day, hour: startHour)
-        newEvent.endDate = createDateObject(day: day, hour: endHour)
+        newEvent.startDate = startHour
+        newEvent.endDate = endHour
         newEvent.calendar = eventStore.calendar(withIdentifier: userWorkCalendar!)
         
         do {
@@ -116,7 +116,7 @@ struct CalendarManager {
         return calendarColorDict
     }
     
-    func createDateObject(day: Int, hour: Int) -> Date {
+    func createDateObject(day: Int, hour: Int? = nil) -> Date {
         let userCalendar = Calendar.current
         var dateComponents = DateComponents()
         
