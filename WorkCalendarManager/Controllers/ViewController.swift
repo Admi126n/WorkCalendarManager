@@ -11,6 +11,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var workHoursLabel: UILabel!
     
     var calendarManager = CalendarManager()
+    let cMB: CalendarManagerBrain = CalendarManagerBrain()
     
     override func viewDidLoad() {
         calendarManager.delegate = self
@@ -21,7 +22,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func calendarManagerTest(_ sender: UIButton) {
-        calendarManager.iterateOverDays()
+        _ = cMB.getEmptySlots(day: 3)
         calendarManager.fetchWorkHours()
     }
     

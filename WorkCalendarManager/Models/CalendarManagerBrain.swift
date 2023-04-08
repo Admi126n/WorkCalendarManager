@@ -68,19 +68,22 @@ struct CalendarManagerBrain {
         //        cM.createEvent(day: day, startHour: startHour, endHour: endHour)
     }
     
-    func getEmptySlots() {
-        /*
-         jednowymiarowa lista booli, kazda komorka to przedzial 15 minut
-         */
-        var startDate = cM.createDateObject(day: 3, hour: 7)
+    /// Checks all events in given day in 15 minutes intervals
+    /// - Parameter d: number of day in month
+    /// - Returns: list of Bools, where each element describes avialability in 15 minutes slot
+    func getEmptySlots(day d: Int) -> [Bool] {
+        // TODO: add wanted margin to avialabilityList (e.g. 1 hour); maybe change list to dict [startHour: value]
+        var startDate = cM.createDateObject(day: d, hour: 7)
         var endDate = Calendar.current.date(byAdding: .minute, value: 15, to: startDate)!
-        let maxEndDate = cM.createDateObject(day: 3, hour: 20)
+        let maxEndDate = cM.createDateObject(day: d, hour: 20)
         var avialabilityList: [Bool] = []
+        let calendars = cM.eventStore.calendars(for: .event)
+        var eventsList: [EKEvent] = []
         
-        while endDate < maxEndDate {
-            var eventsList: [EKEvent] = []
-            let calendars = cM.eventStore.calendars(for: .event)
+        repeat {
             for calendar in calendars {
+                if K.ignoredCalendars.contains(calendar.title) { continue }
+                
                 let predicate = cM.eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: [calendar])
                 
                 eventsList += cM.eventStore.events(matching: predicate)
@@ -92,15 +95,14 @@ struct CalendarManagerBrain {
                 avialabilityList.append(false)
             }
             
-//            print("\(startDate): \(eventsList)")
-            
             startDate = Calendar.current.date(byAdding: .minute, value: 15, to: startDate)!
             endDate = Calendar.current.date(byAdding: .minute, value: 15, to: endDate)!
             
+            eventsList = []
             
-        }
+        } while endDate <= maxEndDate
         
-        print(avialabilityList)
+        return avialabilityList
     }
     
 }
