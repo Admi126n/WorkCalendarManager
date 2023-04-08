@@ -22,7 +22,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func calendarManagerTest(_ sender: UIButton) {
-        _ = cMB.getEmptySlots(day: 3)
+        _ = cMB.getAvailabilityDict(day: 3)
         calendarManager.fetchWorkHours()
     }
     

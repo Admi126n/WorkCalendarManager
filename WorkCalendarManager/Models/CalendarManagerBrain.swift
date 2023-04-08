@@ -33,10 +33,7 @@ struct CalendarManagerBrain {
     
     // MARK: first sketch of function adding events to empty slots in calendar
     func iterateOverHours(day: Int) {
-        /*
-         1. zebranie eventow z calego dnia od 7:00 do 19:00/20:00
-         2. utworzenie slownika/listy? wolnych slotow w przedzialach 15 min
-         */
+        // TODO: refactoring using new method getAvailabilityDict
         let startHour: Date = cM.createDateObject(day: day, hour: 7)
         var endHour: Date = cM.createDateObject(day: day, hour: 10)
         let calendars = cM.eventStore.calendars(for: .event)
@@ -70,18 +67,19 @@ struct CalendarManagerBrain {
     
     /// Checks all events in given day in 15 minutes intervals
     /// - Parameter d: number of day in month
-    /// - Returns: list of Bools, where each element describes avialability in 15 minutes slot
-    func getEmptySlots(day d: Int) -> [Bool] {
-        // TODO: add wanted margin to avialabilityList (e.g. 1 hour); maybe change list to dict [startHour: value]
+    /// - Returns: dictionary [startDate: value], where value means if given slot is empty
+    func getAvailabilityDict(day d: Int) -> [Date: Bool] {
+        // FIXME: make some refactoring because it looks terrible
         var startDate = cM.createDateObject(day: d, hour: 7)
         var endDate = Calendar.current.date(byAdding: .minute, value: 15, to: startDate)!
         let maxEndDate = cM.createDateObject(day: d, hour: 20)
-        var avialabilityList: [Bool] = []
+        var availabilityDict: [Date: Bool] = [:]
         let calendars = cM.eventStore.calendars(for: .event)
         var eventsList: [EKEvent] = []
         
         repeat {
             for calendar in calendars {
+                // TODO: after adding UI, change title to calendarIdentifier
                 if K.ignoredCalendars.contains(calendar.title) { continue }
                 
                 let predicate = cM.eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: [calendar])
@@ -90,9 +88,26 @@ struct CalendarManagerBrain {
             }
             
             if eventsList.isEmpty {
-                avialabilityList.append(true)
+                if let _ = availabilityDict[startDate] {
+                    // do nothing
+                } else {
+                    availabilityDict[startDate] = true
+                }
             } else {
-                avialabilityList.append(false)
+                availabilityDict[startDate] = false
+                
+                // block time 1 hour before calendar event
+                availabilityDict[Calendar.current.date(byAdding: .minute, value: -15, to: startDate)!] = false
+                availabilityDict[Calendar.current.date(byAdding: .minute, value: -30, to: startDate)!] = false
+                availabilityDict[Calendar.current.date(byAdding: .minute, value: -45, to: startDate)!] = false
+                availabilityDict[Calendar.current.date(byAdding: .minute, value: -60, to: startDate)!] = false
+                
+                // block time 1 hour after calendar event
+                availabilityDict[Calendar.current.date(byAdding: .minute, value: 15, to: startDate)!] = false
+                availabilityDict[Calendar.current.date(byAdding: .minute, value: 30, to: startDate)!] = false
+                availabilityDict[Calendar.current.date(byAdding: .minute, value: 45, to: startDate)!] = false
+                availabilityDict[Calendar.current.date(byAdding: .minute, value: 60, to: startDate)!] = false
+                
             }
             
             startDate = Calendar.current.date(byAdding: .minute, value: 15, to: startDate)!
@@ -102,7 +117,7 @@ struct CalendarManagerBrain {
             
         } while endDate <= maxEndDate
         
-        return avialabilityList
+        return availabilityDict
     }
     
 }
