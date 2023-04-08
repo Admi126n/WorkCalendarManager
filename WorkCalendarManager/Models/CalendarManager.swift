@@ -14,7 +14,8 @@ protocol CalendarManagerDelegate {
 }
 
 struct CalendarManager {
-    private var eventStore: EKEventStore
+    // TODO: Make eventStore private and make needed getters
+    var eventStore: EKEventStore
     var delegate: CalendarManagerDelegate?
     
     private var currYear: Int {
@@ -33,7 +34,7 @@ struct CalendarManager {
         return Date().getEndOfCurrMonth()
     }
     
-    private var currMonthLastDay: Int {
+    var currMonthLastDay: Int {
         let lastDay = Calendar.current.date(byAdding: .day, value: -1, to: currMonthEnd)
         return Calendar.current.component(.day, from: lastDay!)
     }
@@ -115,7 +116,7 @@ struct CalendarManager {
         return calendarColorDict
     }
     
-    func createDateObject(day: Int, hour: Int) -> Date? {
+    func createDateObject(day: Int, hour: Int) -> Date {
         let userCalendar = Calendar.current
         var dateComponents = DateComponents()
         
@@ -125,49 +126,7 @@ struct CalendarManager {
         dateComponents.day = day
         dateComponents.hour = hour
         
-        return userCalendar.date(from: dateComponents)
+        return userCalendar.date(from: dateComponents)!
     }
     
-    func iterateOverDays() {
-        for day in 1...currMonthLastDay {
-            let tempDate = createDateObject(day: day, hour: 10)!
-            let tempWeekday = Calendar.current.component(.weekday, from: tempDate)
-            
-            if tempWeekday == 1 || tempWeekday == 7 {
-                continue  // ignore saturdays and sundays
-            }
-            
-            iterateOverHours(day: day)
-        }
-    }
-    
-    // MARK: first sketch of function adding events to empty slots in calendar
-    func iterateOverHours(day: Int) {
-        let startHour = 7
-        var endHour = 8
-        let calendars = eventStore.calendars(for: .event)
-        var eventsInHour: [EKEvent]
-        
-    hoursLoop: for hour in endHour...20 {
-        eventsInHour = []
-        
-    calendarsLoop: for calendar in calendars {
-        let predicate = eventStore.predicateForEvents(withStart: createDateObject(day: day, hour: startHour)!, end: createDateObject(day: day, hour: endHour)!, calendars: [calendar])
-        
-        eventsInHour += eventStore.events(matching: predicate)
-    }
-        if eventsInHour.isEmpty {
-            endHour = hour
-        } else {
-            // TODO: instead of -= 2 get event start hour and calculate good value
-            endHour -= 2
-            break hoursLoop
-        }
-    }
-        if endHour - startHour > 8 {
-            endHour -= (endHour - startHour - 8)
-        }
-        
-        createEvent(day: day, startHour: startHour, endHour: endHour)
-    }
 }
