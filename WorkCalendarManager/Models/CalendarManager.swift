@@ -7,10 +7,11 @@
 
 import Foundation
 import EventKit
+import UIKit
 
 protocol CalendarManagerDelegate {
-    func didFetchWork(hours: Int)
-    func didFailWhileFetching(_ error: Error)
+    func didFetchWorkHours(hours: Int)
+    func didFail(_ error: Error, _ message: String?)
 }
 
 struct CalendarManager {
@@ -33,7 +34,7 @@ struct CalendarManager {
         return Date().getEndOfCurrMonth()
     }
     
-    private var currMonthLastDay: Int {
+    var currMonthLastDay: Int {
         let lastDay = Calendar.current.date(byAdding: .day, value: -1, to: currMonthEnd)
         return Calendar.current.component(.day, from: lastDay!)
     }
@@ -43,18 +44,16 @@ struct CalendarManager {
     }
     
     private var userWorkCalendar: String? {
-        let calendars = eventStore.calendars(for: .event)
+        let calendars = getUserCalendars()
         for calendar in calendars {
             if calendar.title == K.workCalendarName {
                 return calendar.calendarIdentifier
             }
         }
         
-        // TODO: Create new calendar instead of using default calendar
-        return eventStore.defaultCalendarForNewEvents?.calendarIdentifier
+        return createWorkCalendar(withName: K.workCalendarName)
     }
     
-    // TODO: handle errors
     init() {
         eventStore = EKEventStore()
         eventStore.requestAccess(to: .event) { granted, error in
@@ -65,46 +64,69 @@ struct CalendarManager {
         }
     }
     
-    func fetchWorkHours() {
-        var amount: Int = 0
+    private mutating func refreshEventStore() {
+        eventStore = EKEventStore()
+        eventStore.requestAccess(to: .event) { granted, error in
+            if error != nil {
+                print(error as Any)
+                return
+            }
+        }
+    }
+    
+    private func createWorkCalendar(withName name: String) -> String {
+        guard let source = eventStore.defaultCalendarForNewEvents?.source else {
+            return eventStore.defaultCalendarForNewEvents!.calendarIdentifier
+        }
         
-        let calendars = eventStore.calendars(for: .event)
+        let newCalendar = EKCalendar(for: .event, eventStore: eventStore)
+        newCalendar.title = name
+        newCalendar.source = source
+        newCalendar.cgColor = UIColor.blue.cgColor
+        
+        try! eventStore.saveCalendar(newCalendar, commit: true)
+        
+        return newCalendar.calendarIdentifier
+    }
+    
+    mutating func fetchWorkHours() {
+        refreshEventStore()
+        var workHours: Int = 0
+        
+        let calendars = getUserCalendars()
         for calendar in calendars {
-            if calendar.title != K.workCalendarName { continue }
+            guard calendar.title == K.workCalendarName else { continue }
             
-            let predicate = eventStore.predicateForEvents(withStart: currMonthStart, end: currMonthEnd, calendars: [calendar])
-            let events = eventStore.events(matching: predicate)
+            let predicate = createPredicate(withStart: currMonthStart, end: currMonthEnd, for: [calendar])
+            let events = getEventsList(matching: predicate)
             
             for event in events {
-                let eventStartDate = event.startDate
-                let eventEndDate = event.endDate
-                let eventDuration = eventEndDate!.timeIntervalSinceReferenceDate - eventStartDate!.timeIntervalSinceReferenceDate
-                amount += Int(eventDuration / 3600.0)
+                let eventDuration = event.startDate.distance(to: event.endDate)
+                workHours += Int(eventDuration / 3600.0)
             }
             break
         }
-        delegate?.didFetchWork(hours: amount)
+        delegate?.didFetchWorkHours(hours: workHours)
     }
     
-    func createEvent(day: Int, startHour: Int, endHour: Int) {
+    func createEvent(startHour: Date, endHour: Date) {
         let newEvent = EKEvent(eventStore: eventStore)
         
         newEvent.title = K.workCalendarName
         newEvent.notes = K.eventNote
-        newEvent.startDate = createDateObject(day: day, hour: startHour)
-        newEvent.endDate = createDateObject(day: day, hour: endHour)
+        newEvent.startDate = startHour
+        newEvent.endDate = endHour
         newEvent.calendar = eventStore.calendar(withIdentifier: userWorkCalendar!)
         
         do {
             try eventStore.save(newEvent, span: .thisEvent)
-            print("Event saved in calendar")
         } catch let error {
-            print(error)
+            delegate?.didFail(error, "Failed while adding event")
         }
     }
     
     /// - Returns: dictionary with key = calendar title and value = calendar CGColor
-    func fetchUserCalendars() -> [String: CGColor] {
+    func getUserCalendarsColors() -> [String: CGColor] {
         var calendarColorDict: [String: CGColor] = [:]
         
         let calendars = eventStore.calendars(for: .event)
@@ -115,7 +137,7 @@ struct CalendarManager {
         return calendarColorDict
     }
     
-    func createDateObject(day: Int, hour: Int) -> Date? {
+    func createDateObject(day: Int, hour: Int? = nil) -> Date {
         let userCalendar = Calendar.current
         var dateComponents = DateComponents()
         
@@ -125,49 +147,18 @@ struct CalendarManager {
         dateComponents.day = day
         dateComponents.hour = hour
         
-        return userCalendar.date(from: dateComponents)
+        return userCalendar.date(from: dateComponents)!
     }
     
-    func iterateOverDays() {
-        for day in 1...currMonthLastDay {
-            let tempDate = createDateObject(day: day, hour: 10)!
-            let tempWeekday = Calendar.current.component(.weekday, from: tempDate)
-            
-            if tempWeekday == 1 || tempWeekday == 7 {
-                continue  // ignore saturdays and sundays
-            }
-            
-            iterateOverHours(day: day)
-        }
+    func getUserCalendars() -> [EKCalendar] {
+        return eventStore.calendars(for: .event)
     }
     
-    // MARK: first sketch of function adding events to empty slots in calendar
-    func iterateOverHours(day: Int) {
-        let startHour = 7
-        var endHour = 8
-        let calendars = eventStore.calendars(for: .event)
-        var eventsInHour: [EKEvent]
-        
-    hoursLoop: for hour in endHour...20 {
-        eventsInHour = []
-        
-    calendarsLoop: for calendar in calendars {
-        let predicate = eventStore.predicateForEvents(withStart: createDateObject(day: day, hour: startHour)!, end: createDateObject(day: day, hour: endHour)!, calendars: [calendar])
-        
-        eventsInHour += eventStore.events(matching: predicate)
+    func getEventsList(matching predicate: NSPredicate) -> [EKEvent] {
+        return eventStore.events(matching: predicate)
     }
-        if eventsInHour.isEmpty {
-            endHour = hour
-        } else {
-            // TODO: instead of -= 2 get event start hour and calculate good value
-            endHour -= 2
-            break hoursLoop
-        }
-    }
-        if endHour - startHour > 8 {
-            endHour -= (endHour - startHour - 8)
-        }
-        
-        createEvent(day: day, startHour: startHour, endHour: endHour)
+    
+    func createPredicate(withStart startDate: Date, end endDate: Date, for calendars: [EKCalendar]) -> NSPredicate {
+        return eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: calendars)
     }
 }
