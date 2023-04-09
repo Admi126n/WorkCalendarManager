@@ -26,8 +26,7 @@ struct CalendarManagerBrain {
     }
     
     mutating func iterateOverAvailabilityDict(on day: Int) {
-        // TODO: work duration has to be full hours
-        // TODO: work duration has to be smaller or equal to K.workMaxDuration
+        // TODO: refactoring!
         var slotIsEmpty = false
         var startDate: Date = Date()
         var endDate: Date = Date()
@@ -41,15 +40,57 @@ struct CalendarManagerBrain {
                 }
                 slotIsEmpty = true
                 endDate = Calendar.current.date(byAdding: .minute, value: 15, to: key)!
+                
+                if endDate >= cM.createDateObject(day: day, hour: 18) {
+                    let duration = Int(startDate.distance(to: endDate))
+                    
+                    if duration / 3600 >= K.workMinDuration {
+                        if duration % 3600 == 0 {
+                            if duration / 3600 <= K.workMaxDuration {
+                                cM.createEvent(startHour: startDate, endHour: endDate)
+                            } else {
+                                endDate = cutEventToMaxDuration(startDate: startDate, endDate: endDate)
+                                cM.createEvent(startHour: startDate, endHour: endDate)
+                            }
+                        } else {
+                            endDate = cutEventToFullHour(startDate: startDate, endDate: endDate)
+                            if duration / 3600 <= K.workMaxDuration {
+                                cM.createEvent(startHour: startDate, endHour: endDate)
+                            } else {
+                                endDate = cutEventToMaxDuration(startDate: startDate, endDate: endDate)
+                                cM.createEvent(startHour: startDate, endHour: endDate)
+                            }
+                        }
+                    }
+                    break
+                }
+                
+                if Int(startDate.distance(to: endDate)) / 3600 == K.workMaxDuration {
+                    cM.createEvent(startHour: startDate, endHour: endDate)
+                    break
+                }
             } else {
                 if slotIsEmpty {
-                    let duration = startDate.distance(to: endDate) / 3600
+                    let duration = Int(startDate.distance(to: endDate))
                     
-                    if duration >= Double(K.workMinDuration) {
-                        cM.createEvent(startHour: startDate, endHour: endDate)
+                    if duration / 3600 >= K.workMinDuration {
+                        if duration % 3600 == 0 {
+                            if duration / 3600 <= K.workMaxDuration {
+                                cM.createEvent(startHour: startDate, endHour: endDate)
+                            } else {
+                                endDate = cutEventToMaxDuration(startDate: startDate, endDate: endDate)
+                                cM.createEvent(startHour: startDate, endHour: endDate)
+                            }
+                        } else {
+                            endDate = cutEventToFullHour(startDate: startDate, endDate: endDate)
+                            if duration / 3600 <= K.workMaxDuration {
+                                cM.createEvent(startHour: startDate, endHour: endDate)
+                            } else {
+                                endDate = cutEventToMaxDuration(startDate: startDate, endDate: endDate)
+                                cM.createEvent(startHour: startDate, endHour: endDate)
+                            }
+                        }
                     }
-                    
-                    print(startDate, endDate)
                 }
                 slotIsEmpty = false
             }
@@ -102,4 +143,17 @@ struct CalendarManagerBrain {
         }
     }
     
+    private func cutEventToFullHour(startDate: Date, endDate: Date) -> Date {
+        let secondsToCut = Int(startDate.distance(to: endDate)) % 3600
+        let newEndDate = Calendar.current.date(byAdding: .second, value: -secondsToCut, to: endDate)!
+        
+        return newEndDate
+    }
+    
+    private func cutEventToMaxDuration(startDate: Date, endDate: Date) -> Date {
+        let hoursToCut = Int(startDate.distance(to: endDate) / 3600) % K.workMaxDuration
+        let newEndDate = Calendar.current.date(byAdding: .hour, value: -hoursToCut, to: endDate)!
+        
+        return newEndDate
+    }
 }
