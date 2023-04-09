@@ -16,4 +16,7 @@ struct K {
     
     static let workMinDuration: Int = 3
     static let workMaxDuration: Int = 8
+    
+    static let businessDayStartHour: Int = 7
+    static let businessDayEndHour: Int = 18
 }

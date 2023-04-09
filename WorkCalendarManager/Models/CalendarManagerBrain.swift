@@ -25,72 +25,34 @@ struct CalendarManagerBrain {
         }
     }
     
+    // TODO: make it private
     mutating func iterateOverAvailabilityDict(on day: Int) {
-        // TODO: refactoring!
         var slotIsEmpty = false
-        var startDate: Date = Date()
-        var endDate: Date = Date()
+        var workStartDate: Date = Date()
+        var workEndDate: Date = Date()
         
         fillAvailabilityDict(for: day)
         
-        for (key, value) in availabilityDict.sorted(by: { $0.0 < $1.0 }) {
-            if value {
+        for (date, availability) in availabilityDict.sorted(by: { $0.0 < $1.0 }) {
+            if availability {
                 if !slotIsEmpty {
-                    startDate = key
+                    workStartDate = date
                 }
                 slotIsEmpty = true
-                endDate = Calendar.current.date(byAdding: .minute, value: 15, to: key)!
+                workEndDate = Calendar.current.date(byAdding: .minute, value: 15, to: date)!
                 
-                if endDate >= cM.createDateObject(day: day, hour: 18) {
-                    let duration = Int(startDate.distance(to: endDate))
-                    
-                    if duration / 3600 >= K.workMinDuration {
-                        if duration % 3600 == 0 {
-                            if duration / 3600 <= K.workMaxDuration {
-                                cM.createEvent(startHour: startDate, endHour: endDate)
-                            } else {
-                                endDate = cutEventToMaxDuration(startDate: startDate, endDate: endDate)
-                                cM.createEvent(startHour: startDate, endHour: endDate)
-                            }
-                        } else {
-                            endDate = cutEventToFullHour(startDate: startDate, endDate: endDate)
-                            if duration / 3600 <= K.workMaxDuration {
-                                cM.createEvent(startHour: startDate, endHour: endDate)
-                            } else {
-                                endDate = cutEventToMaxDuration(startDate: startDate, endDate: endDate)
-                                cM.createEvent(startHour: startDate, endHour: endDate)
-                            }
-                        }
-                    }
+                if workEndDate >= cM.createDateObject(day: day, hour: K.businessDayEndHour) {
+                    calculateWorkEvent(workStartDate, workEndDate)
                     break
                 }
                 
-                if Int(startDate.distance(to: endDate)) / 3600 == K.workMaxDuration {
-                    cM.createEvent(startHour: startDate, endHour: endDate)
+                if Int(workStartDate.distance(to: workEndDate)) / 3600 == K.workMaxDuration {
+                    cM.createEvent(startHour: workStartDate, endHour: workEndDate)
                     break
                 }
             } else {
                 if slotIsEmpty {
-                    let duration = Int(startDate.distance(to: endDate))
-                    
-                    if duration / 3600 >= K.workMinDuration {
-                        if duration % 3600 == 0 {
-                            if duration / 3600 <= K.workMaxDuration {
-                                cM.createEvent(startHour: startDate, endHour: endDate)
-                            } else {
-                                endDate = cutEventToMaxDuration(startDate: startDate, endDate: endDate)
-                                cM.createEvent(startHour: startDate, endHour: endDate)
-                            }
-                        } else {
-                            endDate = cutEventToFullHour(startDate: startDate, endDate: endDate)
-                            if duration / 3600 <= K.workMaxDuration {
-                                cM.createEvent(startHour: startDate, endHour: endDate)
-                            } else {
-                                endDate = cutEventToMaxDuration(startDate: startDate, endDate: endDate)
-                                cM.createEvent(startHour: startDate, endHour: endDate)
-                            }
-                        }
-                    }
+                    calculateWorkEvent(workStartDate, workEndDate)
                 }
                 slotIsEmpty = false
             }
@@ -102,38 +64,37 @@ struct CalendarManagerBrain {
     mutating func fillAvailabilityDict(for day: Int) {
         availabilityDict = [:]
         
-        // FIXME: make some refactoring because it looks terrible
-        var startDate = cM.createDateObject(day: day, hour: 7)
-        var endDate = Calendar.current.date(byAdding: .minute, value: 15, to: startDate)!
-        let maxEndDate = cM.createDateObject(day: day, hour: 20)
-        let calendars = cM.eventStore.calendars(for: .event)
+        var searchingStartDate = cM.createDateObject(day: day, hour: K.businessDayStartHour)
+        var searchingEndDate = Calendar.current.date(byAdding: .minute, value: 15, to: searchingStartDate)!
+        let businessDayEndDate = cM.createDateObject(day: day, hour: K.businessDayEndHour + 1)
+        let userCalendars = cM.eventStore.calendars(for: .event)
         var eventsList: [EKEvent] = []
         
         repeat {
-            for calendar in calendars {
+            for calendar in userCalendars {
                 // TODO: after adding UI, change title to calendarIdentifier
-                if K.ignoredCalendars.contains(calendar.title) { continue }
+                guard !K.ignoredCalendars.contains(calendar.title) else { continue }
                 
-                let predicate = cM.eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: [calendar])
-                eventsList += cM.eventStore.events(matching: predicate)
+                let predicate = cM.eventStore.predicateForEvents(withStart: searchingStartDate, end: searchingEndDate, calendars: [calendar])  // FIXME: zrobic gettera
+                eventsList += cM.eventStore.events(matching: predicate)  // FIXME: getter
             }
             
             if eventsList.isEmpty {
-                if availabilityDict[startDate] == nil {
-                    availabilityDict[startDate] = true
+                if availabilityDict[searchingStartDate] == nil {
+                    availabilityDict[searchingStartDate] = true
                 }
             } else {
-                availabilityDict[startDate] = false
+                availabilityDict[searchingStartDate] = false
                 
-                blockAvailability(for: -4, from: startDate)  // block time 1 hour before calendar event
-                blockAvailability(for: 4, from: startDate)  // block time 1 hour after calendar event
+                blockAvailability(for: -4, from: searchingStartDate)  // block time 1 hour before calendar event
+                blockAvailability(for: 4, from: searchingStartDate)  // block time 1 hour after calendar event
             }
             
-            startDate = Calendar.current.date(byAdding: .minute, value: 15, to: startDate)!
-            endDate = Calendar.current.date(byAdding: .minute, value: 15, to: endDate)!
+            searchingStartDate = Calendar.current.date(byAdding: .minute, value: 15, to: searchingStartDate)!
+            searchingEndDate = Calendar.current.date(byAdding: .minute, value: 15, to: searchingEndDate)!
             
             eventsList = []
-        } while endDate <= maxEndDate
+        } while searchingEndDate <= businessDayEndDate
     }
     
     private mutating func blockAvailability(for quaters: Int, from date: Date) {
@@ -155,5 +116,29 @@ struct CalendarManagerBrain {
         let newEndDate = Calendar.current.date(byAdding: .hour, value: -hoursToCut, to: endDate)!
         
         return newEndDate
+    }
+    
+    private func calculateWorkEvent(_ workStartDate: Date, _ workEndDate: Date) {
+        var eventEndDate = workEndDate
+        let workDuration = Int(workStartDate.distance(to: eventEndDate))
+        
+        if workDuration / 3600 >= K.workMinDuration {
+            if workDuration % 3600 == 0 {
+                if workDuration / 3600 <= K.workMaxDuration {
+                    cM.createEvent(startHour: workStartDate, endHour: eventEndDate)
+                } else {
+                    eventEndDate = cutEventToMaxDuration(startDate: workStartDate, endDate: eventEndDate)
+                    cM.createEvent(startHour: workStartDate, endHour: eventEndDate)
+                }
+            } else {
+                eventEndDate = cutEventToFullHour(startDate: workStartDate, endDate: eventEndDate)
+                if workDuration / 3600 <= K.workMaxDuration {
+                    cM.createEvent(startHour: workStartDate, endHour: eventEndDate)
+                } else {
+                    eventEndDate = cutEventToMaxDuration(startDate: workStartDate, endDate: eventEndDate)
+                    cM.createEvent(startHour: workStartDate, endHour: eventEndDate)
+                }
+            }
+        }
     }
 }
