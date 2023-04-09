@@ -7,15 +7,15 @@
 
 import Foundation
 import EventKit
+import UIKit
 
 protocol CalendarManagerDelegate {
-    func didFetchWork(hours: Int)
-    func didFailWhileFetching(_ error: Error)
+    func didFetchWorkHours(hours: Int)
+    func didFail(_ error: Error, _ message: String?)
 }
 
 struct CalendarManager {
-    // TODO: Make eventStore private and make needed getters
-    var eventStore: EKEventStore
+    private var eventStore: EKEventStore
     var delegate: CalendarManagerDelegate?
     
     private var currYear: Int {
@@ -44,18 +44,16 @@ struct CalendarManager {
     }
     
     private var userWorkCalendar: String? {
-        let calendars = eventStore.calendars(for: .event)
+        let calendars = getUserCalendars()
         for calendar in calendars {
             if calendar.title == K.workCalendarName {
                 return calendar.calendarIdentifier
             }
         }
         
-        // TODO: Create new calendar instead of using default calendar
-        return eventStore.defaultCalendarForNewEvents?.calendarIdentifier
+        return createWorkCalendar(withName: K.workCalendarName)
     }
     
-    // TODO: handle errors
     init() {
         eventStore = EKEventStore()
         eventStore.requestAccess(to: .event) { granted, error in
@@ -66,25 +64,49 @@ struct CalendarManager {
         }
     }
     
-    func fetchWorkHours() {
-        var amount: Int = 0
+    private mutating func refreshEventStore() {
+        eventStore = EKEventStore()
+        eventStore.requestAccess(to: .event) { granted, error in
+            if error != nil {
+                print(error as Any)
+                return
+            }
+        }
+    }
+    
+    private func createWorkCalendar(withName name: String) -> String {
+        guard let source = eventStore.defaultCalendarForNewEvents?.source else {
+            return eventStore.defaultCalendarForNewEvents!.calendarIdentifier
+        }
         
-        let calendars = eventStore.calendars(for: .event)
+        let newCalendar = EKCalendar(for: .event, eventStore: eventStore)
+        newCalendar.title = name
+        newCalendar.source = source
+        newCalendar.cgColor = UIColor.blue.cgColor
+        
+        try! eventStore.saveCalendar(newCalendar, commit: true)
+        
+        return newCalendar.calendarIdentifier
+    }
+    
+    mutating func fetchWorkHours() {
+        refreshEventStore()
+        var workHours: Int = 0
+        
+        let calendars = getUserCalendars()
         for calendar in calendars {
-            if calendar.title != K.workCalendarName { continue }
+            guard calendar.title == K.workCalendarName else { continue }
             
-            let predicate = eventStore.predicateForEvents(withStart: currMonthStart, end: currMonthEnd, calendars: [calendar])
-            let events = eventStore.events(matching: predicate)
+            let predicate = createPredicate(withStart: currMonthStart, end: currMonthEnd, for: [calendar])
+            let events = getEventsList(matching: predicate)
             
             for event in events {
-                let eventStartDate = event.startDate
-                let eventEndDate = event.endDate
-                let eventDuration = eventEndDate!.timeIntervalSinceReferenceDate - eventStartDate!.timeIntervalSinceReferenceDate
-                amount += Int(eventDuration / 3600.0)
+                let eventDuration = event.startDate.distance(to: event.endDate)
+                workHours += Int(eventDuration / 3600.0)
             }
             break
         }
-        delegate?.didFetchWork(hours: amount)
+        delegate?.didFetchWorkHours(hours: workHours)
     }
     
     func createEvent(startHour: Date, endHour: Date) {
@@ -98,14 +120,13 @@ struct CalendarManager {
         
         do {
             try eventStore.save(newEvent, span: .thisEvent)
-            print("Event saved in calendar")
         } catch let error {
-            print(error)
+            delegate?.didFail(error, "Failed while adding event")
         }
     }
     
     /// - Returns: dictionary with key = calendar title and value = calendar CGColor
-    func fetchUserCalendars() -> [String: CGColor] {
+    func getUserCalendarsColors() -> [String: CGColor] {
         var calendarColorDict: [String: CGColor] = [:]
         
         let calendars = eventStore.calendars(for: .event)
@@ -129,4 +150,15 @@ struct CalendarManager {
         return userCalendar.date(from: dateComponents)!
     }
     
+    func getUserCalendars() -> [EKCalendar] {
+        return eventStore.calendars(for: .event)
+    }
+    
+    func getEventsList(matching predicate: NSPredicate) -> [EKEvent] {
+        return eventStore.events(matching: predicate)
+    }
+    
+    func createPredicate(withStart startDate: Date, end endDate: Date, for calendars: [EKCalendar]) -> NSPredicate {
+        return eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: calendars)
+    }
 }

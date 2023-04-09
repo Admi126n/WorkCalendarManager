@@ -11,7 +11,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var workHoursLabel: UILabel!
     
     var calendarManager = CalendarManager()
-    var cMB: CalendarManagerBrain = CalendarManagerBrain()
+    var calendarManagerBrain = CalendarManagerBrain()
     
     override func viewDidLoad() {
         calendarManager.delegate = self
@@ -22,18 +22,18 @@ class ViewController: UIViewController {
     }
     
     @IBAction func calendarManagerTest(_ sender: UIButton) {
-        cMB.iterateOverAvailabilityDict(on: 3)
+        calendarManagerBrain.iterateOverDays()
         calendarManager.fetchWorkHours()
     }
     
 }
 
 extension ViewController: CalendarManagerDelegate {
-    func didFetchWork(hours: Int) {
+    func didFetchWorkHours(hours: Int) {
         workHoursLabel.text = "Work hours in this month: \(hours)"
     }
     
-    func didFailWhileFetching(_ error: Error) {
+    func didFail(_ error: Error, _ message: String?) {
         print(error)
     }
     

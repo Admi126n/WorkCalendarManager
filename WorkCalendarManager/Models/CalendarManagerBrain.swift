@@ -25,8 +25,7 @@ struct CalendarManagerBrain {
         }
     }
     
-    // TODO: make it private
-    mutating func iterateOverAvailabilityDict(on day: Int) {
+    private mutating func iterateOverAvailabilityDict(on day: Int) {
         var slotIsEmpty = false
         var workStartDate: Date = Date()
         var workEndDate: Date = Date()
@@ -67,7 +66,7 @@ struct CalendarManagerBrain {
         var searchingStartDate = cM.createDateObject(day: day, hour: K.businessDayStartHour)
         var searchingEndDate = Calendar.current.date(byAdding: .minute, value: 15, to: searchingStartDate)!
         let businessDayEndDate = cM.createDateObject(day: day, hour: K.businessDayEndHour + 1)
-        let userCalendars = cM.eventStore.calendars(for: .event)
+        let userCalendars = cM.getUserCalendars()
         var eventsList: [EKEvent] = []
         
         repeat {
@@ -75,8 +74,8 @@ struct CalendarManagerBrain {
                 // TODO: after adding UI, change title to calendarIdentifier
                 guard !K.ignoredCalendars.contains(calendar.title) else { continue }
                 
-                let predicate = cM.eventStore.predicateForEvents(withStart: searchingStartDate, end: searchingEndDate, calendars: [calendar])  // FIXME: zrobic gettera
-                eventsList += cM.eventStore.events(matching: predicate)  // FIXME: getter
+                let predicate = cM.createPredicate(withStart: searchingStartDate, end: searchingEndDate, for: [calendar])
+                eventsList += cM.getEventsList(matching: predicate)
             }
             
             if eventsList.isEmpty {
