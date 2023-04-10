@@ -11,6 +11,7 @@ struct K {
     static let workCalendarName: String = "Praca"
     static let eventTitle: String = "Work"
     static let eventNote: String = "Created by WorkCalendarManager"
+    static let appAppearanceDefaults: String = "appAppearance"
     
     static let ignoredCalendars: [String] = []
     
