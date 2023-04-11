@@ -12,6 +12,8 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var maxDurationLabel: UILabel!
     @IBOutlet weak var startHourLabel: UILabel!
     @IBOutlet weak var endHourLabel: UILabel!
+    @IBOutlet weak var marginBeforeLabel: UILabel!
+    @IBOutlet weak var marginAfterLabel: UILabel!
     
     @IBOutlet weak var appearanceControl: UISegmentedControl!
     
@@ -19,6 +21,8 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var maxDurationStepper: UIStepper!
     @IBOutlet weak var startHourStepper: UIStepper!
     @IBOutlet weak var endHourStepper: UIStepper!
+    @IBOutlet weak var marginBeforeStepper: UIStepper!
+    @IBOutlet weak var marginAfterStepper: UIStepper!
     
     let defaults = UserDefaults.standard
     
@@ -28,10 +32,6 @@ class SettingsViewController: UIViewController {
         updateLabels()
         
         appearanceControl.selectedSegmentIndex = defaults.integer(forKey: K.appAppearanceDefaults)
-    }
-    
-    @IBAction func doneButtonPressed(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func changeAppearance(_ sender: UISegmentedControl) {
@@ -57,5 +57,7 @@ class SettingsViewController: UIViewController {
         maxDurationLabel.text = "Maximum: \(Int(maxDurationStepper.value))h"
         startHourLabel.text = "Start hour: \(Int(startHourStepper.value)):00"
         endHourLabel.text = "End hour: \(Int(endHourStepper.value)):00"
+        marginBeforeLabel.text = "Margin before work: \(Int(marginBeforeStepper.value))min"
+        marginAfterLabel.text = "Margin after work: \(Int(marginAfterStepper.value))min"
     }
 }
