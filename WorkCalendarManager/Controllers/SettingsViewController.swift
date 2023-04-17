@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol SettingsViewControllerDelegate {
+    // FIXME: maybe use dict with stepper values instead of whole controller
+    func updateSettings(_ svc: SettingsViewController)
+}
+
 class SettingsViewController: UIViewController {
     @IBOutlet weak var minDurationLabel: UILabel!
     @IBOutlet weak var maxDurationLabel: UILabel!
@@ -24,6 +29,7 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var marginBeforeStepper: UIStepper!
     @IBOutlet weak var marginAfterStepper: UIStepper!
     
+    var delegate: SettingsViewControllerDelegate?
     let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
@@ -50,6 +56,7 @@ class SettingsViewController: UIViewController {
     
     @IBAction func stepperPressed(_ sender: UIStepper) {
         updateLabels()
+        delegate?.updateSettings(self)
     }
     
     private func updateLabels() {

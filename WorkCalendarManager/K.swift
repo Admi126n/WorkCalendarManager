@@ -12,6 +12,7 @@ struct K {
     static let eventTitle: String = "Work"
     static let eventNote: String = "Created by WorkCalendarManager"
     static let appAppearanceDefaults: String = "appAppearance"
+    static let settingsScreenSegue: String = "settingsScreenSegue"
     
     static let ignoredCalendars: [String] = []
     
