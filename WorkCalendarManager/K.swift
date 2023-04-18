@@ -21,4 +21,13 @@ struct K {
     
     static let businessDayStartHour: Int = 7
     static let businessDayEndHour: Int = 18
+    
+    struct S {
+        static let minDuration: String = "minDuration"
+        static let maxDuration: String = "maxDuration"
+        static let startHour: String = "startHour"
+        static let endHour: String = "endHour"
+        static let marginBefore: String = "marginBefore"
+        static let marginAfter: String = "marginAfter"
+    }
 }

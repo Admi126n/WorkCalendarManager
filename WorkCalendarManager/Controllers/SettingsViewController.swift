@@ -8,8 +8,7 @@
 import UIKit
 
 protocol SettingsViewControllerDelegate {
-    // FIXME: maybe use dict with stepper values instead of whole controller
-    func updateSettings(_ svc: SettingsViewController)
+    func updateSettings(_ settingsDict: [String: Int])
 }
 
 class SettingsViewController: UIViewController {
@@ -30,11 +29,12 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var marginAfterStepper: UIStepper!
     
     var delegate: SettingsViewControllerDelegate?
-    let defaults = UserDefaults.standard
+    private let defaults = UserDefaults.standard
+    private var settingsDict: [String: Int] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         updateLabels()
         
         appearanceControl.selectedSegmentIndex = defaults.integer(forKey: K.appAppearanceDefaults)
@@ -55,16 +55,26 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func stepperPressed(_ sender: UIStepper) {
+        updateSettings()
         updateLabels()
-        delegate?.updateSettings(self)
+        delegate?.updateSettings(settingsDict)
+    }
+    
+    private func updateSettings() {
+        settingsDict[K.S.minDuration] = Int(minDurationStepper.value)
+        settingsDict[K.S.maxDuration] = Int(maxDurationStepper.value)
+        settingsDict[K.S.startHour] = Int(startHourStepper.value)
+        settingsDict[K.S.endHour] = Int(endHourStepper.value)
+        settingsDict[K.S.marginBefore] = Int(marginBeforeStepper.value)
+        settingsDict[K.S.marginAfter] = Int(marginAfterStepper.value)
     }
     
     private func updateLabels() {
-        minDurationLabel.text = "Minimum: \(Int(minDurationStepper.value))h"
-        maxDurationLabel.text = "Maximum: \(Int(maxDurationStepper.value))h"
-        startHourLabel.text = "Start hour: \(Int(startHourStepper.value)):00"
-        endHourLabel.text = "End hour: \(Int(endHourStepper.value)):00"
-        marginBeforeLabel.text = "Margin before work: \(Int(marginBeforeStepper.value))min"
-        marginAfterLabel.text = "Margin after work: \(Int(marginAfterStepper.value))min"
+        minDurationLabel.text = "Minimum: \(settingsDict[K.S.minDuration]!)h"
+        maxDurationLabel.text = "Maximum: \(settingsDict[K.S.maxDuration]!)h"
+        startHourLabel.text = "Start hour: \(settingsDict[K.S.startHour]!):00"
+        endHourLabel.text = "End hour: \(settingsDict[K.S.endHour]!):00"
+        marginBeforeLabel.text = "Margin before work: \(settingsDict[K.S.marginBefore]!)min"
+        marginAfterLabel.text = "Margin after work: \(settingsDict[K.S.marginAfter]!)min"
     }
 }
