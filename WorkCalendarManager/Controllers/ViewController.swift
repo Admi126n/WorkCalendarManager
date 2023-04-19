@@ -26,6 +26,12 @@ class ViewController: UIViewController {
         calendarManager.fetchWorkHours()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == K.settingsScreenSegue {
+            let svc = segue.destination as! SettingsViewController
+            svc.delegate = self
+        }
+    }
 }
 
 extension ViewController: CalendarManagerDelegate {
@@ -35,6 +41,14 @@ extension ViewController: CalendarManagerDelegate {
     
     func didFail(_ error: Error, _ message: String?) {
         print(error)
+    }
+    
+    
+}
+
+extension ViewController: SettingsViewControllerDelegate {
+    func updateSettings(_ settingsDict: [String : Int]) {
+        calendarManagerBrain.setSettingsDict(settingsDict)
     }
     
     
