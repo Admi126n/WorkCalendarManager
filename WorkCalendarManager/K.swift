@@ -13,7 +13,11 @@ struct K {
     static let eventNote: String = "Created by WorkCalendarManager"
     static let settingsScreenSegue: String = "settingsScreenSegue"
     
+    static let calendarCellIdentifier: String = "ReusableCalendarCell"
+    static let calendarCellName: String = "CalendarCell"
+    
     static let ignoredCalendars: [String] = []
+    static let systemCalendars: [String] = ["Birthdays", "Siri Suggestions"]
     
     static let workMinDuration: Int = 3
     static let workMaxDuration: Int = 8

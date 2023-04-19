@@ -361,6 +361,7 @@
                         <outlet property="minDurationStepper" destination="RkZ-P2-VRs" id="4PB-7O-VGH"/>
                         <outlet property="startHourLabel" destination="AjL-Hb-peW" id="WRp-8E-dBn"/>
                         <outlet property="startHourStepper" destination="Syb-pE-0ma" id="AlL-qY-Etf"/>
+                        <outlet property="tableView" destination="37u-p6-5U7" id="49L-mW-3Vt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ys8-jX-vA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

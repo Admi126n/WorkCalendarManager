@@ -20,8 +20,6 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var marginBeforeLabel: UILabel!
     @IBOutlet weak var marginAfterLabel: UILabel!
     
-    @IBOutlet weak var appearanceControl: UISegmentedControl!
-    
     @IBOutlet weak var minDurationStepper: UIStepper!
     @IBOutlet weak var maxDurationStepper: UIStepper!
     @IBOutlet weak var startHourStepper: UIStepper!
@@ -29,12 +27,22 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var marginBeforeStepper: UIStepper!
     @IBOutlet weak var marginAfterStepper: UIStepper!
     
+    @IBOutlet weak var appearanceControl: UISegmentedControl!
+    @IBOutlet weak var tableView: UITableView!
+    
     var delegate: SettingsViewControllerDelegate?
     private let defaults = UserDefaults.standard
     private var settingsDict: [String: Int] = [:]
+    private var calendars: [[String: [Any]]] = [[:]]
+    private var calendarManager: CalendarManager = CalendarManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.dataSource = self
+        tableView.register(UINib(nibName: K.calendarCellName, bundle: nil), forCellReuseIdentifier: K.calendarCellIdentifier)
+        
+        calendars = calendarManager.getUserCalendarsColors()
         
         loadSettingsDict()
         updateLabelsText()
@@ -102,4 +110,24 @@ class SettingsViewController: UIViewController {
             settingsDict = safeDict as! [String: Int]
         }
     }
+}
+
+//MARK: - UITableViewDataSource
+
+extension SettingsViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return calendars.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let calendar = calendars[indexPath.row].first
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.calendarCellIdentifier, for: indexPath) as! CalendarCell
+        
+        cell.calendarName.text = (calendar!.value[0] as! String)
+        cell.calendarColor.backgroundColor = UIColor(cgColor: calendar!.value[1] as! CGColor)
+        
+        return cell
+    }
+    
+    
 }
