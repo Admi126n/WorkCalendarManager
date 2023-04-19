@@ -240,7 +240,7 @@
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="180" stepValue="15" translatesAutoresizingMaskIntoConstraints="NO" id="CWU-Dy-cH4" userLabel="Margin Before">
+                                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="CWU-Dy-cH4" userLabel="Margin Before">
                                                                 <rect key="frame" x="290" y="0.0" width="94" height="30"/>
                                                                 <connections>
                                                                     <action selector="stepperPressed:" destination="d6c-CG-VDu" eventType="valueChanged" id="2v0-NR-Jc2"/>
@@ -260,7 +260,7 @@
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="180" stepValue="15" translatesAutoresizingMaskIntoConstraints="NO" id="ceB-dJ-Tc0" userLabel="Margin After">
+                                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="ceB-dJ-Tc0" userLabel="Margin After">
                                                                 <rect key="frame" x="290" y="0.0" width="94" height="30"/>
                                                                 <connections>
                                                                     <action selector="stepperPressed:" destination="d6c-CG-VDu" eventType="valueChanged" id="S5F-vE-L2w"/>
