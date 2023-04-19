@@ -45,6 +45,8 @@ class SettingsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         updateSettingsDict()
+        
+        delegate?.updateSettings(settingsDict)
     }
     
     @IBAction func changeAppearance(_ sender: UISegmentedControl) {
@@ -64,8 +66,6 @@ class SettingsViewController: UIViewController {
     @IBAction func stepperPressed(_ sender: UIStepper) {
         updateSettingsDict()
         updateLabelsText()
-        
-        delegate?.updateSettings(settingsDict)
     }
     
     private func updateSettingsDict() {

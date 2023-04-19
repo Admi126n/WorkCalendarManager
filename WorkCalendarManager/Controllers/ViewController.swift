@@ -48,7 +48,7 @@ extension ViewController: CalendarManagerDelegate {
 
 extension ViewController: SettingsViewControllerDelegate {
     func updateSettings(_ settingsDict: [String : Int]) {
-        // TODO: update all settings in calendar manager
+        calendarManagerBrain.setSettingsDict(settingsDict)
     }
     
     

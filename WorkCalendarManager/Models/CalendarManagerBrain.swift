@@ -11,6 +11,7 @@ import EventKit
 struct CalendarManagerBrain {
     private let cM: CalendarManager = CalendarManager()
     private var availabilityDict: [Date: Bool] = [:]
+    private var settingsDict: [String: Int] = [:]
     
     mutating func iterateOverDays() {
         for day in 1...cM.currMonthLastDay {
@@ -40,12 +41,12 @@ struct CalendarManagerBrain {
                 slotIsEmpty = true
                 workEndDate = Calendar.current.date(byAdding: .minute, value: 15, to: date)!
                 
-                if workEndDate >= cM.createDateObject(day: day, hour: K.businessDayEndHour) {
+                if workEndDate >= cM.createDateObject(day: day, hour: (settingsDict[K.S.endHour] ?? K.businessDayEndHour)) {
                     calculateWorkEvent(workStartDate, workEndDate)
                     break
                 }
                 
-                if Int(workStartDate.distance(to: workEndDate)) / 3600 == K.workMaxDuration {
+                if Int(workStartDate.distance(to: workEndDate)) / 3600 == (settingsDict[K.S.maxDuration] ?? K.workMaxDuration) {
                     cM.createEvent(startHour: workStartDate, endHour: workEndDate)
                     break
                 }
@@ -63,9 +64,9 @@ struct CalendarManagerBrain {
     mutating func fillAvailabilityDict(for day: Int) {
         availabilityDict = [:]
         
-        var searchingStartDate = cM.createDateObject(day: day, hour: K.businessDayStartHour)
+        var searchingStartDate = cM.createDateObject(day: day, hour: (settingsDict[K.S.startHour] ?? K.businessDayStartHour))
         var searchingEndDate = Calendar.current.date(byAdding: .minute, value: 15, to: searchingStartDate)!
-        let businessDayEndDate = cM.createDateObject(day: day, hour: K.businessDayEndHour + 1)
+        let businessDayEndDate = cM.createDateObject(day: day, hour: (settingsDict[K.S.endHour] ?? K.businessDayEndHour) + 1)
         let userCalendars = cM.getUserCalendars()
         var eventsList: [EKEvent] = []
         
@@ -85,8 +86,8 @@ struct CalendarManagerBrain {
             } else {
                 availabilityDict[searchingStartDate] = false
                 
-                blockAvailability(for: -4, from: searchingStartDate)  // block time 1 hour before calendar event
-                blockAvailability(for: 4, from: searchingStartDate)  // block time 1 hour after calendar event
+                blockAvailability(for: -(settingsDict[K.S.marginBefore] ?? K.marginBeforeWork), from: searchingStartDate)
+                blockAvailability(for: (settingsDict[K.S.marginAfter] ?? K.marginAfterWork), from: searchingStartDate)
             }
             
             searchingStartDate = Calendar.current.date(byAdding: .minute, value: 15, to: searchingStartDate)!
@@ -96,7 +97,12 @@ struct CalendarManagerBrain {
         } while searchingEndDate <= businessDayEndDate
     }
     
+    // TODO: make sure if margins work properly (I mean if they equal given values)
     private mutating func blockAvailability(for quaters: Int, from date: Date) {
+        if quaters == 0 {
+            return
+        }
+        
         for i in 1...abs(quaters) {
             let dist = 15 * i * quaters.signum()
             availabilityDict[Calendar.current.date(byAdding: .minute, value: dist, to: date)!] = false
@@ -111,7 +117,7 @@ struct CalendarManagerBrain {
     }
     
     private func cutEventToMaxDuration(startDate: Date, endDate: Date) -> Date {
-        let hoursToCut = Int(startDate.distance(to: endDate) / 3600) % K.workMaxDuration
+        let hoursToCut = Int(startDate.distance(to: endDate) / 3600) % (settingsDict[K.S.maxDuration] ?? K.workMaxDuration)
         let newEndDate = Calendar.current.date(byAdding: .hour, value: -hoursToCut, to: endDate)!
         
         return newEndDate
@@ -121,9 +127,9 @@ struct CalendarManagerBrain {
         var eventEndDate = workEndDate
         let workDuration = Int(workStartDate.distance(to: eventEndDate))
         
-        if workDuration / 3600 >= K.workMinDuration {
+        if workDuration / 3600 >= (settingsDict[K.S.minDuration] ?? K.workMinDuration) {
             if workDuration % 3600 == 0 {
-                if workDuration / 3600 <= K.workMaxDuration {
+                if workDuration / 3600 <= (settingsDict[K.S.maxDuration] ?? K.workMaxDuration) {
                     cM.createEvent(startHour: workStartDate, endHour: eventEndDate)
                 } else {
                     eventEndDate = cutEventToMaxDuration(startDate: workStartDate, endDate: eventEndDate)
@@ -131,7 +137,7 @@ struct CalendarManagerBrain {
                 }
             } else {
                 eventEndDate = cutEventToFullHour(startDate: workStartDate, endDate: eventEndDate)
-                if workDuration / 3600 <= K.workMaxDuration {
+                if workDuration / 3600 <= (settingsDict[K.S.maxDuration] ?? K.workMaxDuration) {
                     cM.createEvent(startHour: workStartDate, endHour: eventEndDate)
                 } else {
                     eventEndDate = cutEventToMaxDuration(startDate: workStartDate, endDate: eventEndDate)
@@ -139,5 +145,9 @@ struct CalendarManagerBrain {
                 }
             }
         }
+    }
+    
+    mutating func setSettingsDict(_ settingsDict: [String: Int]) {
+        self.settingsDict = settingsDict
     }
 }

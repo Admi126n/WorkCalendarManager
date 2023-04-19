@@ -22,8 +22,8 @@ struct K {
     static let businessDayEndHour: Int = 18
     
     // margins are equal to number of quaters
-    static let marginBeforeWork: Int = 0
-    static let marginAfterWork: Int = 0
+    static let marginBeforeWork: Int = 4
+    static let marginAfterWork: Int = 4
     
     /// Struct with keys to user defaults
     struct D {
