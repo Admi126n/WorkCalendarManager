@@ -18,48 +18,59 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z9G-PY-o8d" userLabel="Main View">
-                        <rect key="frame" x="5" y="30" width="310" height="27"/>
+                        <rect key="frame" x="5" y="20" width="310" height="47"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rDV-V6-r68">
-                                <rect key="frame" x="20" y="3" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="adf-J6-w7z">
-                                <rect key="frame" x="270" y="3.5" width="20" height="20"/>
+                                <rect key="frame" x="280" y="13.5" width="20" height="20"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="dOR-q2-I2w"/>
                                     <constraint firstAttribute="height" constant="20" id="eAr-2R-Cnh"/>
                                 </constraints>
                             </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="22l-ff-bgV">
+                                <rect key="frame" x="10" y="15.5" width="20" height="16.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="Mkd-zl-RcD"/>
+                                    <constraint firstAttribute="height" constant="20" id="SA0-tE-fHY"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rDV-V6-r68">
+                                <rect key="frame" x="40" y="13" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="rDV-V6-r68" firstAttribute="leading" secondItem="z9G-PY-o8d" secondAttribute="leading" constant="20" id="5r7-P8-B2f"/>
-                            <constraint firstAttribute="trailing" secondItem="adf-J6-w7z" secondAttribute="trailing" constant="20" id="daD-1b-ZWM"/>
+                            <constraint firstItem="rDV-V6-r68" firstAttribute="leading" secondItem="22l-ff-bgV" secondAttribute="trailing" constant="10" id="GUb-JG-97i"/>
+                            <constraint firstAttribute="trailing" secondItem="adf-J6-w7z" secondAttribute="trailing" constant="10" id="daD-1b-ZWM"/>
+                            <constraint firstItem="22l-ff-bgV" firstAttribute="leading" secondItem="z9G-PY-o8d" secondAttribute="leading" constant="10" id="gax-mF-QJX"/>
+                            <constraint firstItem="22l-ff-bgV" firstAttribute="centerY" secondItem="z9G-PY-o8d" secondAttribute="centerY" id="mhy-gw-haT"/>
                             <constraint firstItem="rDV-V6-r68" firstAttribute="centerY" secondItem="z9G-PY-o8d" secondAttribute="centerY" id="pZS-Ob-YJF"/>
                             <constraint firstItem="adf-J6-w7z" firstAttribute="centerY" secondItem="z9G-PY-o8d" secondAttribute="centerY" id="tc5-0U-IUr"/>
                         </constraints>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="z9G-PY-o8d" secondAttribute="bottom" constant="30" id="51T-6a-Bo6"/>
+                    <constraint firstAttribute="bottom" secondItem="z9G-PY-o8d" secondAttribute="bottom" constant="20" id="51T-6a-Bo6"/>
                     <constraint firstItem="z9G-PY-o8d" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="9A0-WN-SJh"/>
                     <constraint firstAttribute="trailing" secondItem="z9G-PY-o8d" secondAttribute="trailing" constant="5" id="fgE-oL-U6f"/>
-                    <constraint firstItem="z9G-PY-o8d" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="30" id="nf7-Sd-yld"/>
+                    <constraint firstItem="z9G-PY-o8d" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="nf7-Sd-yld"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="calendarColor" destination="adf-J6-w7z" id="g1i-HW-3JI"/>
                 <outlet property="calendarName" destination="rDV-V6-r68" id="wR3-1w-Xu7"/>
+                <outlet property="checkmark" destination="22l-ff-bgV" id="wpA-oM-SVp"/>
             </connections>
-            <point key="canvasLocation" x="131.8840579710145" y="82.700892857142847"/>
+            <point key="canvasLocation" x="131.8840579710145" y="82.03125"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="checkmark" catalog="system" width="128" height="114"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

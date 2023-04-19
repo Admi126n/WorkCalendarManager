@@ -39,6 +39,7 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UINib(nibName: K.calendarCellName, bundle: nil), forCellReuseIdentifier: K.calendarCellIdentifier)
         
@@ -130,4 +131,18 @@ extension SettingsViewController: UITableViewDataSource {
     }
     
     
+}
+
+//MARK: - UITableViewDelegate
+
+extension SettingsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! CalendarCell
+        
+        if cell.checkmark.alpha == 0 {
+            cell.checkmark.alpha = 1
+        } else {
+            cell.checkmark.alpha = 0
+        }
+    }
 }

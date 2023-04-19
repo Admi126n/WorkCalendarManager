@@ -10,6 +10,7 @@ import UIKit
 class CalendarCell: UITableViewCell {
     @IBOutlet weak var calendarName: UILabel!
     @IBOutlet weak var calendarColor: UIView!
+    @IBOutlet weak var checkmark: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
