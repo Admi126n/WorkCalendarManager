@@ -132,7 +132,7 @@ struct CalendarManager {
         calendarsData.remove(at: 0)
         
         for calendar in calendars {
-            guard !K.systemCalendars.contains(calendar.title) else { continue }
+            guard !K.systemCalendars.contains(calendar.title) && calendar.title != K.workCalendarName else { continue }
             
             calendarsData.append([calendar.calendarIdentifier: [calendar.title, calendar.cgColor!]])
         }

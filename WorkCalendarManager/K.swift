@@ -8,7 +8,7 @@
 import Foundation
 
 struct K {
-    static let workCalendarName: String = "Praca"
+    static let workCalendarName: String = "Work Calendar"
     static let eventTitle: String = "Work"
     static let eventNote: String = "Created by WorkCalendarManager"
     static let settingsScreenSegue: String = "settingsScreenSegue"
@@ -16,7 +16,6 @@ struct K {
     static let calendarCellIdentifier: String = "ReusableCalendarCell"
     static let calendarCellName: String = "CalendarCell"
     
-    static let ignoredCalendars: [String] = []
     static let systemCalendars: [String] = ["Birthdays", "Siri Suggestions"]
     
     static let workMinDuration: Int = 3
@@ -33,6 +32,7 @@ struct K {
     struct D {
         static let appAppearance: String = "appAppearance"
         static let settingsDict: String = "settingsDict"
+        static let ignoredCalendars: String = "ignoredCalendars"
     }
     
     /// Struct with keys to settings dictionary

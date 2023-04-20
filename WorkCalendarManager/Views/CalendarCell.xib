@@ -28,7 +28,7 @@
                                     <constraint firstAttribute="height" constant="20" id="eAr-2R-Cnh"/>
                                 </constraints>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="22l-ff-bgV">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="22l-ff-bgV">
                                 <rect key="frame" x="10" y="15.5" width="20" height="16.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="Mkd-zl-RcD"/>

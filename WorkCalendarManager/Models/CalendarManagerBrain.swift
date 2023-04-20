@@ -12,6 +12,11 @@ struct CalendarManagerBrain {
     private let cM: CalendarManager = CalendarManager()
     private var availabilityDict: [Date: Bool] = [:]
     private var settingsDict: [String: Int] = [:]
+    private var ignoredCalendars: [String] = []
+    
+    init() {
+        setIgnoredCalendars()
+    }
     
     mutating func iterateOverDays() {
         for day in 1...cM.currMonthLastDay {
@@ -72,8 +77,8 @@ struct CalendarManagerBrain {
         
         repeat {
             for calendar in userCalendars {
-                // TODO: after adding UI, change title to calendarIdentifier
-                guard !K.ignoredCalendars.contains(calendar.title) else { continue }
+                guard !K.systemCalendars.contains(calendar.title) else { continue }
+                guard !ignoredCalendars.contains(calendar.calendarIdentifier) else { continue }
                 
                 let predicate = cM.createPredicate(withStart: searchingStartDate, end: searchingEndDate, for: [calendar])
                 eventsList += cM.getEventsList(matching: predicate)
@@ -149,5 +154,13 @@ struct CalendarManagerBrain {
     
     mutating func setSettingsDict(_ settingsDict: [String: Int]) {
         self.settingsDict = settingsDict
+    }
+    
+    mutating func setIgnoredCalendars() {
+        let defaults = UserDefaults.standard
+        
+        if let safeList = defaults.array(forKey: K.D.ignoredCalendars) {
+            self.ignoredCalendars = safeList as! [String]
+        }
     }
 }
