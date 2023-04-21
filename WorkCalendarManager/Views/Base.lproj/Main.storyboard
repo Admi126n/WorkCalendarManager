@@ -48,14 +48,19 @@
                                     <segment title="Third"/>
                                 </segments>
                             </segmentedControl>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="uZQ-6j-a7R">
+                                <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="YzF-47-KKJ" secondAttribute="trailing" constant="10" id="BAY-7i-aqS"/>
                             <constraint firstItem="gfT-Iu-eTA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="W8d-mL-dBN"/>
+                            <constraint firstItem="uZQ-6j-a7R" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Wdi-bM-JZ9"/>
                             <constraint firstItem="CrH-hw-G3G" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="YfS-Fi-QLm"/>
                             <constraint firstItem="YzF-47-KKJ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="c6r-um-aze"/>
+                            <constraint firstItem="uZQ-6j-a7R" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="d0A-vV-gM6"/>
                             <constraint firstItem="YzF-47-KKJ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="fmS-5E-397"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gfT-Iu-eTA" secondAttribute="trailing" constant="10" id="hDx-I9-SFA"/>
                             <constraint firstItem="CrH-hw-G3G" firstAttribute="top" secondItem="gfT-Iu-eTA" secondAttribute="bottom" constant="70" id="hF4-gF-Tog"/>
@@ -76,6 +81,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="uZQ-6j-a7R" id="L8V-M5-3sp"/>
+                        <outlet property="settingsButton" destination="cgV-Dk-PqY" id="mIP-A1-Z7L"/>
                         <outlet property="workHoursLabel" destination="YzF-47-KKJ" id="VMv-E9-yle"/>
                     </connections>
                 </viewController>

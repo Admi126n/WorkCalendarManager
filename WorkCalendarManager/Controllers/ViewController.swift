@@ -9,6 +9,8 @@ import UIKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var workHoursLabel: UILabel!
+    @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var calendarManager = CalendarManager()
     var calendarManagerBrain = CalendarManagerBrain()
@@ -23,8 +25,22 @@ class ViewController: UIViewController {
     }
     
     @IBAction func addButtonPressed(_ sender: UIButton) {
-        calendarManagerBrain.iterateOverDays()
-        calendarManager.fetchWorkHours()
+        activityIndicator.startAnimating()
+        view.isUserInteractionEnabled = false
+        settingsButton.isUserInteractionEnabled = false
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.calendarManagerBrain.iterateOverDays()
+            self.calendarManager.fetchWorkHours()
+
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+                self.view.isUserInteractionEnabled = true
+                self.settingsButton.isUserInteractionEnabled = true
+            }
+        }
+        
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -47,7 +63,9 @@ class ViewController: UIViewController {
 
 extension ViewController: CalendarManagerDelegate {
     func didFetchWorkHours(hours: Int) {
-        workHoursLabel.text = "Work hours in this month: \(hours)"
+        DispatchQueue.main.async {
+            self.workHoursLabel.text = "Work hours in this month: \(hours)"
+        }
     }
     
     func didFail(_ error: Error, _ message: String?) {
