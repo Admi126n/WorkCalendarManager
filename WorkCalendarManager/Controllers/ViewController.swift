@@ -14,14 +14,15 @@ class ViewController: UIViewController {
     var calendarManagerBrain = CalendarManagerBrain()
     
     override func viewDidLoad() {
-        calendarManager.delegate = self
-        
         super.viewDidLoad()
         
+        calendarManager.delegate = self
         calendarManager.fetchWorkHours()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAppDidBecomeActiveNotification(notification:)), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
-    @IBAction func calendarManagerTest(_ sender: UIButton) {
+    @IBAction func addButtonPressed(_ sender: UIButton) {
         calendarManagerBrain.iterateOverDays()
         calendarManager.fetchWorkHours()
     }
@@ -31,6 +32,14 @@ class ViewController: UIViewController {
             let svc = segue.destination as! SettingsViewController
             svc.delegate = self
         }
+    }
+    
+    @objc func handleAppDidBecomeActiveNotification(notification: Notification) {
+        calendarManager.fetchWorkHours()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
