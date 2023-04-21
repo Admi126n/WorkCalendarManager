@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="YzF-47-KKJ">
-                                <rect key="frame" x="10" y="424" width="394" height="48"/>
+                                <rect key="frame" x="10" y="188" width="394" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="zJ2-DZ-Yew"/>
                                 </constraints>
@@ -26,25 +26,40 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CrH-hw-G3G">
-                                <rect key="frame" x="126.5" y="522" width="161" height="31"/>
+                                <rect key="frame" x="157" y="791" width="100" height="31"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="Rzr-7y-S6D"/>
                                     <constraint firstAttribute="height" constant="31" id="rpm-Rl-0LU"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Add work to calendar"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Add"/>
                                 <connections>
-                                    <action selector="calendarManagerTest:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yfS-jr-ZAK"/>
+                                    <action selector="addButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pax-4N-cpn"/>
                                 </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="gfT-Iu-eTA">
+                                <rect key="frame" x="10" y="691" width="394" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="1Bp-m2-qbl"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                    <segment title="Third"/>
+                                </segments>
+                            </segmentedControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="YzF-47-KKJ" secondAttribute="trailing" constant="10" id="0wC-bD-t52"/>
-                            <constraint firstItem="CrH-hw-G3G" firstAttribute="top" secondItem="YzF-47-KKJ" secondAttribute="bottom" constant="50" id="6fn-rT-S7P"/>
-                            <constraint firstItem="YzF-47-KKJ" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="GjY-ct-Nyr"/>
-                            <constraint firstItem="CrH-hw-G3G" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="R9T-Oy-Azd"/>
-                            <constraint firstItem="YzF-47-KKJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="h0g-mQ-wEp"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="YzF-47-KKJ" secondAttribute="trailing" constant="10" id="BAY-7i-aqS"/>
+                            <constraint firstItem="gfT-Iu-eTA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="W8d-mL-dBN"/>
+                            <constraint firstItem="CrH-hw-G3G" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="YfS-Fi-QLm"/>
+                            <constraint firstItem="YzF-47-KKJ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="c6r-um-aze"/>
+                            <constraint firstItem="YzF-47-KKJ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="fmS-5E-397"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gfT-Iu-eTA" secondAttribute="trailing" constant="10" id="hDx-I9-SFA"/>
+                            <constraint firstItem="CrH-hw-G3G" firstAttribute="top" secondItem="gfT-Iu-eTA" secondAttribute="bottom" constant="70" id="hF4-gF-Tog"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="CrH-hw-G3G" secondAttribute="bottom" constant="40" id="x7P-8a-Kyb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Qcv-m4-XJW">
