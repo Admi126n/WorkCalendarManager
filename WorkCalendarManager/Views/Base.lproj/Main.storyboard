@@ -80,7 +80,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B3d-7d-mfp" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="1200"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="800"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Appearance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hSe-ZI-NNF">
                                                 <rect key="frame" x="15" y="0.0" width="384" height="30"/>
@@ -296,7 +296,7 @@
                                         <constraints>
                                             <constraint firstItem="8U7-aD-wTw" firstAttribute="top" secondItem="lFg-Ot-SgE" secondAttribute="bottom" constant="30" id="Bqa-Mm-nnh"/>
                                             <constraint firstItem="lFg-Ot-SgE" firstAttribute="top" secondItem="a70-KM-ipV" secondAttribute="bottom" constant="10" id="CUQ-ai-1VW"/>
-                                            <constraint firstAttribute="height" constant="1200" id="DQI-0d-vK0"/>
+                                            <constraint firstAttribute="height" constant="800" id="DQI-0d-vK0"/>
                                             <constraint firstAttribute="trailing" secondItem="hSe-ZI-NNF" secondAttribute="trailing" constant="15" id="EdM-5w-9V1"/>
                                             <constraint firstItem="Mgd-xI-kff" firstAttribute="leading" secondItem="B3d-7d-mfp" secondAttribute="leading" constant="15" id="Fx8-kD-ZsM"/>
                                             <constraint firstItem="2CG-Xs-0ru" firstAttribute="leading" secondItem="B3d-7d-mfp" secondAttribute="leading" constant="15" id="Kyv-co-lpg"/>
@@ -361,6 +361,7 @@
                         <outlet property="minDurationStepper" destination="RkZ-P2-VRs" id="4PB-7O-VGH"/>
                         <outlet property="startHourLabel" destination="AjL-Hb-peW" id="WRp-8E-dBn"/>
                         <outlet property="startHourStepper" destination="Syb-pE-0ma" id="AlL-qY-Etf"/>
+                        <outlet property="tableView" destination="37u-p6-5U7" id="49L-mW-3Vt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ys8-jX-vA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

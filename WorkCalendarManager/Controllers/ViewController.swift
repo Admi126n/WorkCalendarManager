@@ -34,6 +34,8 @@ class ViewController: UIViewController {
     }
 }
 
+//MARK: - CalendarManagerDelegate
+
 extension ViewController: CalendarManagerDelegate {
     func didFetchWorkHours(hours: Int) {
         workHoursLabel.text = "Work hours in this month: \(hours)"
@@ -46,7 +48,13 @@ extension ViewController: CalendarManagerDelegate {
     
 }
 
+//MARK: - SettingsViewControllerDelegate
+
 extension ViewController: SettingsViewControllerDelegate {
+    func updateIgnoredCalendars() {
+        calendarManagerBrain.setIgnoredCalendars()
+    }
+    
     func updateSettings(_ settingsDict: [String : Int]) {
         calendarManagerBrain.setSettingsDict(settingsDict)
     }

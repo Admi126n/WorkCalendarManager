@@ -9,6 +9,7 @@ import UIKit
 
 protocol SettingsViewControllerDelegate {
     func updateSettings(_ settingsDict: [String: Int])
+    func updateIgnoredCalendars()
 }
 
 // FIXME: minDuration < maxDuration; startHour < endHour; endHour - startHour > minDuration
@@ -20,8 +21,6 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var marginBeforeLabel: UILabel!
     @IBOutlet weak var marginAfterLabel: UILabel!
     
-    @IBOutlet weak var appearanceControl: UISegmentedControl!
-    
     @IBOutlet weak var minDurationStepper: UIStepper!
     @IBOutlet weak var maxDurationStepper: UIStepper!
     @IBOutlet weak var startHourStepper: UIStepper!
@@ -29,12 +28,28 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var marginBeforeStepper: UIStepper!
     @IBOutlet weak var marginAfterStepper: UIStepper!
     
+    @IBOutlet weak var appearanceControl: UISegmentedControl!
+    @IBOutlet weak var tableView: UITableView!
+    
     var delegate: SettingsViewControllerDelegate?
     private let defaults = UserDefaults.standard
     private var settingsDict: [String: Int] = [:]
+    private var calendars: [[String: [Any]]] = [[:]]
+    private var ignoredCalendars: [String] = []
+    private var calendarManager: CalendarManager = CalendarManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let safeList = defaults.array(forKey: K.D.ignoredCalendars) {
+            ignoredCalendars = safeList as! [String]
+        }
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UINib(nibName: K.calendarCellName, bundle: nil), forCellReuseIdentifier: K.calendarCellIdentifier)
+        
+        calendars = calendarManager.getUserCalendarsColors()
         
         loadSettingsDict()
         updateLabelsText()
@@ -45,8 +60,10 @@ class SettingsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         updateSettingsDict()
+        updateIgnoredCalendars()
         
         delegate?.updateSettings(settingsDict)
+        delegate?.updateIgnoredCalendars()
     }
     
     @IBAction func changeAppearance(_ sender: UISegmentedControl) {
@@ -100,6 +117,53 @@ class SettingsViewController: UIViewController {
     private func loadSettingsDict() {
         if let safeDict = defaults.dictionary(forKey: K.D.settingsDict) {
             settingsDict = safeDict as! [String: Int]
+        }
+    }
+    
+    private func updateIgnoredCalendars() {
+        defaults.set(ignoredCalendars, forKey: K.D.ignoredCalendars)
+    }
+}
+
+//MARK: - UITableViewDataSource
+
+extension SettingsViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return calendars.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let calendar = calendars[indexPath.row].first
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.calendarCellIdentifier, for: indexPath) as! CalendarCell
+        
+        if ignoredCalendars.contains(calendar!.key) {
+            cell.checkmark.alpha = 1
+        } else {
+            cell.checkmark.alpha = 0
+        }
+        
+        cell.calendarName.text = (calendar!.value[0] as! String)
+        cell.calendarColor.backgroundColor = UIColor(cgColor: calendar!.value[1] as! CGColor)
+        
+        return cell
+    }
+    
+    
+}
+
+//MARK: - UITableViewDelegate
+
+extension SettingsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! CalendarCell
+        let calendarIdentifier = calendars[indexPath.row].first?.key
+        
+        if cell.checkmark.alpha == 0 {
+            cell.checkmark.alpha = 1
+            ignoredCalendars.append(calendarIdentifier!)
+        } else {
+            cell.checkmark.alpha = 0
+            ignoredCalendars = ignoredCalendars.filter { $0 != calendarIdentifier }
         }
     }
 }

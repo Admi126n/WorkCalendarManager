@@ -125,16 +125,19 @@ struct CalendarManager {
         }
     }
     
-    /// - Returns: dictionary with key = calendar title and value = calendar CGColor
-    func getUserCalendarsColors() -> [String: CGColor] {
-        var calendarColorDict: [String: CGColor] = [:]
-        
+    /// - Returns: dictionary with key = calendar identifier and value = [calendar title, calendar CGColor]
+    func getUserCalendarsColors() -> [[String: [Any]]] {
         let calendars = eventStore.calendars(for: .event)
+        var calendarsData: [[String: [Any]]] = [[:]]
+        calendarsData.remove(at: 0)
+        
         for calendar in calendars {
-            calendarColorDict[calendar.title] = calendar.cgColor
+            guard !K.systemCalendars.contains(calendar.title) && calendar.title != K.workCalendarName else { continue }
+            
+            calendarsData.append([calendar.calendarIdentifier: [calendar.title, calendar.cgColor!]])
         }
         
-        return calendarColorDict
+        return calendarsData
     }
     
     func createDateObject(day: Int, hour: Int? = nil) -> Date {
