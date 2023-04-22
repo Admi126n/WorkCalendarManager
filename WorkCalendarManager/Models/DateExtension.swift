@@ -16,6 +16,14 @@ extension Date {
         return Calendar.current.date(byAdding: DateComponents(month: 1), to: self.getStartOfCurrMonth())!
     }
     
+    func getStartOfMonth(from currentMonth: Int) -> Date {
+        return Calendar.current.date(byAdding: .month, value: currentMonth, to: Date().getStartOfCurrMonth())!
+    }
+    
+    func getEndOfMonth(from currentMonth: Int) -> Date {
+        return Calendar.current.date(byAdding: DateComponents(month: currentMonth + 1), to: Calendar.current.date(byAdding: .month, value: currentMonth, to: self.getStartOfMonth(from: currentMonth))!)!
+    }
+    
     func getCurrYear() -> Int {
         return Calendar.current.component(.year, from: Date())
     }

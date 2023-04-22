@@ -9,7 +9,7 @@ import Foundation
 import EventKit
 
 struct CalendarManagerBrain {
-    private let cM: CalendarManager = CalendarManager()
+    private var cM: CalendarManager = CalendarManager()
     private var availabilityDict: [Date: Bool] = [:]
     private var settingsDict: [String: Int] = [:]
     private var ignoredCalendars: [String] = []
@@ -19,7 +19,7 @@ struct CalendarManagerBrain {
     }
     
     mutating func iterateOverDays() {
-        for day in 1...cM.currMonthLastDay {
+        for day in 1...cM.selectedMonthLastDay {
             let tempDate = cM.createDateObject(day: day)
             let tempWeekday = Calendar.current.component(.weekday, from: tempDate)
             
@@ -162,5 +162,9 @@ struct CalendarManagerBrain {
         if let safeList = defaults.array(forKey: K.D.ignoredCalendars) {
             self.ignoredCalendars = safeList as! [String]
         }
+    }
+    
+    mutating func setMonthsFromCurr(x: Int) {
+        cM.monthsFromCurr = x
     }
 }

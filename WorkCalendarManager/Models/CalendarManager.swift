@@ -14,28 +14,31 @@ protocol CalendarManagerDelegate {
     func didFail(_ error: Error, _ message: String?)
 }
 
+// TODO: use singletton pattern
 struct CalendarManager {
     private var eventStore: EKEventStore
     var delegate: CalendarManagerDelegate?
+    var monthsFromCurr: Int = 0
     
     private var currYear: Int {
+        // FIXME: change year to next if needed
         return Date().getCurrYear()
     }
     
-    private var currMonth: Int {
+    var currMonth: Int {
         return Date().getCurrMonth()
     }
     
-    private var currMonthStart: Date {
-        return Date().getStartOfCurrMonth()
-    }
+//    private var currMonthStart: Date {
+//        return Date().getStartOfCurrMonth()
+//    }
     
-    private var currMonthEnd: Date {
-        return Date().getEndOfCurrMonth()
-    }
+//    private var currMonthEnd: Date {
+//        return Date().getEndOfCurrMonth()
+//    }
     
-    var currMonthLastDay: Int {
-        let lastDay = Calendar.current.date(byAdding: .day, value: -1, to: currMonthEnd)
+    var selectedMonthLastDay: Int {
+        let lastDay = Calendar.current.date(byAdding: .day, value: -1, to: Date().getEndOfMonth(from: monthsFromCurr))
         return Calendar.current.component(.day, from: lastDay!)
     }
     
@@ -97,7 +100,7 @@ struct CalendarManager {
         for calendar in calendars {
             guard calendar.title == K.workCalendarName else { continue }
             
-            let predicate = createPredicate(withStart: currMonthStart, end: currMonthEnd, for: [calendar])
+            let predicate = createPredicate(withStart: Date().getStartOfMonth(from: monthsFromCurr), end: Date().getEndOfMonth(from: monthsFromCurr), for: [calendar])
             let events = getEventsList(matching: predicate)
             
             for event in events {
@@ -146,7 +149,7 @@ struct CalendarManager {
         
         dateComponents.timeZone = TimeZone(identifier: userTimeZoneIdentifier)
         dateComponents.year = currYear
-        dateComponents.month = currMonth
+        dateComponents.month = currMonth + monthsFromCurr
         dateComponents.day = day
         dateComponents.hour = hour
         

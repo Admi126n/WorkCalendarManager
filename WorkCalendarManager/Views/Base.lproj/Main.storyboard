@@ -47,6 +47,9 @@
                                     <segment title="Second"/>
                                     <segment title="Third"/>
                                 </segments>
+                                <connections>
+                                    <action selector="changeMonth:" destination="BYZ-38-t0r" eventType="valueChanged" id="uDi-fZ-JcJ"/>
+                                </connections>
                             </segmentedControl>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="uZQ-6j-a7R">
                                 <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
@@ -82,6 +85,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="uZQ-6j-a7R" id="L8V-M5-3sp"/>
+                        <outlet property="segmentedControl" destination="gfT-Iu-eTA" id="qcl-gU-gGX"/>
                         <outlet property="settingsButton" destination="cgV-Dk-PqY" id="mIP-A1-Z7L"/>
                         <outlet property="workHoursLabel" destination="YzF-47-KKJ" id="VMv-E9-yle"/>
                     </connections>
