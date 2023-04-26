@@ -36,7 +36,6 @@ class SettingsViewController: UIViewController {
     private var settingsDict: [String: Int] = [:]
     private var calendars: [[String: [Any]]] = [[:]]
     private var ignoredCalendars: [String] = []
-    private var calendarManager: CalendarManager = CalendarManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,9 +46,10 @@ class SettingsViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UINib(nibName: K.calendarCellName, bundle: nil), forCellReuseIdentifier: K.calendarCellIdentifier)
+        tableView.register(UINib(nibName: K.calendarCellName, bundle: nil),
+                           forCellReuseIdentifier: K.calendarCellIdentifier)
         
-        calendars = calendarManager.getUserCalendarsColors()
+        calendars = CalendarManager.cm.getUserCalendarsColors()
         
         loadSettingsDict()
         updateLabelsText()
@@ -70,13 +70,19 @@ class SettingsViewController: UIViewController {
         switch sender.selectedSegmentIndex {
         case 0:
             defaults.set(UIUserInterfaceStyle.unspecified.rawValue, forKey: K.D.appAppearance)
-            view.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(rawValue: defaults.integer(forKey: K.D.appAppearance))!
+            
+            view.window?.overrideUserInterfaceStyle =
+            UIUserInterfaceStyle(rawValue: defaults.integer(forKey: K.D.appAppearance))!
         case 1:
             defaults.set(UIUserInterfaceStyle.light.rawValue, forKey: K.D.appAppearance)
-            view.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(rawValue: defaults.integer(forKey: K.D.appAppearance))!
+            
+            view.window?.overrideUserInterfaceStyle =
+            UIUserInterfaceStyle(rawValue: defaults.integer(forKey: K.D.appAppearance))!
         default:
             defaults.set(UIUserInterfaceStyle.dark.rawValue, forKey: K.D.appAppearance)
-            view.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(rawValue: defaults.integer(forKey: K.D.appAppearance))!
+            
+            view.window?.overrideUserInterfaceStyle =
+            UIUserInterfaceStyle(rawValue: defaults.integer(forKey: K.D.appAppearance))!
         }
     }
     
@@ -97,21 +103,25 @@ class SettingsViewController: UIViewController {
     }
     
     private func updateLabelsText() {
-        minDurationLabel.text = "Minimum: \(settingsDict[K.S.minDuration] ?? K.workMinDuration)h"
-        maxDurationLabel.text = "Maximum: \(settingsDict[K.S.maxDuration] ?? K.workMaxDuration)h"
-        startHourLabel.text = "Start hour: \(settingsDict[K.S.startHour] ?? K.businessDayStartHour):00"
-        endHourLabel.text = "End hour: \(settingsDict[K.S.endHour] ?? K.businessDayEndHour):00"
-        marginBeforeLabel.text = "Margin before work: \((settingsDict[K.S.marginBefore] ?? K.marginBeforeWork) * 15)min"
-        marginAfterLabel.text = "Margin after work: \((settingsDict[K.S.marginAfter] ?? K.marginAfterWork) * 15)min"
+        minDurationLabel.text = "Minimum: \(settingsDict[K.S.minDuration] ?? K.DS[K.S.minDuration]!)h"
+        maxDurationLabel.text = "Maximum: \(settingsDict[K.S.maxDuration] ?? K.DS[K.S.maxDuration]!)h"
+        startHourLabel.text = "Start hour: \(settingsDict[K.S.startHour] ?? K.DS[K.S.startHour]!):00"
+        endHourLabel.text = "End hour: \(settingsDict[K.S.endHour] ?? K.DS[K.S.endHour]!):00"
+        
+        marginBeforeLabel.text =
+        "Margin before work: \((settingsDict[K.S.marginBefore] ?? K.DS[K.S.marginBefore]!) * 15)min"
+        
+        marginAfterLabel.text =
+        "Margin after work: \((settingsDict[K.S.marginAfter] ?? K.DS[K.S.marginAfter]!) * 15)min"
     }
     
     private func updateSteppersValue() {
-        minDurationStepper.value = Double(settingsDict[K.S.minDuration] ?? K.workMinDuration)
-        maxDurationStepper.value = Double(settingsDict[K.S.maxDuration] ?? K.workMaxDuration)
-        startHourStepper.value = Double(settingsDict[K.S.startHour] ?? K.businessDayStartHour)
-        endHourStepper.value = Double(settingsDict[K.S.endHour] ?? K.businessDayEndHour)
-        marginBeforeStepper.value = Double(settingsDict[K.S.marginBefore] ?? K.marginBeforeWork)
-        marginAfterStepper.value = Double(settingsDict[K.S.marginAfter] ?? K.marginAfterWork)
+        minDurationStepper.value = Double(settingsDict[K.S.minDuration] ?? K.DS[K.S.minDuration]!)
+        maxDurationStepper.value = Double(settingsDict[K.S.maxDuration] ?? K.DS[K.S.maxDuration]!)
+        startHourStepper.value = Double(settingsDict[K.S.startHour] ?? K.DS[K.S.startHour]!)
+        endHourStepper.value = Double(settingsDict[K.S.endHour] ?? K.DS[K.S.endHour]!)
+        marginBeforeStepper.value = Double(settingsDict[K.S.marginBefore] ?? K.DS[K.S.marginBefore]!)
+        marginAfterStepper.value = Double(settingsDict[K.S.marginAfter] ?? K.DS[K.S.marginAfter]!)
     }
     
     private func loadSettingsDict() {
@@ -134,7 +144,9 @@ extension SettingsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let calendar = calendars[indexPath.row].first
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.calendarCellIdentifier, for: indexPath) as! CalendarCell
+        
+        let cell =
+        tableView.dequeueReusableCell(withIdentifier: K.calendarCellIdentifier, for: indexPath) as! CalendarCell
         
         if ignoredCalendars.contains(calendar!.key) {
             cell.checkmark.alpha = 1
