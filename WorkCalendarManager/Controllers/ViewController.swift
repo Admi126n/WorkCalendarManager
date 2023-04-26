@@ -13,50 +13,36 @@ class ViewController: UIViewController {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    var calendarManager = CalendarManager()
     var calendarManagerBrain = CalendarManagerBrain()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setSegmentedControl()
+        CalendarManager.cm.delegate = self
+        CalendarManager.cm.fetchWorkHours()
+        CalendarManager.cm.getMonthsNames()
         
-        calendarManager.delegate = self
-        calendarManager.fetchWorkHours()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleAppDidBecomeActiveNotification(notification:)), name: UIApplication.didBecomeActiveNotification, object: nil)
-    }
-    
-    private func setSegmentedControl() {
-        segmentedControl.setTitle("\(DateFormatter().shortMonthSymbols[calendarManager.currMonth - 1])", forSegmentAt: 0)
-        segmentedControl.setTitle("\(DateFormatter().shortMonthSymbols[calendarManager.currMonth])", forSegmentAt: 1)
-        segmentedControl.setTitle("\(DateFormatter().shortMonthSymbols[calendarManager.currMonth + 1])", forSegmentAt: 2)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleAppDidBecomeActiveNotification(notification:)),
+                                               name: UIApplication.didBecomeActiveNotification,
+                                               object: nil)
     }
     
     @IBAction func changeMonth(_ sender: UISegmentedControl) {
-        calendarManager.monthsFromCurr = sender.selectedSegmentIndex
-        calendarManagerBrain.setMonthsFromCurr(x: sender.selectedSegmentIndex)
-        calendarManager.fetchWorkHours()
+        CalendarManager.cm.setMonthsFromCurr(sender.selectedSegmentIndex)
+        CalendarManager.cm.fetchWorkHours()
     }
     
     @IBAction func addButtonPressed(_ sender: UIButton) {
-        activityIndicator.startAnimating()
-        view.isUserInteractionEnabled = false
-        settingsButton.isUserInteractionEnabled = false
-        // TODO: maybe add label with info 'adding events'
-        
-        DispatchQueue.global(qos: .userInitiated).async {
+        runActivityIndicatorAndExecute {
             self.calendarManagerBrain.iterateOverDays()
-            self.calendarManager.fetchWorkHours()
-
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-                self.view.isUserInteractionEnabled = true
-                self.settingsButton.isUserInteractionEnabled = true
-            }
+            CalendarManager.cm.fetchWorkHours()
         }
         
-        
+    }
+
+    @objc func handleAppDidBecomeActiveNotification(notification: Notification) {
+        CalendarManager.cm.fetchWorkHours()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -66,8 +52,19 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc func handleAppDidBecomeActiveNotification(notification: Notification) {
-        calendarManager.fetchWorkHours()
+    func runActivityIndicatorAndExecute(code: @escaping () -> Void) {
+        activityIndicator.startAnimating()
+        view.isUserInteractionEnabled = false
+        settingsButton.isUserInteractionEnabled = false
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            code()
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+                self.view.isUserInteractionEnabled = true
+                self.settingsButton.isUserInteractionEnabled = true
+            }
+        }
     }
     
     deinit {
@@ -78,9 +75,17 @@ class ViewController: UIViewController {
 //MARK: - CalendarManagerDelegate
 
 extension ViewController: CalendarManagerDelegate {
-    func didFetchWorkHours(hours: Int) {
+    func didFetchWorkHours(_ hours: Int) {
+        let selectedSegmentTitle = segmentedControl.titleForSegment(at: segmentedControl.selectedSegmentIndex)!
+        
         DispatchQueue.main.async { [self] in
-            self.workHoursLabel.text = "Work hours in \(segmentedControl.titleForSegment(at: segmentedControl.selectedSegmentIndex) ?? ""): \(hours)"
+            self.workHoursLabel.text = "Work hours in \(selectedSegmentTitle): \(hours)"
+        }
+    }
+    
+    func didGetMonthsNames(_ monthsNames: [String]) {
+        for i in 0..<segmentedControl.numberOfSegments {
+            segmentedControl.setTitle(monthsNames[i], forSegmentAt: i)
         }
     }
     

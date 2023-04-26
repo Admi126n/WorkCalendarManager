@@ -10,35 +10,31 @@ import EventKit
 import UIKit
 
 protocol CalendarManagerDelegate {
-    func didFetchWorkHours(hours: Int)
+    func didFetchWorkHours(_ hours: Int)
+    func didGetMonthsNames(_ monthsNames: [String])
     func didFail(_ error: Error, _ message: String?)
 }
 
-// TODO: use singletton pattern
 struct CalendarManager {
+    static var cm = CalendarManager()
+    
     private var eventStore: EKEventStore
+    private var monthsFromCurr: Int = 0
     var delegate: CalendarManagerDelegate?
-    var monthsFromCurr: Int = 0
     
     private var currYear: Int {
-        // FIXME: change year to next if needed
-        return Date().getCurrYear()
+        return Date().getYear(of: Date().getStartDateOfMonth(x: monthsFromCurr))
     }
     
     var currMonth: Int {
         return Date().getCurrMonth()
     }
     
-//    private var currMonthStart: Date {
-//        return Date().getStartOfCurrMonth()
-//    }
-    
-//    private var currMonthEnd: Date {
-//        return Date().getEndOfCurrMonth()
-//    }
-    
     var selectedMonthLastDay: Int {
-        let lastDay = Calendar.current.date(byAdding: .day, value: -1, to: Date().getEndOfMonth(from: monthsFromCurr))
+        let lastDay = Calendar.current.date(byAdding: .day,
+                                            value: -1,
+                                            to: Date().getEndDateOfMonth(x: monthsFromCurr))
+        
         return Calendar.current.component(.day, from: lastDay!)
     }
     
@@ -57,7 +53,7 @@ struct CalendarManager {
         return createWorkCalendar(withName: K.workCalendarName)
     }
     
-    init() {
+    private init() {
         eventStore = EKEventStore()
         eventStore.requestAccess(to: .event) { granted, error in
             if error != nil {
@@ -65,6 +61,8 @@ struct CalendarManager {
                 return
             }
         }
+        
+        getMonthsNames()
     }
     
     private mutating func refreshEventStore() {
@@ -95,27 +93,39 @@ struct CalendarManager {
     mutating func fetchWorkHours() {
         refreshEventStore()
         var workHours: Int = 0
+        let defaults = UserDefaults.standard
+        
+        var ignoredCalendars: [String] = []
+        if let safeList = defaults.array(forKey: K.D.ignoredCalendars) {
+            ignoredCalendars = safeList as! [String]
+        }
         
         let calendars = getUserCalendars()
+        
         for calendar in calendars {
-            guard calendar.title == K.workCalendarName else { continue }
+            guard !(ignoredCalendars.contains(calendar.calendarIdentifier)
+                    || calendar.isImmutable) else { continue }
             
-            let predicate = createPredicate(withStart: Date().getStartOfMonth(from: monthsFromCurr), end: Date().getEndOfMonth(from: monthsFromCurr), for: [calendar])
+            let predicate = createPredicate(withStart: Date().getStartDateOfMonth(x: monthsFromCurr),
+                                            end: Date().getEndDateOfMonth(x: monthsFromCurr),
+                                            for: [calendar])
+            
             let events = getEventsList(matching: predicate)
             
             for event in events {
+                guard event.title.contains(K.eventTitle) else { continue }
+                
                 let eventDuration = event.startDate.distance(to: event.endDate)
                 workHours += Int(eventDuration / 3600.0)
             }
-            break
         }
-        delegate?.didFetchWorkHours(hours: workHours)
+        delegate?.didFetchWorkHours(workHours)
     }
     
     func createEvent(startHour: Date, endHour: Date) {
         let newEvent = EKEvent(eventStore: eventStore)
         
-        newEvent.title = K.workCalendarName
+        newEvent.title = K.eventTitle
         newEvent.notes = K.eventNote
         newEvent.startDate = startHour
         newEvent.endDate = endHour
@@ -135,7 +145,7 @@ struct CalendarManager {
         calendarsData.remove(at: 0)
         
         for calendar in calendars {
-            guard !K.systemCalendars.contains(calendar.title) && calendar.title != K.workCalendarName else { continue }
+            guard !calendar.isImmutable && calendar.title != K.workCalendarName else { continue }
             
             calendarsData.append([calendar.calendarIdentifier: [calendar.title, calendar.cgColor!]])
         }
@@ -149,7 +159,7 @@ struct CalendarManager {
         
         dateComponents.timeZone = TimeZone(identifier: userTimeZoneIdentifier)
         dateComponents.year = currYear
-        dateComponents.month = currMonth + monthsFromCurr
+        dateComponents.month = Date().getCurrMonth() + monthsFromCurr
         dateComponents.day = day
         dateComponents.hour = hour
         
@@ -166,5 +176,19 @@ struct CalendarManager {
     
     func createPredicate(withStart startDate: Date, end endDate: Date, for calendars: [EKCalendar]) -> NSPredicate {
         return eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: calendars)
+    }
+    
+    func getMonthsNames() {
+        var monthsShortNames: [String] = []
+        
+        for i in -1...1 {
+            monthsShortNames.append("\(DateFormatter().shortMonthSymbols[(currMonth + i) % 11])")
+        }
+        
+        delegate?.didGetMonthsNames(monthsShortNames)
+    }
+    
+    mutating func setMonthsFromCurr(_ x: Int) {
+        monthsFromCurr = x
     }
 }
