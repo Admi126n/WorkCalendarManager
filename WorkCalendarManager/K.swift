@@ -7,26 +7,19 @@
 
 import Foundation
 
+/// Struct with string variables and needed default settings
 struct K {
+    // Event note and title and work calendar name
     static let workCalendarName: String = "Work Calendar"
     static let eventTitle: String = "Work"
     static let eventNote: String = "Created by WorkCalendarManager"
+    
+    /// Identifier of segue to settings screen
     static let settingsScreenSegue: String = "settingsScreenSegue"
     
+    // Calendar cell identifier and name
     static let calendarCellIdentifier: String = "ReusableCalendarCell"
     static let calendarCellName: String = "CalendarCell"
-    
-    static let systemCalendars: [String] = ["Birthdays", "Siri Suggestions"]
-    
-    static let workMinDuration: Int = 3
-    static let workMaxDuration: Int = 8
-    
-    static let businessDayStartHour: Int = 7
-    static let businessDayEndHour: Int = 18
-    
-    // margins are equal to number of quaters
-    static let marginBeforeWork: Int = 4
-    static let marginAfterWork: Int = 4
     
     /// Struct with keys to user defaults
     struct D {
@@ -44,4 +37,12 @@ struct K {
         static let marginBefore: String = "marginBefore"
         static let marginAfter: String = "marginAfter"
     }
+    
+    /// Dictionary with default settings
+    static let DS: [String: Int] = [S.minDuration: 3,
+                                    S.maxDuration: 8,
+                                    S.startHour: 7,
+                                    S.endHour: 18,
+                                    S.marginBefore: 4,
+                                    S.marginAfter: 4]
 }
