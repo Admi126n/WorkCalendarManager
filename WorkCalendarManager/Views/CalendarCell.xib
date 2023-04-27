@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -28,27 +29,30 @@
                                     <constraint firstAttribute="height" constant="20" id="eAr-2R-Cnh"/>
                                 </constraints>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="22l-ff-bgV">
-                                <rect key="frame" x="10" y="15.5" width="20" height="16.5"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="Mkd-zl-RcD"/>
-                                    <constraint firstAttribute="height" constant="20" id="SA0-tE-fHY"/>
-                                </constraints>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rDV-V6-r68">
                                 <rect key="frame" x="40" y="13" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="V" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2tb-52-ePb">
+                                <rect key="frame" x="10" y="13.5" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="DHR-PP-Wzc"/>
+                                    <constraint firstAttribute="height" constant="20" id="amt-Tz-eNJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="linkColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="rDV-V6-r68" firstAttribute="leading" secondItem="22l-ff-bgV" secondAttribute="trailing" constant="10" id="GUb-JG-97i"/>
+                            <constraint firstItem="2tb-52-ePb" firstAttribute="centerY" secondItem="z9G-PY-o8d" secondAttribute="centerY" id="2v8-qk-iHM"/>
                             <constraint firstAttribute="trailing" secondItem="adf-J6-w7z" secondAttribute="trailing" constant="10" id="daD-1b-ZWM"/>
-                            <constraint firstItem="22l-ff-bgV" firstAttribute="leading" secondItem="z9G-PY-o8d" secondAttribute="leading" constant="10" id="gax-mF-QJX"/>
-                            <constraint firstItem="22l-ff-bgV" firstAttribute="centerY" secondItem="z9G-PY-o8d" secondAttribute="centerY" id="mhy-gw-haT"/>
+                            <constraint firstItem="rDV-V6-r68" firstAttribute="leading" secondItem="2tb-52-ePb" secondAttribute="trailing" constant="10" id="hO7-wc-7P8"/>
                             <constraint firstItem="rDV-V6-r68" firstAttribute="centerY" secondItem="z9G-PY-o8d" secondAttribute="centerY" id="pZS-Ob-YJF"/>
+                            <constraint firstItem="2tb-52-ePb" firstAttribute="leading" secondItem="z9G-PY-o8d" secondAttribute="leading" constant="10" id="rAm-Bx-BDi"/>
                             <constraint firstItem="adf-J6-w7z" firstAttribute="centerY" secondItem="z9G-PY-o8d" secondAttribute="centerY" id="tc5-0U-IUr"/>
                         </constraints>
                     </view>
@@ -64,13 +68,15 @@
             <connections>
                 <outlet property="calendarColor" destination="adf-J6-w7z" id="g1i-HW-3JI"/>
                 <outlet property="calendarName" destination="rDV-V6-r68" id="wR3-1w-Xu7"/>
-                <outlet property="checkmark" destination="22l-ff-bgV" id="wpA-oM-SVp"/>
+                <outlet property="checkmark" destination="2tb-52-ePb" id="Uef-BR-deN"/>
             </connections>
             <point key="canvasLocation" x="131.8840579710145" y="82.03125"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="checkmark" catalog="system" width="128" height="114"/>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

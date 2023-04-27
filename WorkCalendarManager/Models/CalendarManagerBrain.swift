@@ -50,9 +50,17 @@ struct CalendarManagerBrain {
                     break
                 }
                 
-                if Int(workStartDate.distance(to: workEndDate)) / 3600 == (settingsDict[K.S.maxDuration] ?? K.DS[K.S.maxDuration]!) {
-                    CalendarManager.cm.createEvent(startHour: workStartDate, endHour: workEndDate)
-                    break
+                if #available(iOS 13.0, *) {
+                    if Int(workStartDate.distance(to: workEndDate)) / 3600 == (settingsDict[K.S.maxDuration] ?? K.DS[K.S.maxDuration]!) {
+                        CalendarManager.cm.createEvent(startHour: workStartDate, endHour: workEndDate)
+                        break
+                    }
+                } else {
+                    // Fallback on earlier versions
+                    if Int(workEndDate.timeIntervalSince(workStartDate)) / 3600 == (settingsDict[K.S.maxDuration] ?? K.DS[K.S.maxDuration]!) {
+                        CalendarManager.cm.createEvent(startHour: workStartDate, endHour: workEndDate)
+                        break
+                    }
                 }
             } else {
                 if slotIsEmpty {
@@ -114,22 +122,40 @@ struct CalendarManagerBrain {
     }
     
     private func cutEventToFullHour(startDate: Date, endDate: Date) -> Date {
-        let secondsToCut = Int(startDate.distance(to: endDate)) % 3600
+        var secondsToCut = 0
+        if #available(iOS 13.0, *) {
+            secondsToCut = Int(startDate.distance(to: endDate)) % 3600
+        } else {
+            // Fallback on earlier versions
+            secondsToCut = Int(endDate.timeIntervalSince(startDate)) % 3600
+        }
         let newEndDate = Calendar.current.date(byAdding: .second, value: -secondsToCut, to: endDate)!
         
         return newEndDate
     }
     
     private func cutEventToMaxDuration(startDate: Date, endDate: Date) -> Date {
-        let hoursToCut = Int(startDate.distance(to: endDate) / 3600) % (settingsDict[K.S.maxDuration] ?? K.DS[K.S.maxDuration]!)
+        var hoursToCut = 0
+        if #available(iOS 13.0, *) {
+            hoursToCut = Int(startDate.distance(to: endDate) / 3600) % (settingsDict[K.S.maxDuration] ?? K.DS[K.S.maxDuration]!)
+        } else {
+            // Fallback on earlier versions
+            hoursToCut = Int(endDate.timeIntervalSince(startDate) / 3600) % (settingsDict[K.S.maxDuration] ?? K.DS[K.S.maxDuration]!)
+        }
         let newEndDate = Calendar.current.date(byAdding: .hour, value: -hoursToCut, to: endDate)!
         
         return newEndDate
     }
     
     private func calculateWorkEvent(_ workStartDate: Date, _ workEndDate: Date) {
+        var workDuration = 0
         var eventEndDate = workEndDate
-        let workDuration = Int(workStartDate.distance(to: eventEndDate))
+        if #available(iOS 13.0, *) {
+            workDuration = Int(workStartDate.distance(to: eventEndDate))
+        } else {
+            // Fallback on earlier versions
+            workDuration = Int(eventEndDate.timeIntervalSince(workStartDate))
+        }
         
         if workDuration / 3600 >= (settingsDict[K.S.minDuration] ?? K.DS[K.S.minDuration]!) {
             if workDuration % 3600 == 0 {

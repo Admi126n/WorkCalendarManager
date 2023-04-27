@@ -115,7 +115,13 @@ struct CalendarManager {
             for event in events {
                 guard event.title.contains(K.eventTitle) else { continue }
                 
-                let eventDuration = event.startDate.distance(to: event.endDate)
+                var eventDuration: TimeInterval
+                
+                if #available(iOS 13.0, *) {
+                    eventDuration = event.startDate.distance(to: event.endDate)
+                } else {
+                    eventDuration = event.endDate.timeIntervalSince(event.startDate)
+                }
                 workHours += Int(eventDuration / 3600.0)
             }
         }

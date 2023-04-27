@@ -71,18 +71,30 @@ class SettingsViewController: UIViewController {
         case 0:
             defaults.set(UIUserInterfaceStyle.unspecified.rawValue, forKey: K.D.appAppearance)
             
-            view.window?.overrideUserInterfaceStyle =
-            UIUserInterfaceStyle(rawValue: defaults.integer(forKey: K.D.appAppearance))!
+            if #available(iOS 13.0, *) {
+                view.window?.overrideUserInterfaceStyle =
+                UIUserInterfaceStyle(rawValue: defaults.integer(forKey: K.D.appAppearance))!
+            } else {
+                // Fallback on earlier versions
+            }
         case 1:
             defaults.set(UIUserInterfaceStyle.light.rawValue, forKey: K.D.appAppearance)
             
-            view.window?.overrideUserInterfaceStyle =
-            UIUserInterfaceStyle(rawValue: defaults.integer(forKey: K.D.appAppearance))!
+            if #available(iOS 13.0, *) {
+                view.window?.overrideUserInterfaceStyle =
+                UIUserInterfaceStyle(rawValue: defaults.integer(forKey: K.D.appAppearance))!
+            } else {
+                // Fallback on earlier versions
+            }
         default:
             defaults.set(UIUserInterfaceStyle.dark.rawValue, forKey: K.D.appAppearance)
             
-            view.window?.overrideUserInterfaceStyle =
-            UIUserInterfaceStyle(rawValue: defaults.integer(forKey: K.D.appAppearance))!
+            if #available(iOS 13.0, *) {
+                view.window?.overrideUserInterfaceStyle =
+                UIUserInterfaceStyle(rawValue: defaults.integer(forKey: K.D.appAppearance))!
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
     
