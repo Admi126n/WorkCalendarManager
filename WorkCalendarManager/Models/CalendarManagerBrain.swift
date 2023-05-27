@@ -131,22 +131,22 @@ struct CalendarManagerBrain {
         var eventEndDate = workEndDate
         let workDuration = Int(workStartDate.distance(to: eventEndDate))
         
-        if workDuration / 3600 >= (settingsDict[K.S.minDuration] ?? K.DS[K.S.minDuration]!) {
-            if workDuration % 3600 == 0 {
-                if workDuration / 3600 <= (settingsDict[K.S.maxDuration] ?? K.DS[K.S.maxDuration]!) {
-                    CalendarManager.cm.createEvent(startHour: workStartDate, endHour: eventEndDate)
-                } else {
-                    eventEndDate = cutEventToMaxDuration(startDate: workStartDate, endDate: eventEndDate)
-                    CalendarManager.cm.createEvent(startHour: workStartDate, endHour: eventEndDate)
-                }
+        if workDuration / 3600 < (settingsDict[K.S.minDuration] ?? K.DS[K.S.minDuration]!) { return }
+        
+        if workDuration % 3600 == 0 {
+            if workDuration / 3600 <= (settingsDict[K.S.maxDuration] ?? K.DS[K.S.maxDuration]!) {
+                CalendarManager.cm.createEvent(startHour: workStartDate, endHour: eventEndDate)
             } else {
-                eventEndDate = cutEventToFullHour(startDate: workStartDate, endDate: eventEndDate)
-                if workDuration / 3600 <= (settingsDict[K.S.maxDuration] ?? K.DS[K.S.maxDuration]!) {
-                    CalendarManager.cm.createEvent(startHour: workStartDate, endHour: eventEndDate)
-                } else {
-                    eventEndDate = cutEventToMaxDuration(startDate: workStartDate, endDate: eventEndDate)
-                    CalendarManager.cm.createEvent(startHour: workStartDate, endHour: eventEndDate)
-                }
+                eventEndDate = cutEventToMaxDuration(startDate: workStartDate, endDate: eventEndDate)
+                CalendarManager.cm.createEvent(startHour: workStartDate, endHour: eventEndDate)
+            }
+        } else {
+            eventEndDate = cutEventToFullHour(startDate: workStartDate, endDate: eventEndDate)
+            if workDuration / 3600 <= (settingsDict[K.S.maxDuration] ?? K.DS[K.S.maxDuration]!) {
+                CalendarManager.cm.createEvent(startHour: workStartDate, endHour: eventEndDate)
+            } else {
+                eventEndDate = cutEventToMaxDuration(startDate: workStartDate, endDate: eventEndDate)
+                CalendarManager.cm.createEvent(startHour: workStartDate, endHour: eventEndDate)
             }
         }
     }

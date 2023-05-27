@@ -76,9 +76,9 @@ class ViewController: UIViewController {
 
 extension ViewController: CalendarManagerDelegate {
     func didFetchWorkHours(_ hours: Int) {
-        let selectedSegmentTitle = segmentedControl.titleForSegment(at: segmentedControl.selectedSegmentIndex)!
         
         DispatchQueue.main.async { [self] in
+            let selectedSegmentTitle = self.segmentedControl.titleForSegment(at: segmentedControl.selectedSegmentIndex)!
             self.workHoursLabel.text = "Work hours in \(selectedSegmentTitle): \(hours)"
         }
     }
