@@ -26,8 +26,7 @@ extension Date {
     
     func getYear(of selectedMonth: Date) -> Int {
         let month = Calendar.current.component(.month, from: selectedMonth)
-        
-        return Calendar.current.component(.year, from: Date().getStartDateOfMonth(x: month))
+        return Calendar.current.component(.year, from: Date().getStartDateOfMonth(x: getCurrMonth() - month))
     }
     
     func getCurrMonth() -> Int {
