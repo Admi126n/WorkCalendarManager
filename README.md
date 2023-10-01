@@ -9,6 +9,8 @@ In app settings I can set:
 - Margins before and after work
 - Calendars which should be ignored while app is searching for free time
 
+Project is archived because I'm going to recreate and improve it using SwiftUI.
+
 ### Screenshots
 |Main screen|Settings screen|
 |:-------------:|:-------------:|
