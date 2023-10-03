@@ -55,7 +55,7 @@ struct CalendarManager {
     
     private init() {
         eventStore = EKEventStore()
-        eventStore.requestAccess(to: .event) { granted, error in
+        eventStore.requestFullAccessToEvents { granted, error in
             if error != nil {
                 print(error as Any)
                 return
@@ -67,7 +67,7 @@ struct CalendarManager {
     
     private mutating func refreshEventStore() {
         eventStore = EKEventStore()
-        eventStore.requestAccess(to: .event) { granted, error in
+        eventStore.requestFullAccessToEvents { granted, error in
             if error != nil {
                 print(error as Any)
                 return
