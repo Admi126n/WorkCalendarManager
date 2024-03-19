@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		667970922BA9F86E00597A7B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667970912BA9F86E00597A7B /* SettingsView.swift */; };
+		667970942BA9F89400597A7B /* AddWorkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667970932BA9F89400597A7B /* AddWorkView.swift */; };
 		66BEA7802B813B710051D68B /* WorkCalendarManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BEA77F2B813B710051D68B /* WorkCalendarManagerApp.swift */; };
 		66BEA7822B813B710051D68B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BEA7812B813B710051D68B /* ContentView.swift */; };
 		66BEA7842B813B730051D68B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66BEA7832B813B730051D68B /* Assets.xcassets */; };
@@ -14,6 +16,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		667970912BA9F86E00597A7B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		667970932BA9F89400597A7B /* AddWorkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkView.swift; sourceTree = "<group>"; };
+		667970952BA9FB4300597A7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		66BEA77C2B813B710051D68B /* WorkCalendarManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorkCalendarManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66BEA77F2B813B710051D68B /* WorkCalendarManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkCalendarManagerApp.swift; sourceTree = "<group>"; };
 		66BEA7812B813B710051D68B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -51,8 +56,11 @@
 		66BEA77E2B813B710051D68B /* WorkCalendarManager */ = {
 			isa = PBXGroup;
 			children = (
+				667970952BA9FB4300597A7B /* Info.plist */,
 				66BEA77F2B813B710051D68B /* WorkCalendarManagerApp.swift */,
 				66BEA7812B813B710051D68B /* ContentView.swift */,
+				667970932BA9F89400597A7B /* AddWorkView.swift */,
+				667970912BA9F86E00597A7B /* SettingsView.swift */,
 				66BEA7832B813B730051D68B /* Assets.xcassets */,
 				66BEA7852B813B730051D68B /* Preview Content */,
 			);
@@ -137,8 +145,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				667970922BA9F86E00597A7B /* SettingsView.swift in Sources */,
 				66BEA7822B813B710051D68B /* ContentView.swift in Sources */,
 				66BEA7802B813B710051D68B /* WorkCalendarManagerApp.swift in Sources */,
+				667970942BA9F89400597A7B /* AddWorkView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +285,7 @@
 				DEVELOPMENT_TEAM = 8M6629LY4U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WorkCalendarManager/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -305,6 +316,7 @@
 				DEVELOPMENT_TEAM = 8M6629LY4U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WorkCalendarManager/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
