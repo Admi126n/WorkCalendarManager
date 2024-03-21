@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		66689DC52BAC9F030028E7A9 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66689DC42BAC9F030028E7A9 /* MainScreenView.swift */; };
+		66689DC72BAC9F370028E7A9 /* MainScreenView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66689DC62BAC9F370028E7A9 /* MainScreenView+ViewModel.swift */; };
 		667970922BA9F86E00597A7B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667970912BA9F86E00597A7B /* SettingsView.swift */; };
 		667970942BA9F89400597A7B /* AddWorkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667970932BA9F89400597A7B /* AddWorkView.swift */; };
 		66BEA7802B813B710051D68B /* WorkCalendarManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BEA77F2B813B710051D68B /* WorkCalendarManagerApp.swift */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		66689DC42BAC9F030028E7A9 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
+		66689DC62BAC9F370028E7A9 /* MainScreenView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainScreenView+ViewModel.swift"; sourceTree = "<group>"; };
 		667970912BA9F86E00597A7B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		667970932BA9F89400597A7B /* AddWorkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkView.swift; sourceTree = "<group>"; };
 		667970952BA9FB4300597A7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -63,6 +67,8 @@
 				667970912BA9F86E00597A7B /* SettingsView.swift */,
 				66BEA7832B813B730051D68B /* Assets.xcassets */,
 				66BEA7852B813B730051D68B /* Preview Content */,
+				66689DC42BAC9F030028E7A9 /* MainScreenView.swift */,
+				66689DC62BAC9F370028E7A9 /* MainScreenView+ViewModel.swift */,
 			);
 			path = WorkCalendarManager;
 			sourceTree = "<group>";
@@ -145,7 +151,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66689DC72BAC9F370028E7A9 /* MainScreenView+ViewModel.swift in Sources */,
 				667970922BA9F86E00597A7B /* SettingsView.swift in Sources */,
+				66689DC52BAC9F030028E7A9 /* MainScreenView.swift in Sources */,
 				66BEA7822B813B710051D68B /* ContentView.swift in Sources */,
 				66BEA7802B813B710051D68B /* WorkCalendarManagerApp.swift in Sources */,
 				667970942BA9F89400597A7B /* AddWorkView.swift in Sources */,
