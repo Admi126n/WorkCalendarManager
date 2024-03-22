@@ -14,6 +14,8 @@ extension MainScreenView {
 		
 		@Published private(set) var accessGranted: Bool = false
 		
+		private let eventStore = EKEventStore()
+		
 		init() {
 			let acces = EKEventStore.authorizationStatus(for: .event)
 			
@@ -25,8 +27,6 @@ extension MainScreenView {
 		}
 		
 		private func requestCalendarAccess() {
-			let eventStore = EKEventStore()
-			
 			eventStore.requestFullAccessToEvents { granted, error in
 				Task { @MainActor in
 					self.accessGranted = granted
