@@ -13,6 +13,7 @@ extension MainScreenView {
 	class ViewModel: ObservableObject {
 		
 		@Published private(set) var accessGranted: Bool = false
+		@Published private(set) var text = ""
 		
 		private let eventStore = EKEventStore()
 		

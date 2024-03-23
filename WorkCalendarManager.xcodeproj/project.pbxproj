@@ -13,6 +13,7 @@
 		667970922BA9F86E00597A7B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667970912BA9F86E00597A7B /* SettingsView.swift */; };
 		667970942BA9F89400597A7B /* AddWorkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667970932BA9F89400597A7B /* AddWorkView.swift */; };
 		668E06212BADDDB7009C6C06 /* Date+utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E06202BADDDB7009C6C06 /* Date+utilities.swift */; };
+		668E06272BAF769F009C6C06 /* EKEvent+duration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E06262BAF769F009C6C06 /* EKEvent+duration.swift */; };
 		66BEA7802B813B710051D68B /* WorkCalendarManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BEA77F2B813B710051D68B /* WorkCalendarManagerApp.swift */; };
 		66BEA7822B813B710051D68B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BEA7812B813B710051D68B /* ContentView.swift */; };
 		66BEA7842B813B730051D68B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66BEA7832B813B730051D68B /* Assets.xcassets */; };
@@ -27,6 +28,7 @@
 		667970932BA9F89400597A7B /* AddWorkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkView.swift; sourceTree = "<group>"; };
 		667970952BA9FB4300597A7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		668E06202BADDDB7009C6C06 /* Date+utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+utilities.swift"; sourceTree = "<group>"; };
+		668E06262BAF769F009C6C06 /* EKEvent+duration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EKEvent+duration.swift"; sourceTree = "<group>"; };
 		66BEA77C2B813B710051D68B /* WorkCalendarManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorkCalendarManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66BEA77F2B813B710051D68B /* WorkCalendarManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkCalendarManagerApp.swift; sourceTree = "<group>"; };
 		66BEA7812B813B710051D68B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -45,6 +47,45 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		668E06222BAF762A009C6C06 /* MainScreen */ = {
+			isa = PBXGroup;
+			children = (
+				66689DC42BAC9F030028E7A9 /* MainScreenView.swift */,
+				66689DC62BAC9F370028E7A9 /* MainScreenView+ViewModel.swift */,
+			);
+			path = MainScreen;
+			sourceTree = "<group>";
+		};
+		668E06232BAF763B009C6C06 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				66BEA7812B813B710051D68B /* ContentView.swift */,
+				667970932BA9F89400597A7B /* AddWorkView.swift */,
+				667970912BA9F86E00597A7B /* SettingsView.swift */,
+				668E06222BAF762A009C6C06 /* MainScreen */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		668E06242BAF7650009C6C06 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				667970952BA9FB4300597A7B /* Info.plist */,
+				66BEA7832B813B730051D68B /* Assets.xcassets */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		668E06252BAF7663009C6C06 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				66689DCA2BACA78B0028E7A9 /* CalendarConnector.swift */,
+				668E06202BADDDB7009C6C06 /* Date+utilities.swift */,
+				668E06262BAF769F009C6C06 /* EKEvent+duration.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		66BEA7732B813B710051D68B = {
 			isa = PBXGroup;
 			children = (
@@ -64,17 +105,11 @@
 		66BEA77E2B813B710051D68B /* WorkCalendarManager */ = {
 			isa = PBXGroup;
 			children = (
-				667970952BA9FB4300597A7B /* Info.plist */,
-				66BEA77F2B813B710051D68B /* WorkCalendarManagerApp.swift */,
-				66BEA7812B813B710051D68B /* ContentView.swift */,
-				667970932BA9F89400597A7B /* AddWorkView.swift */,
-				667970912BA9F86E00597A7B /* SettingsView.swift */,
-				66BEA7832B813B730051D68B /* Assets.xcassets */,
+				668E06242BAF7650009C6C06 /* Utilities */,
 				66BEA7852B813B730051D68B /* Preview Content */,
-				66689DC42BAC9F030028E7A9 /* MainScreenView.swift */,
-				66689DC62BAC9F370028E7A9 /* MainScreenView+ViewModel.swift */,
-				66689DCA2BACA78B0028E7A9 /* CalendarConnector.swift */,
-				668E06202BADDDB7009C6C06 /* Date+utilities.swift */,
+				66BEA77F2B813B710051D68B /* WorkCalendarManagerApp.swift */,
+				668E06232BAF763B009C6C06 /* View */,
+				668E06252BAF7663009C6C06 /* Model */,
 			);
 			path = WorkCalendarManager;
 			sourceTree = "<group>";
@@ -161,6 +196,7 @@
 				66689DC72BAC9F370028E7A9 /* MainScreenView+ViewModel.swift in Sources */,
 				667970922BA9F86E00597A7B /* SettingsView.swift in Sources */,
 				66689DC52BAC9F030028E7A9 /* MainScreenView.swift in Sources */,
+				668E06272BAF769F009C6C06 /* EKEvent+duration.swift in Sources */,
 				668E06212BADDDB7009C6C06 /* Date+utilities.swift in Sources */,
 				66BEA7822B813B710051D68B /* ContentView.swift in Sources */,
 				66BEA7802B813B710051D68B /* WorkCalendarManagerApp.swift in Sources */,
