@@ -37,20 +37,4 @@ struct CalendarConnector {
 	func getEvents(fromCalendar calendar: EKCalendar, from: Date, to: Date, _ eventStore: EKEventStore) -> [EKEvent] {
 		getEvents(fromCalendars: [calendar], from: from, to: to, eventStore)
 	}
-	
-	/// Returns sum of seconds between `startDate` and `endDate` of given events
-	/// - Parameter events: Events to count duration
-	/// - Returns: Sum of events duration in seconds
-	func getDuration(of events: [EKEvent]) -> Int {
-		events.reduce(0) { partialResult, event in
-			partialResult + event.duration
-		}
-	}
-	
-	func getHoursAndMinutes(from seconds: Int) -> (hours: Int, minutes: Int) {
-		let hours = seconds / 3600
-		let minutes = (seconds % 3600) / 60
-		
-		return (hours, minutes)
-	}
 }
