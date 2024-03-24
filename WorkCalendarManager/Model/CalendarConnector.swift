@@ -16,7 +16,7 @@ struct CalendarConnector {
 	///   - to: End date of searching
 	///   - eventStore: Instange of `EKEventStore`
 	/// - Returns: List of  events
-	func getEvents(fromCalendars calendars: [EKCalendar], from: Date, to: Date, _ eventStore: EKEventStore) -> [EKEvent] {
+	static func getEvents(fromCalendars calendars: [EKCalendar], from: Date, to: Date, _ eventStore: EKEventStore) -> [EKEvent] {
 		let predicate = eventStore.predicateForEvents(
 			withStart: from,
 			end: to,
@@ -34,7 +34,7 @@ struct CalendarConnector {
 	///   - to: End date of searching
 	///   - eventStore: Instange of `EKEventStore`
 	/// - Returns: List of  events
-	func getEvents(fromCalendar calendar: EKCalendar, from: Date, to: Date, _ eventStore: EKEventStore) -> [EKEvent] {
+	static func getEvents(fromCalendar calendar: EKCalendar, from: Date, to: Date, _ eventStore: EKEventStore) -> [EKEvent] {
 		getEvents(fromCalendars: [calendar], from: from, to: to, eventStore)
 	}
 }

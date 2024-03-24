@@ -16,8 +16,15 @@ extension Date {
 		return Calendar.current.date(from: componentsOfToday)!
 	}
 	
-	/// Returns first moment of next  month
+	/// Returns first moment of next month
 	var endOfMonth: Date {
 		Calendar.current.date(byAdding: .month, value: 1, to: startOfMonth)!
+	}
+	
+	/// Returns short month name from date
+	var monthShortName: String {
+		let monthNum = Calendar.current.dateComponents([.month], from: self).month!
+		
+		return DateFormatter().shortMonthSymbols[monthNum - 1]
 	}
 }
