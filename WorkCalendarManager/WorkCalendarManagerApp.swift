@@ -12,6 +12,7 @@ struct WorkCalendarManagerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+				.tint(.indigo)
         }
     }
 }
