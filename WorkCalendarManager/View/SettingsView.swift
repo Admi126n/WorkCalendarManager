@@ -9,13 +9,9 @@ import SwiftUI
 
 struct SettingsView: View {
     var body: some View {
-		Button("sss") {
-			
-		}
-		.buttonStyle(.borderedProminent)
-//        Text("Settings")
-//			.font(.title)
-//			.fontDesign(.serif)
+        Text("Settings")
+			.font(.title)
+			.fontDesign(.serif)
     }
 }
 

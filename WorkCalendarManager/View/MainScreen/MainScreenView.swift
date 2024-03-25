@@ -5,11 +5,12 @@
 //  Created by Adam Tokarski on 21/03/2024.
 //
 
+import Charts
 import SwiftUI
 
 struct MainScreenView: View {
-	@State private var showingSettings = false
 	@State private var showingAddWork = false
+	@State private var showingSettings = false
 	
 	@StateObject var vm = ViewModel()
 	
@@ -17,8 +18,28 @@ struct MainScreenView: View {
 		NavigationStack {
 			ZStack {
 				ScrollView {
-					Text(vm.accessGranted ? "True" : "False")
-						.foregroundStyle(vm.accessGranted ? .green : .red)
+					HStack {
+						Text("Work hours per month")
+							.font(.headline)
+							.padding(.leading, 8)
+						
+						Spacer()
+					}
+					
+					Chart {
+						ForEach(vm.workTime) { month in
+							BarMark(
+								x: .value("Month", month.month),
+								y: .value("Hours", month.hours))
+							.annotation {
+								Text("\(month.hours, format: .number)")
+									.font(.footnote)
+							}
+							.shadow(radius: 5, x: 2.0, y: 2.0)
+						}
+					}
+					.chartYAxis(.hidden)
+					.frame(height: 300)
 				}
 				
 				VStack {
@@ -45,6 +66,9 @@ struct MainScreenView: View {
 		}
 		.sheet(isPresented: $showingSettings, content: SettingsView.init)
 		.sheet(isPresented: $showingAddWork, content: AddWorkView.init)
+		.onAppear {
+			vm.getWorkTimePerMonth()
+		}
 	}
 }
 
