@@ -37,4 +37,22 @@ struct CalendarConnector {
 	static func getEvents(fromCalendar calendar: EKCalendar, from: Date, to: Date, _ eventStore: EKEventStore) -> [EKEvent] {
 		getEvents(fromCalendars: [calendar], from: from, to: to, eventStore)
 	}
+	
+	/// Returns all non-subscribed calendars from given `eventStore`
+	/// - Parameter eventStore: Instance of `EKEventStore`
+	/// - Returns: List of calendars
+	static func getCalendars(from eventStore: EKEventStore) -> [EKCalendar] {
+		let calendars = eventStore.calendars(for: .event)
+		
+		return calendars.filter { !$0.isSubscribed }
+	}
+	
+	/// Returns all available calendars from given identiviers
+	/// - Parameters:
+	///   - identifiers: List of calendars identifiers
+	/// - Parameter eventStore: Instance of `EKEventStore`
+	/// - Returns: List of calendars
+	static func getCalendarsWith(identifiers: [String], _ eventStore: EKEventStore) -> [EKCalendar] {
+		identifiers.compactMap { eventStore.calendar(withIdentifier: $0) }
+	}
 }
