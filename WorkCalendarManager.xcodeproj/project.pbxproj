@@ -20,6 +20,7 @@
 		66BEA7822B813B710051D68B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BEA7812B813B710051D68B /* ContentView.swift */; };
 		66BEA7842B813B730051D68B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66BEA7832B813B730051D68B /* Assets.xcassets */; };
 		66BEA7872B813B730051D68B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66BEA7862B813B730051D68B /* Preview Assets.xcassets */; };
+		66D2AFB12BBC20FF001B884E /* CalendarsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2AFB02BBC20FF001B884E /* CalendarsPicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		66BEA7812B813B710051D68B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		66BEA7832B813B730051D68B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		66BEA7862B813B730051D68B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		66D2AFB02BBC20FF001B884E /* CalendarsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarsPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 			children = (
 				66BEA7812B813B710051D68B /* ContentView.swift */,
 				667970932BA9F89400597A7B /* AddWorkView.swift */,
+				66D2AFB02BBC20FF001B884E /* CalendarsPicker.swift */,
 				667970912BA9F86E00597A7B /* SettingsView.swift */,
 				668E06222BAF762A009C6C06 /* MainScreen */,
 			);
@@ -201,6 +204,7 @@
 				66689DCB2BACA78B0028E7A9 /* CalendarConnector.swift in Sources */,
 				668E06292BAF7AE6009C6C06 /* CalendarCalculator.swift in Sources */,
 				66689DC72BAC9F370028E7A9 /* MainScreenView+ViewModel.swift in Sources */,
+				66D2AFB12BBC20FF001B884E /* CalendarsPicker.swift in Sources */,
 				667970922BA9F86E00597A7B /* SettingsView.swift in Sources */,
 				66689DC52BAC9F030028E7A9 /* MainScreenView.swift in Sources */,
 				668E06272BAF769F009C6C06 /* EKEvent+duration.swift in Sources */,

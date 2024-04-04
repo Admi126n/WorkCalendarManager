@@ -5,13 +5,35 @@
 //  Created by Adam Tokarski on 19/03/2024.
 //
 
+import EventKit
 import SwiftUI
 
+fileprivate enum SelectedField {
+	case workCalendars
+}
+
 struct SettingsView: View {
+	
+	@State private var c: [EKCalendar] = []
+	
     var body: some View {
-        Text("Settings")
-			.font(.title)
-			.fontDesign(.serif)
+		NavigationStack {
+			Form {
+				Text("Settings")
+					.font(.title)
+					.fontDesign(.serif)
+				
+				NavigationLink(value: SelectedField.workCalendars) {
+					Text("Select calendars")
+				}
+			}
+			.navigationDestination(for: SelectedField.self) { selectedField in
+				switch selectedField {
+				case .workCalendars:
+					CalendarsPicker(selectedCalendars: $c)
+				}
+			}
+		}
     }
 }
 
