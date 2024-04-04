@@ -38,13 +38,13 @@ struct CalendarConnector {
 		getEvents(fromCalendars: [calendar], from: from, to: to, eventStore)
 	}
 	
-	/// Returns all non-subscribed calendars from given `eventStore`
+	/// Returns all local calendars from given `eventStore`
 	/// - Parameter eventStore: Instance of `EKEventStore`
 	/// - Returns: List of calendars
-	static func getNonSubscriptionCalendars(from eventStore: EKEventStore) -> [EKCalendar] {
+	static func getLocalCalendars(from eventStore: EKEventStore) -> [EKCalendar] {
 		let calendars = eventStore.calendars(for: .event)
 		
-		return calendars.filter { !$0.isSubscribed }
+		return calendars.filter { !$0.isSubscribed && $0.allowsContentModifications }
 	}
 	
 	/// Returns all available calendars from given identiviers
