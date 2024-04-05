@@ -12,7 +12,7 @@ struct CalendarsPicker: View {
 	
 	@Binding var selectedCalendars: [EKCalendar]
 	
-	let calendars: [EKCalendar] = []
+	let calendars: [EKCalendar]
 	
 	var body: some View {
 		Section("Work calendars") {
@@ -32,7 +32,7 @@ struct CalendarsPicker: View {
 								.foregroundStyle(.green)
 						}
 					}
-					.containerShape(.rect)
+					.contentShape(.rect)
 					.onTapGesture {
 						if !selectedCalendars.contains(cal) {
 							// Add calendar to selected
@@ -49,5 +49,5 @@ struct CalendarsPicker: View {
 }
 
 #Preview {
-	CalendarsPicker(selectedCalendars: .constant([]))
+	CalendarsPicker(selectedCalendars: .constant([]), calendars: [])
 }

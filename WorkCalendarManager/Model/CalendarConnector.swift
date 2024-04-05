@@ -17,6 +17,8 @@ struct CalendarConnector {
 	///   - eventStore: Instange of `EKEventStore`
 	/// - Returns: List of  events
 	static func getEvents(fromCalendars calendars: [EKCalendar], from: Date, to: Date, _ eventStore: EKEventStore) -> [EKEvent] {
+		guard !calendars.isEmpty else { return [] }
+		
 		let predicate = eventStore.predicateForEvents(
 			withStart: from,
 			end: to,

@@ -14,6 +14,8 @@ fileprivate enum SelectedField {
 
 struct SettingsView: View {
 	
+	@EnvironmentObject var userSettings: UserSettings
+	
 	@State private var c: [EKCalendar] = []
 	
     var body: some View {
@@ -30,7 +32,9 @@ struct SettingsView: View {
 			.navigationDestination(for: SelectedField.self) { selectedField in
 				switch selectedField {
 				case .workCalendars:
-					CalendarsPicker(selectedCalendars: $c)
+					CalendarsPicker(
+						selectedCalendars: $userSettings.workCalendars,
+						calendars: userSettings.allCalendars)
 				}
 			}
 		}

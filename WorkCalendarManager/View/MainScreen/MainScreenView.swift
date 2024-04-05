@@ -12,6 +12,7 @@ struct MainScreenView: View {
 	@State private var showingAddWork = false
 	@State private var showingSettings = false
 	
+	@StateObject var userSettings = UserSettings()
 	@StateObject var vm = ViewModel()
 	
 	var body: some View {
@@ -66,6 +67,7 @@ struct MainScreenView: View {
 		}
 		.sheet(isPresented: $showingSettings, content: SettingsView.init)
 		.sheet(isPresented: $showingAddWork, content: AddWorkView.init)
+		.environmentObject(userSettings)
 		.onAppear {
 			vm.getWorkTimePerMonth()
 		}
