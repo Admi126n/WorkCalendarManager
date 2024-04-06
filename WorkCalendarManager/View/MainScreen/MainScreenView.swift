@@ -12,7 +12,6 @@ struct MainScreenView: View {
 	@State private var showingAddWork = false
 	@State private var showingSettings = false
 	
-	@StateObject var userSettings = UserSettings()
 	@StateObject var vm = ViewModel()
 	
 	var body: some View {

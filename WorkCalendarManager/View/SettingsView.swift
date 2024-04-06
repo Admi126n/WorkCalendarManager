@@ -14,7 +14,7 @@ fileprivate enum SelectedField {
 
 struct SettingsView: View {
 	
-	@EnvironmentObject var userSettings: UserSettings
+	@EnvironmentObject var userSettings: LocalState
 	
 	@State private var c: [EKCalendar] = []
 	

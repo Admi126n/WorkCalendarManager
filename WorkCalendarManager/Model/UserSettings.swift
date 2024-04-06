@@ -2,14 +2,24 @@
 //  UserSettings.swift
 //  WorkCalendarManager
 //
-//  Created by Adam Tokarski on 04/04/2024.
+//  Created by Adam Tokarski on 06/04/2024.
 //
 
-import EventKit
+import Foundation
 
-class UserSettings: ObservableObject {
+struct UserSettings {
 	
-	@Published var workCalendars: [EKCalendar] = []
-	@Published var allCalendars: [EKCalendar] = []
-	
+	static var workCalendarsIdentifiers: [String] {
+		get {
+			if let array = UserDefaults.standard.array(forKey: K.workCalendarsIdentifiers) as? [String] {
+				return array
+			} else {
+				return []
+			}
+		}
+		
+		set(newValue) {
+			UserDefaults.standard.set(newValue, forKey: K.workCalendarsIdentifiers)
+		}
+	}
 }
