@@ -11,19 +11,15 @@ class LocalState: ObservableObject {
 	
 	@Published var workCalendars: [EKCalendar] {
 		didSet {
-			UserSettings.workCalendarsIdentifiers = workCalendars.map { $0.calendarIdentifier }
+			UserSettings.setWorkCalendarIdentifiers(workCalendars)
 		}
 	}
 	
 	@Published var allCalendars: [EKCalendar]
 	
 	init(_ eventStore: EKEventStore) {
-		workCalendars = UserSettings.workCalendarsIdentifiers.compactMap {
-			// TODO: remove identifiers for which there is no calendar
-			eventStore.calendar(withIdentifier: $0)
-		}
-		
-		allCalendars = []
+		self.workCalendars = UserSettings.getCalendarsFromIdentifiers(eventStore)
+		self.allCalendars = []
 	}
 	
 }
