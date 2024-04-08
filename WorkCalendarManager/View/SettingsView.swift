@@ -14,33 +14,41 @@ fileprivate enum SelectedField {
 
 struct SettingsView: View {
 	
-	@EnvironmentObject var userSettings: LocalState
+	@EnvironmentObject var localState: LocalState
 	
 	@State private var c: [EKCalendar] = []
 	
     var body: some View {
 		NavigationStack {
 			Form {
-				Text("Settings")
-					.font(.title)
-					.fontDesign(.serif)
-				
-				NavigationLink(value: SelectedField.workCalendars) {
-					Text("Select calendars")
+				Section("Work calendars") {
+					NavigationLink(value: SelectedField.workCalendars) {
+						HStack {
+							Text("Select calendars")
+							
+							Spacer()
+							
+							Text("\(localState.workCalendars.count) selected")
+								.foregroundStyle(.secondary)
+						}
+					}
 				}
 			}
 			.navigationDestination(for: SelectedField.self) { selectedField in
 				switch selectedField {
 				case .workCalendars:
 					CalendarsPicker(
-						selectedCalendars: $userSettings.workCalendars,
-						calendars: userSettings.allCalendars)
+						selectedCalendars: $localState.workCalendars,
+						calendars: localState.allCalendars)
 				}
 			}
+			.navigationTitle("Settings")
+			.navigationBarTitleDisplayMode(.inline)
 		}
     }
 }
 
 #Preview {
     SettingsView()
+		.environmentObject(LocalState(EKEventStore()))
 }

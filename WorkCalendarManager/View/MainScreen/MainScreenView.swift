@@ -57,8 +57,6 @@ struct MainScreenView: View {
 			.toolbar {
 				ToolbarItem(placement: .topBarTrailing) {
 					Button("Settings", systemImage: "person.circle") {
-						// show settings screen
-						print("Settings...")
 						showingSettings.toggle()
 					}
 				}
