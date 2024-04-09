@@ -1,0 +1,53 @@
+//
+//  CalendarsPicker.swift
+//  WorkCalendarManager
+//
+//  Created by Adam Tokarski on 02/04/2024.
+//
+
+import EventKit
+import SwiftUI
+
+struct CalendarsPicker: View {
+	
+	@Binding var selectedCalendars: [EKCalendar]
+	
+	let calendars: [EKCalendar]
+	
+	var body: some View {
+		Section("Work calendars") {
+			List {
+				ForEach(calendars, id: \.self) { cal in
+					HStack {
+						Circle()
+							.frame(width: 10)
+							.foregroundStyle(Color(cgColor: cal.cgColor))
+						
+						Text(cal.title)
+						
+						Spacer()
+						
+						if selectedCalendars.contains(cal) {
+							Image(systemName: "checkmark")
+								.foregroundStyle(.green)
+						}
+					}
+					.contentShape(.rect)
+					.onTapGesture {
+						if !selectedCalendars.contains(cal) {
+							// Add calendar to selected
+							selectedCalendars.append(cal)
+							// Remove calendar from selected
+						} else if let index = selectedCalendars.firstIndex(of: cal) {
+							selectedCalendars.remove(at: index)
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+#Preview {
+	CalendarsPicker(selectedCalendars: .constant([]), calendars: [])
+}

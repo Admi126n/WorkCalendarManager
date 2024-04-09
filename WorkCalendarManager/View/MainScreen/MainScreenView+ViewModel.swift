@@ -18,11 +18,14 @@ extension MainScreenView {
 			}
 		}
 		
+		@Published private(set) var localState: LocalState
 		@Published private(set) var workTime: [WorkTime] = []
 		
 		private let eventStore = EKEventStore()
 		
 		init() {
+			self.localState = LocalState(eventStore)
+			
 			let acces = EKEventStore.authorizationStatus(for: .event)
 			
 			if acces == .fullAccess {
@@ -45,9 +48,9 @@ extension MainScreenView {
 		///   - month: Month to fetch events from
 		///   - calendar: Calendar to fetch events from
 		/// - Returns: Duration of events in seconds
-		private func getWorkDuration(for month: Date, fromCalendar calendar: EKCalendar) -> Int {
+		private func getWorkDuration(for month: Date, fromCalendars calendars: [EKCalendar]) -> Int {
 			let events = CalendarConnector.getEvents(
-				fromCalendar: eventStore.defaultCalendarForNewEvents!,
+				fromCalendars: calendars,
 				from: month.startOfMonth,
 				to: month.endOfMonth,
 				eventStore)
@@ -68,12 +71,18 @@ extension MainScreenView {
 			for (name, month) in months {
 				let duration = getWorkDuration(
 					for: month,
-					fromCalendar: eventStore.defaultCalendarForNewEvents!)
-					
+					fromCalendars: localState.workCalendars)
+				
 				withAnimation {
 					workTime.append(WorkTime(month: name, hours: Float(duration) / 3600.0))
 				}
 			}
+		}
+		
+		func getUserCalendars() {
+			guard accessGranted else { return }
+			
+			localState.allCalendars = CalendarConnector.getLocalCalendars(from: eventStore)
 		}
 	}
 }

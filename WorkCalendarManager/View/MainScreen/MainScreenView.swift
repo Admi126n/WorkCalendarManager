@@ -57,16 +57,16 @@ struct MainScreenView: View {
 			.toolbar {
 				ToolbarItem(placement: .topBarTrailing) {
 					Button("Settings", systemImage: "person.circle") {
-						// show settings screen
-						print("Settings...")
 						showingSettings.toggle()
 					}
 				}
 			}
 		}
-		.sheet(isPresented: $showingSettings, content: SettingsView.init)
+		.sheet(isPresented: $showingSettings, onDismiss: vm.getWorkTimePerMonth, content: SettingsView.init)
 		.sheet(isPresented: $showingAddWork, content: AddWorkView.init)
+		.environmentObject(vm.localState)
 		.onAppear {
+			vm.getUserCalendars()
 			vm.getWorkTimePerMonth()
 		}
 	}
