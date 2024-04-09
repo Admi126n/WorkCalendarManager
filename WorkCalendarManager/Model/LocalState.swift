@@ -15,10 +15,17 @@ class LocalState: ObservableObject {
 		}
 	}
 	
+	@Published var ignoredCalendars: [EKCalendar] {
+		didSet {
+			UserSettings.setIgnoredCalendarsIdentifiers(ignoredCalendars)
+		}
+	}
+	
 	@Published var allCalendars: [EKCalendar]
 	
 	init(_ eventStore: EKEventStore) {
-		self.workCalendars = UserSettings.getCalendarsFromIdentifiers(eventStore)
+		self.workCalendars = UserSettings.getWorkCalendars(eventStore)
+		self.ignoredCalendars = UserSettings.getIgnoredCalendars(eventStore)
 		self.allCalendars = []
 	}
 	

@@ -9,6 +9,7 @@ import Charts
 import SwiftUI
 
 struct MainScreenView: View {
+	
 	@State private var showingAddWork = false
 	@State private var showingSettings = false
 	

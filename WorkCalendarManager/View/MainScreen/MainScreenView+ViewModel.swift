@@ -46,7 +46,7 @@ extension MainScreenView {
 		/// Returns duration of all events from given `month` for given `calendar`
 		/// - Parameters:
 		///   - month: Month to fetch events from
-		///   - calendar: Calendar to fetch events from
+		///   - calendars: Calendars to fetch events from
 		/// - Returns: Duration of events in seconds
 		private func getWorkDuration(for month: Date, fromCalendars calendars: [EKCalendar]) -> Int {
 			let events = CalendarConnector.getEvents(
@@ -79,6 +79,7 @@ extension MainScreenView {
 			}
 		}
 		
+		/// Gets local calendars and sets `localState.allCalendars`
 		func getUserCalendars() {
 			guard accessGranted else { return }
 			
