@@ -8,10 +8,6 @@
 import EventKit
 import SwiftUI
 
-fileprivate enum SelectedField {
-	case workCalendars
-}
-
 struct SettingsView: View {
 	
 	@EnvironmentObject var localState: LocalState
@@ -21,17 +17,14 @@ struct SettingsView: View {
     var body: some View {
 		NavigationStack {
 			Form {
-				Section("Work calendars") {
-					NavigationLink(value: SelectedField.workCalendars) {
-						HStack {
-							Text("Select calendars")
-							
-							Spacer()
-							
-							Text("\(localState.workCalendars.count) selected")
-								.foregroundStyle(.secondary)
-						}
-					}
+				Section("Calendars") {
+					CalendarPickerLink(
+						navigationValue: .workCalendars,
+						selectedElementsCount: localState.workCalendars.count)
+				
+					CalendarPickerLink(
+						navigationValue: .ignoredCalendars,
+						selectedElementsCount: localState.ignoredCalendars.count)
 				}
 			}
 			.navigationDestination(for: SelectedField.self) { selectedField in
@@ -40,6 +33,10 @@ struct SettingsView: View {
 					CalendarsPicker(
 						selectedCalendars: $localState.workCalendars,
 						calendars: localState.allCalendars)
+				case .ignoredCalendars:
+					CalendarsPicker(
+						selectedCalendars: $localState.ignoredCalendars,
+						calendars: localState.allCalendars)
 				}
 			}
 			.navigationTitle("Settings")
@@ -47,6 +44,33 @@ struct SettingsView: View {
 		}
     }
 }
+
+// MARK: - Helper struct and enum
+
+fileprivate enum SelectedField: String {
+	case ignoredCalendars = "Ignored"
+	case workCalendars = "Work"
+}
+
+fileprivate struct CalendarPickerLink: View {
+	let navigationValue: SelectedField
+	let selectedElementsCount: Int
+	
+	var body: some View {
+		NavigationLink(value: navigationValue) {
+			HStack {
+				Text(navigationValue.rawValue)
+				
+				Spacer()
+				
+				Text("\(selectedElementsCount) selected")
+					.foregroundStyle(.secondary)
+			}
+		}
+	}
+}
+
+// MARK: - Preview
 
 #Preview {
     SettingsView()
