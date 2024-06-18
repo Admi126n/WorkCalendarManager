@@ -31,10 +31,12 @@ struct SettingsView: View {
 				switch selectedField {
 				case .workCalendars:
 					CalendarsPicker(
+						title: "Work calendars",
 						selectedCalendars: $localState.workCalendars,
 						calendars: localState.allCalendars)
 				case .ignoredCalendars:
 					CalendarsPicker(
+						title: "Ignored calendars",
 						selectedCalendars: $localState.ignoredCalendars,
 						calendars: localState.allCalendars)
 				}
