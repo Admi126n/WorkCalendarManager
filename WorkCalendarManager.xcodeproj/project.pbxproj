@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		66052A432BC14EE60068850F /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66052A422BC14EE60068850F /* UserSettings.swift */; };
 		660613792BBEADAE00B9D87B /* LocalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660613782BBEADAE00B9D87B /* LocalState.swift */; };
+		6615565E2C21C59400155ACB /* Locale+CurrncySymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6615565D2C21C59400155ACB /* Locale+CurrncySymbol.swift */; };
+		661556602C21ED9F00155ACB /* MonthSalaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6615565F2C21ED9F00155ACB /* MonthSalaryView.swift */; };
 		66689DC52BAC9F030028E7A9 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66689DC42BAC9F030028E7A9 /* MainScreenView.swift */; };
 		66689DC72BAC9F370028E7A9 /* MainScreenView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66689DC62BAC9F370028E7A9 /* MainScreenView+ViewModel.swift */; };
 		66689DCB2BACA78B0028E7A9 /* CalendarConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66689DCA2BACA78B0028E7A9 /* CalendarConnector.swift */; };
@@ -29,6 +31,8 @@
 /* Begin PBXFileReference section */
 		66052A422BC14EE60068850F /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		660613782BBEADAE00B9D87B /* LocalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalState.swift; sourceTree = "<group>"; };
+		6615565D2C21C59400155ACB /* Locale+CurrncySymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+CurrncySymbol.swift"; sourceTree = "<group>"; };
+		6615565F2C21ED9F00155ACB /* MonthSalaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthSalaryView.swift; sourceTree = "<group>"; };
 		66689DC42BAC9F030028E7A9 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
 		66689DC62BAC9F370028E7A9 /* MainScreenView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainScreenView+ViewModel.swift"; sourceTree = "<group>"; };
 		66689DCA2BACA78B0028E7A9 /* CalendarConnector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarConnector.swift; sourceTree = "<group>"; };
@@ -71,9 +75,10 @@
 		668E06232BAF763B009C6C06 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				66BEA7812B813B710051D68B /* ContentView.swift */,
 				667970932BA9F89400597A7B /* AddWorkView.swift */,
+				66BEA7812B813B710051D68B /* ContentView.swift */,
 				66D2AFB02BBC20FF001B884E /* CalendarsPicker.swift */,
+				6615565F2C21ED9F00155ACB /* MonthSalaryView.swift */,
 				667970912BA9F86E00597A7B /* SettingsView.swift */,
 				668E06222BAF762A009C6C06 /* MainScreen */,
 			);
@@ -100,6 +105,7 @@
 				66F6F8852BBFE51A00B8281C /* UserDefaultsKeys.swift */,
 				66052A422BC14EE60068850F /* UserSettings.swift */,
 				668E062A2BB0889C009C6C06 /* WorkTime.swift */,
+				6615565D2C21C59400155ACB /* Locale+CurrncySymbol.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -220,8 +226,10 @@
 				668E06272BAF769F009C6C06 /* EKEvent+duration.swift in Sources */,
 				66F6F8862BBFE51A00B8281C /* UserDefaultsKeys.swift in Sources */,
 				668E06212BADDDB7009C6C06 /* Date+utilities.swift in Sources */,
+				661556602C21ED9F00155ACB /* MonthSalaryView.swift in Sources */,
 				668E062B2BB0889C009C6C06 /* WorkTime.swift in Sources */,
 				66BEA7822B813B710051D68B /* ContentView.swift in Sources */,
+				6615565E2C21C59400155ACB /* Locale+CurrncySymbol.swift in Sources */,
 				66BEA7802B813B710051D68B /* WorkCalendarManagerApp.swift in Sources */,
 				66052A432BC14EE60068850F /* UserSettings.swift in Sources */,
 				667970942BA9F89400597A7B /* AddWorkView.swift in Sources */,

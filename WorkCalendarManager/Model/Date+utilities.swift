@@ -27,4 +27,12 @@ extension Date {
 		
 		return DateFormatter().shortMonthSymbols[monthNum - 1]
 	}
+	
+	/// Returns long month name from date
+	var monthLongName: String {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "MMMM"
+		
+		return dateFormatter.string(from: self)
+	}
 }
