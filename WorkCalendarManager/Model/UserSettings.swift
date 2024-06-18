@@ -37,6 +37,14 @@ struct UserSettings {
 	static func getIgnoredCalendars(_ eventStore: EKEventStore) -> [EKCalendar] {
 		ignoredCalendars.getCalendars(eventStore)
 	}
+	
+	static func setSalaryPerMonth(_ salaryPerMonth: Double) {
+		UserDefaults.standard.set(salaryPerMonth, forKey: K.salaryPerHour)
+	}
+	
+	static func getSalaryPerMonth() -> Double {
+		UserDefaults.standard.double(forKey: K.salaryPerHour)
+	}
 }
 
 // MARK: - Helper struct

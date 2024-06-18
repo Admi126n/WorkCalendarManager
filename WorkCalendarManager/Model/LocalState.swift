@@ -21,11 +21,18 @@ class LocalState: ObservableObject {
 		}
 	}
 	
+	@Published var salaryPerMonth: Double {
+		didSet {
+			UserSettings.setSalaryPerMonth(salaryPerMonth)
+		}
+	}
+	
 	@Published var allCalendars: [EKCalendar]
 	
 	init(_ eventStore: EKEventStore) {
 		self.workCalendars = UserSettings.getWorkCalendars(eventStore)
 		self.ignoredCalendars = UserSettings.getIgnoredCalendars(eventStore)
+		self.salaryPerMonth = UserSettings.getSalaryPerMonth()
 		self.allCalendars = []
 	}
 	
