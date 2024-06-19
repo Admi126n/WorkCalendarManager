@@ -21,9 +21,9 @@ class LocalState: ObservableObject {
 		}
 	}
 	
-	@Published var salaryPerMonth: Double {
+	@Published var salaryPerHour: Double {
 		didSet {
-			UserSettings.setSalaryPerMonth(salaryPerMonth)
+			UserSettings.setSalaryPerHour(salaryPerHour)
 		}
 	}
 	
@@ -32,7 +32,7 @@ class LocalState: ObservableObject {
 	init(_ eventStore: EKEventStore) {
 		self.workCalendars = UserSettings.getWorkCalendars(eventStore)
 		self.ignoredCalendars = UserSettings.getIgnoredCalendars(eventStore)
-		self.salaryPerMonth = UserSettings.getSalaryPerMonth()
+		self.salaryPerHour = UserSettings.getSalaryPerHour()
 		self.allCalendars = []
 	}
 	

@@ -30,7 +30,7 @@ struct SettingsView: View {
 				}
 				
 				Section {
-					TextField("Salary", value: $localState.salaryPerMonth, format: .currency(code: "PLN"))
+					TextField("Salary", value: $localState.salaryPerHour, format: .currency(code: "PLN"))
 						.keyboardType(.decimalPad)
 						.focused($focused)
 				} header: {

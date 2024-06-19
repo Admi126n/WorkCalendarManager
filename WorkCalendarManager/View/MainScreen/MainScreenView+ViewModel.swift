@@ -15,17 +15,22 @@ extension MainScreenView {
 		@Published private(set) var accessGranted: Bool = false {
 			didSet {
 				getWorkTimePerMonth()
+				getSalaryPerMonth()
 			}
 		}
 		
 		@Published private(set) var localState: LocalState
 		@Published private(set) var workTime: [WorkTime] = []
+		@Published private(set) var salaryPerMonth: [SalaryPerMonth] = []
 		
 		private let eventStore = EKEventStore()
 		
 		/// Calculated salary for current month
 		var monthSalary: Double {
-			localState.salaryPerMonth * Double(workTime[2].hours)
+			// when app is opened first time there is no data because of no access
+			guard workTime.count == 5 else { return 0 }
+			
+			return localState.salaryPerHour * Double(workTime[2].hours)
 		}
 		
 		var currencyCode: String {
@@ -67,8 +72,24 @@ extension MainScreenView {
 			return CalendarCalculator.getDuration(of: events)
 		}
 		
+		private func getSalaryPerMonth() {
+			guard accessGranted else { return }
+			
+			withAnimation {
+				salaryPerMonth = []
+			}
+			
+			for (i, month) in workTime.enumerated() {
+				withAnimation {
+					salaryPerMonth.append(SalaryPerMonth(
+						month: month.month,
+						salary: Double(workTime[i].hours) * localState.salaryPerHour))
+				}
+			}
+		}
+		
 		/// Fetches events from user calendar and fills `workTime` list
-		func getWorkTimePerMonth() {
+		private func getWorkTimePerMonth() {
 			guard accessGranted else { return }
 			
 			withAnimation {
@@ -86,6 +107,11 @@ extension MainScreenView {
 					workTime.append(WorkTime(month: name, hours: Float(duration) / 3600.0))
 				}
 			}
+		}
+		
+		func refresh() {
+			getWorkTimePerMonth()
+			getSalaryPerMonth()
 		}
 		
 		/// Gets local calendars and sets `localState.allCalendars`

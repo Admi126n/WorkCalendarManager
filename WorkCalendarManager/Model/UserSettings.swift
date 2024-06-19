@@ -38,11 +38,11 @@ struct UserSettings {
 		ignoredCalendars.getCalendars(eventStore)
 	}
 	
-	static func setSalaryPerMonth(_ salaryPerMonth: Double) {
-		UserDefaults.standard.set(salaryPerMonth, forKey: K.salaryPerHour)
+	static func setSalaryPerHour(_ salaryPerHour: Double) {
+		UserDefaults.standard.set(salaryPerHour, forKey: K.salaryPerHour)
 	}
 	
-	static func getSalaryPerMonth() -> Double {
+	static func getSalaryPerHour() -> Double {
 		UserDefaults.standard.double(forKey: K.salaryPerHour)
 	}
 }
