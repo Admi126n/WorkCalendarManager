@@ -19,29 +19,38 @@ struct MainScreenView: View {
 		NavigationStack {
 			ZStack {
 				ScrollView {
-					HStack {
-						Text("Work hours per month")
-							.font(.headline)
-							.padding(.leading, 8)
-						
-						Spacer()
+					if vm.monthSalary != 0 {
+						MonthSalaryView(
+							salary: vm.monthSalary,
+							month: Date.now.monthLongName,
+							currencyCode: vm.currencyCode)
 					}
 					
-					Chart {
-						ForEach(vm.workTime) { month in
-							BarMark(
-								x: .value("Month", month.month),
-								y: .value("Hours", month.hours))
-							.annotation {
-								Text("\(month.hours, format: .number)")
-									.font(.footnote)
+					VStack {
+						Text("Hours per month")
+							.font(.headline)
+							.fontDesign(.rounded)
+						
+						Chart {
+							ForEach(vm.workTime) { month in
+								BarMark(
+									x: .value("Month", month.month),
+									y: .value("Hours", month.hours))
+								.annotation {
+									Text("\(month.hours, format: .number)")
+										.font(.footnote)
+								}
+								.shadow(radius: 5, x: 2.0, y: 2.0)
 							}
-							.shadow(radius: 5, x: 2.0, y: 2.0)
 						}
+						.chartYAxis(.hidden)
+						.frame(height: 300)
 					}
-					.chartYAxis(.hidden)
-					.frame(height: 300)
+					.padding(8)
+					.background(.ultraThinMaterial)
+					.clipShape(.rect(cornerRadius: 20))
 				}
+				.padding(.horizontal)
 				
 				VStack {
 					Spacer()
@@ -74,5 +83,5 @@ struct MainScreenView: View {
 }
 
 #Preview {
-    MainScreenView()
+	MainScreenView()
 }

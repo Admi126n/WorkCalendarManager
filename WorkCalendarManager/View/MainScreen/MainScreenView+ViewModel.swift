@@ -23,6 +23,15 @@ extension MainScreenView {
 		
 		private let eventStore = EKEventStore()
 		
+		/// Calculated salary for current month
+		var monthSalary: Double {
+			localState.salaryPerMonth * Double(workTime[2].hours)
+		}
+		
+		var currencyCode: String {
+			Locale.currencySymbol ?? "PLN"
+		}
+		
 		init() {
 			self.localState = LocalState(eventStore)
 			
