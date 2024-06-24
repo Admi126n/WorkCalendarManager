@@ -26,7 +26,7 @@ extension MainScreenView {
 		private let eventStore = EKEventStore()
 		
 		/// Calculated salary for current month
-		var monthSalary: Double {
+		var currentMonthSalary: Double {
 			// when app is opened first time there is no data because of no access
 			guard workTime.count == 5 else { return 0 }
 			

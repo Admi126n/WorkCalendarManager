@@ -25,6 +25,7 @@ struct MonthSalaryView: View {
 			Text("Salary in \(month)")
 				.foregroundStyle(.secondary)
 		}
+		.background(.background)
 		.padding(.bottom)
     }
 	

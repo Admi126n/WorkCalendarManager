@@ -19,38 +19,46 @@ struct MainScreenView: View {
 		NavigationStack {
 			ZStack {
 				ScrollView {
-					if vm.monthSalary != 0 {
+					if vm.currentMonthSalary != 0 {
 						MonthSalaryView(
-							salary: vm.monthSalary,
+							salary: vm.currentMonthSalary,
 							month: Date.now.monthLongName,
 							currencyCode: vm.currencyCode)
 					}
 					
-					VStack {
-						Text("Hours per month")
-							.font(.headline)
-							.fontDesign(.rounded)
-						
-						Chart {
-							ForEach(vm.workTime) { month in
-								BarMark(
-									x: .value("Month", month.month),
-									y: .value("Hours", month.hours))
-								.annotation {
-									Text("\(month.hours, format: .number)")
-										.font(.footnote)
-								}
-								.shadow(radius: 5, x: 2.0, y: 2.0)
+					ChartContainer(title: "Hours per month", 300) {
+						Chart(vm.workTime) { month in
+							BarMark(
+								x: .value("Month", month.month),
+								y: .value("Hours", month.hours))
+							.annotation {
+								Text("\(month.hours, format: .number)")
+									.font(.footnote)
+									.foregroundStyle(month.hours != 0 ? .primary : .secondary)
 							}
+							.shadow(radius: 5, x: 2.0, y: 2.0)
 						}
-						.chartYAxis(.hidden)
-						.frame(height: 300)
 					}
-					.padding(8)
-					.background(.ultraThinMaterial)
-					.clipShape(.rect(cornerRadius: 20))
+					
+					ChartContainer(title: "Salary per month", 150) {
+						Chart(vm.salaryPerMonth) { month in
+							BarMark(
+								x: .value("Salary", month.salary),
+								y: .value("Hours", month.month))
+							.annotation(position: .trailing) {
+								Text("\(month.month): \(Int(month.salary))")
+									.font(.footnote)
+									.foregroundStyle(month.salary != 0 ? .primary : .secondary)
+							}
+							.shadow(radius: 5, x: 2.0, y: 2.0)
+						}
+						.chartXAxis(.hidden)
+					}
 				}
 				.padding(.horizontal)
+				.refreshable {
+					vm.refresh()
+				}
 				
 				VStack {
 					Spacer()
@@ -72,12 +80,12 @@ struct MainScreenView: View {
 				}
 			}
 		}
-		.sheet(isPresented: $showingSettings, onDismiss: vm.getWorkTimePerMonth, content: SettingsView.init)
+		.sheet(isPresented: $showingSettings, onDismiss: vm.refresh, content: SettingsView.init)
 		.sheet(isPresented: $showingAddWork, content: AddWorkView.init)
 		.environmentObject(vm.localState)
 		.onAppear {
 			vm.getUserCalendars()
-			vm.getWorkTimePerMonth()
+			vm.refresh()
 		}
 	}
 }
