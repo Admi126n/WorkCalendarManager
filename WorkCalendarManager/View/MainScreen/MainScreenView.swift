@@ -38,21 +38,38 @@ struct MainScreenView: View {
 							}
 							.shadow(radius: 5, x: 2.0, y: 2.0)
 						}
+						.chartYAxis(.hidden)
 					}
 					
 					ChartContainer(title: "Salary per month", 150) {
-						Chart(vm.salaryPerMonth) { month in
-							BarMark(
-								x: .value("Salary", month.salary),
-								y: .value("Hours", month.month))
-							.annotation(position: .trailing) {
-								Text("\(month.month): \(Int(month.salary))")
-									.font(.footnote)
-									.foregroundStyle(month.salary != 0 ? .primary : .secondary)
+						HStack {
+							VStack {
+								ForEach(vm.salaryPerMonth) { month in
+									Spacer()
+									Text(month.month)
+									Spacer()
+								}
 							}
-							.shadow(radius: 5, x: 2.0, y: 2.0)
+							.font(.caption2)
+							.foregroundStyle(.secondary)
+							Chart(vm.salaryPerMonth) { month in
+								BarMark(
+									x: .value("Salary", month.salary),
+									y: .value("Hours", month.month))
+								.annotation(position: .trailing) {
+									Text("\(Int(month.salary))")
+										.font(.footnote)
+										.foregroundStyle(month.salary != 0 ? .primary : .secondary)
+								}
+								.shadow(radius: 5, x: 2.0, y: 2.0)
+							}
+							.chartXAxis(.hidden)
+							.chartYAxis {
+								AxisMarks {
+									AxisGridLine()
+								}
+							}
 						}
-						.chartXAxis(.hidden)
 					}
 				}
 				.padding(.horizontal)

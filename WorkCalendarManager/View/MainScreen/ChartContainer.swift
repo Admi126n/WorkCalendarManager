@@ -20,7 +20,6 @@ struct ChartContainer<Content> : View where Content : View {
 				.fontDesign(.rounded)
 			
 			chart
-				.chartYAxis(.hidden)
 				.frame(height: height)
 		}
 		.padding(8)
