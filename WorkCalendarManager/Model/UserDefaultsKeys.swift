@@ -12,5 +12,7 @@ typealias K = UserDefaultsKeys
 struct UserDefaultsKeys {
 	
 	static let workCalendarsIdentifiers = "workCalendarsIdentifiers"
+	static let ignoredCalendarsIdentifiers = "ignoredCalendarsIdentifiers"
+	static let salaryPerHour = "salaryPerHour"
 	
 }

@@ -15,13 +15,27 @@ extension MainScreenView {
 		@Published private(set) var accessGranted: Bool = false {
 			didSet {
 				getWorkTimePerMonth()
+				getSalaryPerMonth()
 			}
 		}
 		
 		@Published private(set) var localState: LocalState
 		@Published private(set) var workTime: [WorkTime] = []
+		@Published private(set) var salaryPerMonth: [SalaryPerMonth] = []
 		
 		private let eventStore = EKEventStore()
+		
+		/// Calculated salary for current month
+		var currentMonthSalary: Double {
+			// when app is opened first time there is no data because of no access
+			guard workTime.count == 5 else { return 0 }
+			
+			return localState.salaryPerHour * Double(workTime[2].hours)
+		}
+		
+		var currencyCode: String {
+			Locale.currencySymbol ?? "PLN"
+		}
 		
 		init() {
 			self.localState = LocalState(eventStore)
@@ -46,7 +60,7 @@ extension MainScreenView {
 		/// Returns duration of all events from given `month` for given `calendar`
 		/// - Parameters:
 		///   - month: Month to fetch events from
-		///   - calendar: Calendar to fetch events from
+		///   - calendars: Calendars to fetch events from
 		/// - Returns: Duration of events in seconds
 		private func getWorkDuration(for month: Date, fromCalendars calendars: [EKCalendar]) -> Int {
 			let events = CalendarConnector.getEvents(
@@ -58,8 +72,24 @@ extension MainScreenView {
 			return CalendarCalculator.getDuration(of: events)
 		}
 		
+		private func getSalaryPerMonth() {
+			guard accessGranted else { return }
+			
+			withAnimation {
+				salaryPerMonth = []
+			}
+			
+			for (i, month) in workTime.enumerated() {
+				withAnimation {
+					salaryPerMonth.append(SalaryPerMonth(
+						month: month.month,
+						salary: Double(workTime[i].hours) * localState.salaryPerHour))
+				}
+			}
+		}
+		
 		/// Fetches events from user calendar and fills `workTime` list
-		func getWorkTimePerMonth() {
+		private func getWorkTimePerMonth() {
 			guard accessGranted else { return }
 			
 			withAnimation {
@@ -79,6 +109,12 @@ extension MainScreenView {
 			}
 		}
 		
+		func refresh() {
+			getWorkTimePerMonth()
+			getSalaryPerMonth()
+		}
+		
+		/// Gets local calendars and sets `localState.allCalendars`
 		func getUserCalendars() {
 			guard accessGranted else { return }
 			
