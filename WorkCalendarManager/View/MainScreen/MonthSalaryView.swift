@@ -22,7 +22,7 @@ struct MonthSalaryView: View {
 				.minimumScaleFactor(0.01)
 				.padding(.horizontal, 32)
 			
-			Text("Salary in \(month)")
+			Text("Salary for \(month)")
 				.foregroundStyle(.secondary)
 		}
 		.background(.background)
