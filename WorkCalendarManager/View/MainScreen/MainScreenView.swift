@@ -81,8 +81,6 @@ struct MainScreenView: View {
 					Spacer()
 					
 					Button("Add work", systemImage: "calendar.badge.plus") {
-						// show sheet with configuration options
-						print("Adding...")
 						showingAddWork.toggle()
 					}
 					.buttonStyle(.borderedProminent)
@@ -98,7 +96,7 @@ struct MainScreenView: View {
 			}
 		}
 		.sheet(isPresented: $showingSettings, onDismiss: vm.refresh, content: SettingsView.init)
-		.sheet(isPresented: $showingAddWork, content: AddWorkView.init)
+		.sheet(isPresented: $showingAddWork) { AddWorkView(eventStore: vm.eventStore) }
 		.environmentObject(vm.localState)
 		.onAppear {
 			vm.getUserCalendars()
