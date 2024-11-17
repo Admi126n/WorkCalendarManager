@@ -67,6 +67,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		661686622C4E664A00122233 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				668E06202BADDDB7009C6C06 /* Date+utilities.swift */,
+				668E06262BAF769F009C6C06 /* EKEvent+duration.swift */,
+				6615565D2C21C59400155ACB /* Locale+CurrncySymbol.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		661686632C4E666400122233 /* DataStructs */ = {
+			isa = PBXGroup;
+			children = (
+				669E8EEE2C23280B00476AD2 /* SalaryPerMonth.swift */,
+				668E062A2BB0889C009C6C06 /* WorkTime.swift */,
+			);
+			path = DataStructs;
+			sourceTree = "<group>";
+		};
 		668E06222BAF762A009C6C06 /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,13 +124,10 @@
 				668E06282BAF7AE6009C6C06 /* CalendarCalculator.swift */,
 				66689DCA2BACA78B0028E7A9 /* CalendarConnector.swift */,
 				660613782BBEADAE00B9D87B /* LocalState.swift */,
-				669E8EEE2C23280B00476AD2 /* SalaryPerMonth.swift */,
 				66F6F8852BBFE51A00B8281C /* UserDefaultsKeys.swift */,
 				66052A422BC14EE60068850F /* UserSettings.swift */,
-				668E062A2BB0889C009C6C06 /* WorkTime.swift */,
-				668E06202BADDDB7009C6C06 /* Date+utilities.swift */,
-				668E06262BAF769F009C6C06 /* EKEvent+duration.swift */,
-				6615565D2C21C59400155ACB /* Locale+CurrncySymbol.swift */,
+				661686632C4E666400122233 /* DataStructs */,
+				661686622C4E664A00122233 /* Extensions */,
 			);
 			path = Model;
 			sourceTree = "<group>";
