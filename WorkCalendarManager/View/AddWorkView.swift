@@ -33,7 +33,7 @@ struct AddWorkView: View {
 					DatePicker(
 						"To date",
 						selection: $endDate,
-						in: startDate...startDate.endOfMonth,
+						in: startDate...,
 						displayedComponents: .date)
 				}
 				
@@ -65,7 +65,16 @@ struct AddWorkView: View {
 				}
 				
 				Button {
-					print("Adding work")
+					print("Adding")
+					var eventCreator = EventsCreator(
+						startDate: startDate,
+						endDate: endDate,
+						calendar: selectedCalendar,
+						eventStore: eventStore,
+						userCalendars: localState.allCalendars,
+						ignoredCalendars: localState.ignoredCalendars)
+					
+					eventCreator.iterateOverDays()
 				} label: {
 					Spacer()
 					

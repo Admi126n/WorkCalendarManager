@@ -7,6 +7,11 @@
 
 import EventKit
 
+struct EventParameters {
+	static let title = "Work"
+	static let notes = "Created by WorkCalendarManager"
+}
+
 struct UserSettings {
 	
 	private static var workCalendars = UserDefaultsElement(key: K.workCalendarsIdentifiers)
@@ -20,6 +25,36 @@ struct UserSettings {
 	static var ignoredCalendarsIdentifiers: [String] {
 		get { ignoredCalendars.elements }
 		set(newValue) { ignoredCalendars.elements = newValue }
+	}
+	
+	#warning("TODO: Implement day start hour")
+	static var dayStartHour: Int {
+		7
+	}
+	
+	#warning("TODO: Implement day end hour")
+	static var dayEndHour: Int {
+		15
+	}
+	
+	#warning("TODO: Implement work min duration")
+	static var workMinDuration: Int {
+		2
+	}
+	
+	#warning("TODO: Implement work max duration")
+	static var workMaxDuration: Int {
+		8
+	}
+	
+	#warning("TODO: Implement margin before")
+	static var marginBefore: Int {
+		15
+	}
+	
+	#warning("TODO: Implement margin after")
+	static var marginAfter: Int {
+		15
 	}
 
 	static func setWorkCalendarIdentifiers(_ calendars: [EKCalendar]) {

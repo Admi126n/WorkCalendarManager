@@ -27,6 +27,7 @@
 		66BEA7842B813B730051D68B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66BEA7832B813B730051D68B /* Assets.xcassets */; };
 		66BEA7872B813B730051D68B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66BEA7862B813B730051D68B /* Preview Assets.xcassets */; };
 		66D2AFB12BBC20FF001B884E /* CalendarsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2AFB02BBC20FF001B884E /* CalendarsPicker.swift */; };
+		66F28FAA2CEA113E009571AB /* EventsCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F28FA92CEA113E009571AB /* EventsCreator.swift */; };
 		66F6F8862BBFE51A00B8281C /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F6F8852BBFE51A00B8281C /* UserDefaultsKeys.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		66BEA7832B813B730051D68B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		66BEA7862B813B730051D68B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		66D2AFB02BBC20FF001B884E /* CalendarsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarsPicker.swift; sourceTree = "<group>"; };
+		66F28FA92CEA113E009571AB /* EventsCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsCreator.swift; sourceTree = "<group>"; };
 		66F6F8852BBFE51A00B8281C /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -123,6 +125,7 @@
 			children = (
 				668E06282BAF7AE6009C6C06 /* CalendarCalculator.swift */,
 				66689DCA2BACA78B0028E7A9 /* CalendarConnector.swift */,
+				66F28FA92CEA113E009571AB /* EventsCreator.swift */,
 				660613782BBEADAE00B9D87B /* LocalState.swift */,
 				66F6F8852BBFE51A00B8281C /* UserDefaultsKeys.swift */,
 				66052A422BC14EE60068850F /* UserSettings.swift */,
@@ -245,6 +248,7 @@
 				66D2AFB12BBC20FF001B884E /* CalendarsPicker.swift in Sources */,
 				660613792BBEADAE00B9D87B /* LocalState.swift in Sources */,
 				667970922BA9F86E00597A7B /* SettingsView.swift in Sources */,
+				66F28FAA2CEA113E009571AB /* EventsCreator.swift in Sources */,
 				66689DC52BAC9F030028E7A9 /* MainScreenView.swift in Sources */,
 				668E06272BAF769F009C6C06 /* EKEvent+duration.swift in Sources */,
 				66F6F8862BBFE51A00B8281C /* UserDefaultsKeys.swift in Sources */,
