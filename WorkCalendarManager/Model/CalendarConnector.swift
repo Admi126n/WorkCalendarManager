@@ -7,7 +7,7 @@
 
 import EventKit
 
-struct CalendarConnector {
+enum CalendarConnector {
 	
 	/// Returns events from given `calendars` from given time range
 	/// - Parameters:

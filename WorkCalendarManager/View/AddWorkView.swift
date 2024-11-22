@@ -74,7 +74,7 @@ struct AddWorkView: View {
 						userCalendars: localState.allCalendars,
 						ignoredCalendars: localState.ignoredCalendars)
 					
-					eventCreator.iterateOverDays()
+					eventCreator.createWork()
 				} label: {
 					Spacer()
 					

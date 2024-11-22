@@ -8,6 +8,7 @@
 import Foundation
 
 extension Locale {
+	
 	static var currencySymbol: String? {
 		current.currency?.identifier
 	}

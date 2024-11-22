@@ -28,6 +28,7 @@
 		66BEA7872B813B730051D68B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66BEA7862B813B730051D68B /* Preview Assets.xcassets */; };
 		66D2AFB12BBC20FF001B884E /* CalendarsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2AFB02BBC20FF001B884E /* CalendarsPicker.swift */; };
 		66F28FAA2CEA113E009571AB /* EventsCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F28FA92CEA113E009571AB /* EventsCreator.swift */; };
+		66F28FAC2CEA711D009571AB /* EKEventStore+utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F28FAB2CEA711D009571AB /* EKEventStore+utilities.swift */; };
 		66F6F8862BBFE51A00B8281C /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F6F8852BBFE51A00B8281C /* UserDefaultsKeys.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +56,7 @@
 		66BEA7862B813B730051D68B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		66D2AFB02BBC20FF001B884E /* CalendarsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarsPicker.swift; sourceTree = "<group>"; };
 		66F28FA92CEA113E009571AB /* EventsCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsCreator.swift; sourceTree = "<group>"; };
+		66F28FAB2CEA711D009571AB /* EKEventStore+utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EKEventStore+utilities.swift"; sourceTree = "<group>"; };
 		66F6F8852BBFE51A00B8281C /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,6 +77,7 @@
 				668E06202BADDDB7009C6C06 /* Date+utilities.swift */,
 				668E06262BAF769F009C6C06 /* EKEvent+duration.swift */,
 				6615565D2C21C59400155ACB /* Locale+CurrncySymbol.swift */,
+				66F28FAB2CEA711D009571AB /* EKEventStore+utilities.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				6615565E2C21C59400155ACB /* Locale+CurrncySymbol.swift in Sources */,
 				66BEA7802B813B710051D68B /* WorkCalendarManagerApp.swift in Sources */,
 				66052A432BC14EE60068850F /* UserSettings.swift in Sources */,
+				66F28FAC2CEA711D009571AB /* EKEventStore+utilities.swift in Sources */,
 				667970942BA9F89400597A7B /* AddWorkView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

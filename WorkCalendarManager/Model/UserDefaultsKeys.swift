@@ -9,10 +9,9 @@ import Foundation
 
 typealias K = UserDefaultsKeys
 
-struct UserDefaultsKeys {
+enum UserDefaultsKeys {
 	
 	static let workCalendarsIdentifiers = "workCalendarsIdentifiers"
 	static let ignoredCalendarsIdentifiers = "ignoredCalendarsIdentifiers"
 	static let salaryPerHour = "salaryPerHour"
-	
 }

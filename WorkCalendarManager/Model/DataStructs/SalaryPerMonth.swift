@@ -8,6 +8,7 @@
 import Foundation
 
 struct SalaryPerMonth: Identifiable {
+	
 	let id = UUID()
 	let month: String
 	let salary: Double

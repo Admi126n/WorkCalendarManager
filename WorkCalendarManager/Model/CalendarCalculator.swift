@@ -7,7 +7,7 @@
 
 import EventKit
 
-struct CalendarCalculator {
+enum CalendarCalculator {
 	
 	/// Returns sum of seconds between `startDate` and `endDate` of given events
 	/// - Parameter events: Events to count duration

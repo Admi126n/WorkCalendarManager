@@ -9,6 +9,7 @@ import EventKit
 import Foundation
 
 struct EventsCreator {
+	
 	private var availabilityDict: [Date: Bool] = [:]
 	
 	let startDate: Date
@@ -18,15 +19,22 @@ struct EventsCreator {
 	let userCalendars: [EKCalendar]
 	let ignoredCalendars: [EKCalendar]
 	
-	var startDateDay: Int {
-		Calendar.current.component(.day, from: startDate)
+	init(startDate: Date,
+		 endDate: Date,
+		 calendar: EKCalendar,
+		 eventStore: EKEventStore,
+		 userCalendars: [EKCalendar],
+		 ignoredCalendars: [EKCalendar]
+	) {
+		self.startDate = startDate
+		self.endDate = endDate
+		self.calendar = calendar
+		self.eventStore = eventStore
+		self.userCalendars = userCalendars
+		self.ignoredCalendars = ignoredCalendars
 	}
 	
-	var endDateDay: Int {
-		Calendar.current.component(.day, from: endDate)
-	}
-	
-	mutating func iterateOverDays() {
+	mutating func createWork() {
 		var day = startDate
 		
 		while day < endDate {
@@ -34,11 +42,7 @@ struct EventsCreator {
 				day = Calendar.current.date(byAdding: .day, value: 1, to: day)!
 			}
 			
-			let tempWeekday = Calendar.current.component(.weekday, from: day)
-			
-			if tempWeekday == 1 || tempWeekday == 7 {
-				continue
-			}
+			guard day.weekday != 1 && day.weekday != 7 else { continue }
 			
 			iterateOverAvailabilityDict(on: day)
 		}
@@ -51,26 +55,26 @@ struct EventsCreator {
 		
 		fillAvailabilityDict(for: day)
 		
-		for (date, availability) in availabilityDict.sorted(by: { $0.0 < $1.0 }) {
-			if availability {
+		for (date, available) in availabilityDict.sorted(by: { $0.0 < $1.0 }) {
+			if available {
 				if !slotIsEmpty {
 					workStartDate = date
 				}
 				slotIsEmpty = true
 				workEndDate = Calendar.current.date(byAdding: .minute, value: 15, to: date)!
 				
-				if workEndDate >= CalendarManager.cm.set(hour: UserSettings.dayEndHour, to: day) {
-					calculateWorkEvent(workStartDate, workEndDate)
+				if workEndDate >= day.getCopyWithHour(UserSettings.dayEndHour) {
+					createWorkEvent(workStartDate, workEndDate)
 					break
 				}
 				
 				if Int(workStartDate.distance(to: workEndDate)) / 3600 == UserSettings.workMaxDuration {
-					CalendarManager.cm.createEvent(startHour: workStartDate, endHour: workEndDate, eventStore: eventStore, calendar: calendar)
+					eventStore.saveEvent(withStart: workStartDate, end: workEndDate, in: calendar)
 					break
 				}
 			} else {
 				if slotIsEmpty {
-					calculateWorkEvent(workStartDate, workEndDate)
+					createWorkEvent(workStartDate, workEndDate)
 				}
 				slotIsEmpty = false
 			}
@@ -82,9 +86,9 @@ struct EventsCreator {
 	mutating func fillAvailabilityDict(for day: Date) {
 		availabilityDict = [:]
 		
-		var searchingStartDate = CalendarManager.cm.set(hour: UserSettings.dayStartHour, to: day)
+		var searchingStartDate = day.getCopyWithHour(UserSettings.dayStartHour)
 		var searchingEndDate = Calendar.current.date(byAdding: .minute, value: 15, to: searchingStartDate)!
-		let businessDayEndDate = CalendarManager.cm.set(hour: UserSettings.dayEndHour + 1, to: day)
+		let businessDayEndDate = day.getCopyWithHour(UserSettings.dayEndHour + 1)
 		var eventsList: [EKEvent] = []
 		
 		repeat {
@@ -92,8 +96,7 @@ struct EventsCreator {
 				guard !(ignoredCalendars.contains(calendar)
 						|| calendar.isImmutable) else { continue }
 				
-				let predicate = CalendarManager.cm.createPredicate(withStart: searchingStartDate, end: searchingEndDate, for: [calendar], eventStore: eventStore)
-				eventsList += CalendarManager.cm.getEventsList(matching: predicate, eventStore: eventStore)
+				eventsList += eventStore.getEventsBetween(searchingStartDate, searchingEndDate, for: calendar)
 			}
 			
 			if eventsList.isEmpty {
@@ -125,7 +128,7 @@ struct EventsCreator {
 		}
 	}
 	
-	private func calculateWorkEvent(_ workStartDate: Date, _ workEndDate: Date) {
+	private func createWorkEvent(_ workStartDate: Date, _ workEndDate: Date) {
 		var eventEndDate = workEndDate
 		let workDuration = Int(workStartDate.distance(to: eventEndDate))
 		
@@ -133,18 +136,18 @@ struct EventsCreator {
 		
 		if workDuration % 3600 == 0 {
 			if workDuration / 3600 <= UserSettings.workMaxDuration {
-				CalendarManager.cm.createEvent(startHour: workStartDate, endHour: eventEndDate, eventStore: eventStore, calendar: calendar)
+				eventStore.saveEvent(withStart: workStartDate, end: eventEndDate, in: calendar)
 			} else {
 				eventEndDate = cutEventToMaxDuration(startDate: workStartDate, endDate: eventEndDate)
-				CalendarManager.cm.createEvent(startHour: workStartDate, endHour: eventEndDate, eventStore: eventStore, calendar: calendar)
+				eventStore.saveEvent(withStart: workStartDate, end: eventEndDate, in: calendar)
 			}
 		} else {
 			eventEndDate = cutEventToFullHour(startDate: workStartDate, endDate: eventEndDate)
 			if workDuration / 3600 <= UserSettings.workMaxDuration {
-				CalendarManager.cm.createEvent(startHour: workStartDate, endHour: eventEndDate, eventStore: eventStore, calendar: calendar)
+				eventStore.saveEvent(withStart: workStartDate, end: eventEndDate, in: calendar)
 			} else {
 				eventEndDate = cutEventToMaxDuration(startDate: workStartDate, endDate: eventEndDate)
-				CalendarManager.cm.createEvent(startHour: workStartDate, endHour: eventEndDate, eventStore: eventStore, calendar: calendar)
+				eventStore.saveEvent(withStart: workStartDate, end: eventEndDate, in: calendar)
 			}
 		}
 	}
@@ -161,51 +164,5 @@ struct EventsCreator {
 		let newEndDate = Calendar.current.date(byAdding: .second, value: -secondsToCut, to: endDate)!
 		
 		return newEndDate
-	}
-	
-	init(startDate: Date, endDate: Date, calendar: EKCalendar, eventStore: EKEventStore, userCalendars: [EKCalendar], ignoredCalendars: [EKCalendar]) {
-		self.startDate = startDate
-		self.endDate = endDate
-		self.calendar = calendar
-		self.eventStore = eventStore
-		self.userCalendars = userCalendars
-		self.ignoredCalendars = ignoredCalendars
-	}
-}
-
-struct CalendarManager {
-	static var cm = CalendarManager()
-
-	private var userTimeZoneIdentifier: String {
-		return TimeZone.current.identifier
-	}
-	
-	func createEvent(startHour: Date, endHour: Date, eventStore: EKEventStore, calendar: EKCalendar) {
-		let newEvent = EKEvent(eventStore: eventStore)
-		
-		newEvent.title = EventParameters.title
-		newEvent.notes = EventParameters.notes
-		newEvent.startDate = startHour
-		newEvent.endDate = endHour
-		newEvent.calendar = calendar
-		
-		try? eventStore.save(newEvent, span: .thisEvent)
-	}
-	
-	func set(hour: Int, to day: Date) -> Date {
-		let userCalendar = Calendar.current
-		var dateComponents = Calendar.current.dateComponents([.year, .month, .day, .timeZone], from: day)
-		
-		dateComponents.hour = hour
-		
-		return userCalendar.date(from: dateComponents)!
-	}
-	
-	func getEventsList(matching predicate: NSPredicate, eventStore: EKEventStore) -> [EKEvent] {
-		return eventStore.events(matching: predicate)
-	}
-	
-	func createPredicate(withStart startDate: Date, end endDate: Date, for calendars: [EKCalendar], eventStore: EKEventStore) -> NSPredicate {
-		return eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: calendars)
 	}
 }

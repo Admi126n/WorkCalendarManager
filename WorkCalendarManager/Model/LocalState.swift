@@ -34,6 +34,5 @@ class LocalState: ObservableObject {
 		self.ignoredCalendars = UserSettings.getIgnoredCalendars(eventStore)
 		self.salaryPerHour = UserSettings.getSalaryPerHour()
 		self.allCalendars = []
-	}
-	
+	}	
 }

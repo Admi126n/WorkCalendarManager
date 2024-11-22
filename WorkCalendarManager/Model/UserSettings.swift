@@ -8,6 +8,7 @@
 import EventKit
 
 struct EventParameters {
+	
 	static let title = "Work"
 	static let notes = "Created by WorkCalendarManager"
 }
