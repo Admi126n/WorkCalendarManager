@@ -13,49 +13,52 @@ struct EventParameters {
 	static let notes = "Created by WorkCalendarManager"
 }
 
-struct UserSettings {
+enum UserSettings {
 	
 	private static var workCalendars = UserDefaultsElement(key: K.workCalendarsIdentifiers)
 	private static var ignoredCalendars = UserDefaultsElement(key: K.ignoredCalendarsIdentifiers)
 	
-	static var workCalendarsIdentifiers: [String] {
-		get { workCalendars.elements }
-		set(newValue) { workCalendars.elements = newValue }
-	}
-	
-	static var ignoredCalendarsIdentifiers: [String] {
-		get { ignoredCalendars.elements }
-		set(newValue) { ignoredCalendars.elements = newValue }
-	}
-	
-	#warning("TODO: Implement day start hour")
 	static var dayStartHour: Int {
-		7
+		get { UserDefaults.standard.value(forKey: K.startHour) as? Int ?? 7 }
+		set { UserDefaults.standard.set(newValue, forKey: K.startHour) }
 	}
-	
-	#warning("TODO: Implement day end hour")
+
 	static var dayEndHour: Int {
-		15
+		get { UserDefaults.standard.value(forKey: K.endHour) as? Int ?? 15 }
+		set { UserDefaults.standard.set(newValue, forKey: K.endHour) }
 	}
 	
-	#warning("TODO: Implement work min duration")
+	/// Duration in hours
 	static var workMinDuration: Int {
-		2
+		get { UserDefaults.standard.value(forKey: K.minDuration) as? Int ?? 3 }
+		set { UserDefaults.standard.set(newValue, forKey: K.minDuration) }
 	}
 	
-	#warning("TODO: Implement work max duration")
+	/// Duration in hours
 	static var workMaxDuration: Int {
-		8
+		get { UserDefaults.standard.value(forKey: K.maxDuration) as? Int ?? 8 }
+		set { UserDefaults.standard.set(newValue, forKey: K.maxDuration) }
 	}
 	
-	#warning("TODO: Implement margin before")
+	/// Number of quaters
+	///
+	/// 1 is treated as 15 minutes
 	static var marginBefore: Int {
-		15
+		get { UserDefaults.standard.value(forKey: K.magrinBefore) as? Int ?? 4 }
+		set { UserDefaults.standard.set(newValue, forKey: K.magrinBefore) }
 	}
 	
-	#warning("TODO: Implement margin after")
+	/// Number of quaters
+	///
+	/// 1 is treated as 15 minutes
 	static var marginAfter: Int {
-		15
+		get { UserDefaults.standard.value(forKey: K.magrinAfter) as? Int ?? 4 }
+		set { UserDefaults.standard.set(newValue, forKey: K.magrinAfter) }
+	}
+	
+	static var salaryPerHour: Double {
+		get { UserDefaults.standard.double(forKey: K.salaryPerHour) }
+		set { UserDefaults.standard.set(newValue, forKey: K.salaryPerHour) }
 	}
 
 	static func setWorkCalendarIdentifiers(_ calendars: [EKCalendar]) {
@@ -72,14 +75,6 @@ struct UserSettings {
 	
 	static func getIgnoredCalendars(_ eventStore: EKEventStore) -> [EKCalendar] {
 		ignoredCalendars.getCalendars(eventStore)
-	}
-	
-	static func setSalaryPerHour(_ salaryPerHour: Double) {
-		UserDefaults.standard.set(salaryPerHour, forKey: K.salaryPerHour)
-	}
-	
-	static func getSalaryPerHour() -> Double {
-		UserDefaults.standard.double(forKey: K.salaryPerHour)
 	}
 }
 

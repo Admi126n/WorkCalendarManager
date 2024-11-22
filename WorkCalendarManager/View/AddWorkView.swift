@@ -68,7 +68,7 @@ struct AddWorkView: View {
 					print("Adding")
 					var eventCreator = EventsCreator(
 						startDate: startDate,
-						endDate: endDate,
+						endDate: Calendar.current.date(byAdding: .day, value: 1, to: endDate)!,
 						calendar: selectedCalendar,
 						eventStore: eventStore,
 						userCalendars: localState.allCalendars,
