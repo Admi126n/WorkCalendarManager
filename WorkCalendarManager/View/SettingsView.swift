@@ -38,6 +38,54 @@ struct SettingsView: View {
 				} footer: {
 					Text("Based on it app can calculate your month salary")
 				}
+				
+				Section("Buisness day") {
+					Picker("Start hour", selection: $localState.dayStartHour) {
+						ForEach(6..<11) {
+							Text("\($0):00")
+								.tag($0)
+						}
+					}
+					
+					Picker("End hour", selection: $localState.dayEndHour) {
+						ForEach(12..<21) {
+							Text("\($0):00")
+								.tag($0)
+						}
+					}
+				}
+				
+				Section("Duration") {
+					Picker("Minimum duration", selection: $localState.workMinDuration) {
+						ForEach(1..<5) {
+							Text("\($0) hours")
+								.tag($0)
+						}
+					}
+					
+					Picker("Maximum duration", selection: $localState.workMaxDuration) {
+						ForEach(5..<13) {
+							Text("\($0) hours")
+								.tag($0)
+						}
+					}
+				}
+				
+				Section("Margins") {
+					Picker("Margin before work", selection: $localState.marginBefore) {
+						ForEach(1..<9) {
+							Text("\($0 * 15) minutes")
+								.tag($0)
+						}
+					}
+					
+					Picker("Margin after work", selection: $localState.marginAfter) {
+						ForEach(1..<9) {
+							Text("\($0 * 15) minutes")
+								.tag($0)
+						}
+					}
+				}
 			}
 			.navigationDestination(for: SelectedField.self) { selectedField in
 				switch selectedField {

@@ -35,4 +35,17 @@ extension Date {
 		
 		return dateFormatter.string(from: self)
 	}
+	
+	/// Returns `.weekday` component
+	var weekday: Int {
+		Calendar.current.component(.weekday, from: self)
+	}
+	
+	/// Returns copy of `Date` instance with modified `hour` component
+	func getCopyWithHour(_ hour: Int) -> Date {
+		var dateComponents = Calendar.current.dateComponents(in: Calendar.current.timeZone, from: self)
+		dateComponents.hour = hour
+		
+		return Calendar.current.date(from: dateComponents)!
+	}
 }

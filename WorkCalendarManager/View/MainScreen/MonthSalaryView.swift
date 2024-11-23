@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MonthSalaryView: View {
+	
 	let currencyCode: String
 	let month: String
 	let salary: Double

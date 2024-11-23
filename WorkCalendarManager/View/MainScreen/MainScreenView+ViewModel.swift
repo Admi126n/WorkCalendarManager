@@ -23,7 +23,7 @@ extension MainScreenView {
 		@Published private(set) var workTime: [WorkTime] = []
 		@Published private(set) var salaryPerMonth: [SalaryPerMonth] = []
 		
-		private let eventStore = EKEventStore()
+		private(set) var eventStore = EKEventStore()
 		
 		/// Calculated salary for current month
 		var currentMonthSalary: Double {
@@ -112,6 +112,7 @@ extension MainScreenView {
 		func refresh() {
 			getWorkTimePerMonth()
 			getSalaryPerMonth()
+			getUserCalendars()
 		}
 		
 		/// Gets local calendars and sets `localState.allCalendars`
