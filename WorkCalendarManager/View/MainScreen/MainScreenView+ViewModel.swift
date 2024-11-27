@@ -108,8 +108,7 @@ extension MainScreenView {
 		}
 		
 		func getColorFor(hours: Float, between: Color = .yellow, and: Color = .green) -> Color {
-			let hoursGoal: CGFloat = 100
-			let ratio = min(1, CGFloat(hours) / hoursGoal)
+			let ratio = CGFloat(min(1, hours / Float(localState.monthlyHoursGoal)))
 			
 			let (r1, g1, b1) = between.conponents
 			let (r2, g2, b2) = and.conponents

@@ -37,12 +37,20 @@ class LocalState: ObservableObject {
 		didSet { UserSettings.marginAfter = marginAfter }
 	}
 	
-	@Published var workMinDuration: Int {
-		didSet { UserSettings.workMinDuration = workMinDuration }
+	@Published var minDuration: Int {
+		didSet { UserSettings.minDuration = minDuration }
 	}
 	
-	@Published var workMaxDuration: Int {
-		didSet { UserSettings.workMaxDuration = workMaxDuration }
+	@Published var maxDuration: Int {
+		didSet { UserSettings.maxDuration = maxDuration }
+	}
+	
+	@Published var lastSelectedCalendar: String {
+		didSet { UserSettings.lastSelectedCalendar = lastSelectedCalendar }
+	}
+	
+	@Published var monthlyHoursGoal: Int {
+		didSet { UserSettings.monthlyHoursGoal = monthlyHoursGoal }
 	}
 	
 	@Published var allCalendars: [EKCalendar]
@@ -59,7 +67,10 @@ class LocalState: ObservableObject {
 		self.marginBefore = UserSettings.marginBefore
 		self.marginAfter = UserSettings.marginAfter
 		
-		self.workMinDuration = UserSettings.workMinDuration
-		self.workMaxDuration = UserSettings.workMaxDuration
+		self.minDuration = UserSettings.minDuration
+		self.maxDuration = UserSettings.maxDuration
+		
+		self.lastSelectedCalendar = UserSettings.lastSelectedCalendar
+		self.monthlyHoursGoal = UserSettings.monthlyHoursGoal
 	}
 }

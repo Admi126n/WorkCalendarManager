@@ -29,13 +29,13 @@ enum UserSettings {
 	}
 	
 	/// Duration in hours
-	static var workMinDuration: Int {
+	static var minDuration: Int {
 		get { UserDefaults.standard.value(forKey: K.minDuration) as? Int ?? 3 }
 		set { UserDefaults.standard.set(newValue, forKey: K.minDuration) }
 	}
 	
 	/// Duration in hours
-	static var workMaxDuration: Int {
+	static var maxDuration: Int {
 		get { UserDefaults.standard.value(forKey: K.maxDuration) as? Int ?? 8 }
 		set { UserDefaults.standard.set(newValue, forKey: K.maxDuration) }
 	}
@@ -61,6 +61,17 @@ enum UserSettings {
 		set { UserDefaults.standard.set(newValue, forKey: K.salaryPerHour) }
 	}
 
+	/// Identifier of last calendar selected for new events
+	static var lastSelectedCalendar: String {
+		get { UserDefaults.standard.string(forKey: K.lastSelectedCalendar) ?? "" }
+		set { UserDefaults.standard.set(newValue, forKey: K.lastSelectedCalendar) }
+	}
+	
+	static var monthlyHoursGoal: Int {
+		get { UserDefaults.standard.integer(forKey: K.monthlyHoursGoal) }
+		set { UserDefaults.standard.set(newValue, forKey: K.monthlyHoursGoal) }
+	}
+	
 	static func setWorkCalendarIdentifiers(_ calendars: [EKCalendar]) {
 		workCalendars.setElements(calendars)
 	}

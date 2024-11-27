@@ -39,6 +39,10 @@ struct SettingsView: View {
 					Text("Based on it app can calculate your month salary")
 				}
 				
+				Section("Monthly hours goal") {
+					Stepper("\(localState.monthlyHoursGoal) hours", value: $localState.monthlyHoursGoal, in: 80...160)
+				}
+				
 				Section("Buisness day") {
 					Picker("Start hour", selection: $localState.dayStartHour) {
 						ForEach(6..<11) {
@@ -56,14 +60,14 @@ struct SettingsView: View {
 				}
 				
 				Section("Duration") {
-					Picker("Minimum duration", selection: $localState.workMinDuration) {
+					Picker("Minimum duration", selection: $localState.minDuration) {
 						ForEach(1..<5) {
 							Text("\($0) hours")
 								.tag($0)
 						}
 					}
 					
-					Picker("Maximum duration", selection: $localState.workMaxDuration) {
+					Picker("Maximum duration", selection: $localState.maxDuration) {
 						ForEach(5..<13) {
 							Text("\($0) hours")
 								.tag($0)

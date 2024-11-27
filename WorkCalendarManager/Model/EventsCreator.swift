@@ -68,7 +68,7 @@ struct EventsCreator {
 					break
 				}
 				
-				if Int(workStartDate.distance(to: workEndDate)) / 3600 == UserSettings.workMaxDuration {
+				if Int(workStartDate.distance(to: workEndDate)) / 3600 == UserSettings.maxDuration {
 					eventStore.saveEvent(withStart: workStartDate, end: workEndDate, in: calendar)
 					break
 				}
@@ -132,10 +132,10 @@ struct EventsCreator {
 		var eventEndDate = workEndDate
 		let workDuration = Int(workStartDate.distance(to: eventEndDate))
 		
-		if workDuration / 3600 < UserSettings.workMinDuration { return }
+		if workDuration / 3600 < UserSettings.minDuration { return }
 		
 		if workDuration % 3600 == 0 {
-			if workDuration / 3600 <= UserSettings.workMaxDuration {
+			if workDuration / 3600 <= UserSettings.maxDuration {
 				eventStore.saveEvent(withStart: workStartDate, end: eventEndDate, in: calendar)
 			} else {
 				eventEndDate = cutEventToMaxDuration(startDate: workStartDate, endDate: eventEndDate)
@@ -143,7 +143,7 @@ struct EventsCreator {
 			}
 		} else {
 			eventEndDate = cutEventToFullHour(startDate: workStartDate, endDate: eventEndDate)
-			if workDuration / 3600 <= UserSettings.workMaxDuration {
+			if workDuration / 3600 <= UserSettings.maxDuration {
 				eventStore.saveEvent(withStart: workStartDate, end: eventEndDate, in: calendar)
 			} else {
 				eventEndDate = cutEventToMaxDuration(startDate: workStartDate, endDate: eventEndDate)
@@ -153,7 +153,7 @@ struct EventsCreator {
 	}
 	
 	private func cutEventToMaxDuration(startDate: Date, endDate: Date) -> Date {
-		let hoursToCut = Int(startDate.distance(to: endDate) / 3600) % UserSettings.workMaxDuration
+		let hoursToCut = Int(startDate.distance(to: endDate) / 3600) % UserSettings.maxDuration
 		let newEndDate = Calendar.current.date(byAdding: .hour, value: -hoursToCut, to: endDate)!
 		
 		return newEndDate

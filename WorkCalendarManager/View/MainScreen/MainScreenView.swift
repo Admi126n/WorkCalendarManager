@@ -38,7 +38,7 @@ struct MainScreenView: View {
 									.foregroundStyle(month.hours != 0 ? Color.primary : Color.clear)
 							}
 							.annotation(position: .overlay, alignment: .center) {
-								if month.hours >= 110 {
+								if month.hours >= Float(vm.localState.monthlyHoursGoal) * 1.1 {
 									ParticlesView()
 								}
 							}
@@ -104,7 +104,7 @@ struct MainScreenView: View {
 			}
 		}
 		.sheet(isPresented: $showingSettings, onDismiss: vm.refresh, content: SettingsView.init)
-		.sheet(isPresented: $showingAddWork) { AddWorkView(eventStore: vm.eventStore) }
+		.sheet(isPresented: $showingAddWork, onDismiss: vm.refresh) { AddWorkView(eventStore: vm.eventStore) }
 		.environmentObject(vm.localState)
 		.onAppear {
 			vm.getUserCalendars()

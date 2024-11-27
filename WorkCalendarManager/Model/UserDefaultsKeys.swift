@@ -16,8 +16,10 @@ enum UserDefaultsKeys {
 	static let salaryPerHour = "salaryPerHour"
 	static let magrinBefore = "marginBefore"
 	static let magrinAfter = "marginAfter"
-	static let minDuration = "workMinDuration"
-	static let maxDuration = "workMaxDuration"
+	static let minDuration = "minDuration"
+	static let maxDuration = "axDuration"
 	static let startHour = "startHour"
 	static let endHour = "endHour"
+	static let lastSelectedCalendar = "lastSelectedCalendar"
+	static let monthlyHoursGoal = "monthlyHoursGoal"
 }

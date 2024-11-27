@@ -56,6 +56,7 @@ struct AddWorkView: View {
 						.contentShape(.rect)
 						.onTapGesture {
 							selectedCalendar = calendar
+							localState.lastSelectedCalendar = calendar.calendarIdentifier
 						}
 					}
 				} header: {
@@ -95,6 +96,11 @@ struct AddWorkView: View {
 			.onChange(of: startDate) { _, newValue in
 				if newValue > endDate {
 					endDate = newValue
+				}
+			}
+			.onAppear {
+				if let calendar = eventStore.calendar(withIdentifier: localState.lastSelectedCalendar) {
+					selectedCalendar = calendar
 				}
 			}
 		}
