@@ -12,6 +12,9 @@
 		6615565E2C21C59400155ACB /* Locale+CurrncySymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6615565D2C21C59400155ACB /* Locale+CurrncySymbol.swift */; };
 		661556602C21ED9F00155ACB /* MonthSalaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6615565F2C21ED9F00155ACB /* MonthSalaryView.swift */; };
 		66623DD12CF79DD60006DA1F /* Color+components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66623DD02CF79DD60006DA1F /* Color+components.swift */; };
+		66623DD72CF79E460006DA1F /* ParticlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66623DD62CF79E460006DA1F /* ParticlesView.swift */; };
+		66623DDA2CF79E5D0006DA1F /* Particle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66623DD82CF79E5D0006DA1F /* Particle.swift */; };
+		66623DDB2CF79E5D0006DA1F /* ParticleSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66623DD92CF79E5D0006DA1F /* ParticleSystem.swift */; };
 		66689DC52BAC9F030028E7A9 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66689DC42BAC9F030028E7A9 /* MainScreenView.swift */; };
 		66689DC72BAC9F370028E7A9 /* MainScreenView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66689DC62BAC9F370028E7A9 /* MainScreenView+ViewModel.swift */; };
 		66689DCB2BACA78B0028E7A9 /* CalendarConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66689DCA2BACA78B0028E7A9 /* CalendarConnector.swift */; };
@@ -38,6 +41,9 @@
 		6615565D2C21C59400155ACB /* Locale+CurrncySymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+CurrncySymbol.swift"; sourceTree = "<group>"; };
 		6615565F2C21ED9F00155ACB /* MonthSalaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthSalaryView.swift; sourceTree = "<group>"; };
 		66623DD02CF79DD60006DA1F /* Color+components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+components.swift"; sourceTree = "<group>"; };
+		66623DD62CF79E460006DA1F /* ParticlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticlesView.swift; sourceTree = "<group>"; };
+		66623DD82CF79E5D0006DA1F /* Particle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Particle.swift; sourceTree = "<group>"; };
+		66623DD92CF79E5D0006DA1F /* ParticleSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleSystem.swift; sourceTree = "<group>"; };
 		66689DC42BAC9F030028E7A9 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
 		66689DC62BAC9F370028E7A9 /* MainScreenView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainScreenView+ViewModel.swift"; sourceTree = "<group>"; };
 		66689DCA2BACA78B0028E7A9 /* CalendarConnector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarConnector.swift; sourceTree = "<group>"; };
@@ -91,6 +97,15 @@
 			path = DataStructs;
 			sourceTree = "<group>";
 		};
+		66623DDC2CF79E650006DA1F /* Particles */ = {
+			isa = PBXGroup;
+			children = (
+				66623DD82CF79E5D0006DA1F /* Particle.swift */,
+				66623DD92CF79E5D0006DA1F /* ParticleSystem.swift */,
+			);
+			path = Particles;
+			sourceTree = "<group>";
+		};
 		668E06222BAF762A009C6C06 /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -108,6 +123,7 @@
 				667970932BA9F89400597A7B /* AddWorkView.swift */,
 				66BEA7812B813B710051D68B /* ContentView.swift */,
 				66D2AFB02BBC20FF001B884E /* CalendarsPicker.swift */,
+				66623DD62CF79E460006DA1F /* ParticlesView.swift */,
 				667970912BA9F86E00597A7B /* SettingsView.swift */,
 				668E06222BAF762A009C6C06 /* MainScreen */,
 			);
@@ -126,14 +142,15 @@
 		668E06252BAF7663009C6C06 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				661686632C4E666400122233 /* DataStructs */,
+				661686622C4E664A00122233 /* Extensions */,
+				66623DDC2CF79E650006DA1F /* Particles */,
 				668E06282BAF7AE6009C6C06 /* CalendarCalculator.swift */,
 				66689DCA2BACA78B0028E7A9 /* CalendarConnector.swift */,
 				66F28FA92CEA113E009571AB /* EventsCreator.swift */,
 				660613782BBEADAE00B9D87B /* LocalState.swift */,
 				66F6F8852BBFE51A00B8281C /* UserDefaultsKeys.swift */,
 				66052A422BC14EE60068850F /* UserSettings.swift */,
-				661686632C4E666400122233 /* DataStructs */,
-				661686622C4E664A00122233 /* Extensions */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -247,6 +264,7 @@
 				669E8EF12C234E5400476AD2 /* ChartContainer.swift in Sources */,
 				66689DCB2BACA78B0028E7A9 /* CalendarConnector.swift in Sources */,
 				668E06292BAF7AE6009C6C06 /* CalendarCalculator.swift in Sources */,
+				66623DD72CF79E460006DA1F /* ParticlesView.swift in Sources */,
 				66689DC72BAC9F370028E7A9 /* MainScreenView+ViewModel.swift in Sources */,
 				66D2AFB12BBC20FF001B884E /* CalendarsPicker.swift in Sources */,
 				660613792BBEADAE00B9D87B /* LocalState.swift in Sources */,
@@ -263,6 +281,8 @@
 				6615565E2C21C59400155ACB /* Locale+CurrncySymbol.swift in Sources */,
 				66BEA7802B813B710051D68B /* WorkCalendarManagerApp.swift in Sources */,
 				66052A432BC14EE60068850F /* UserSettings.swift in Sources */,
+				66623DDA2CF79E5D0006DA1F /* Particle.swift in Sources */,
+				66623DDB2CF79E5D0006DA1F /* ParticleSystem.swift in Sources */,
 				66F28FAC2CEA711D009571AB /* EKEventStore+utilities.swift in Sources */,
 				667970942BA9F89400597A7B /* AddWorkView.swift in Sources */,
 			);

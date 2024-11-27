@@ -37,6 +37,11 @@ struct MainScreenView: View {
 									.font(.footnote)
 									.foregroundStyle(month.hours != 0 ? Color.primary : Color.clear)
 							}
+							.annotation(position: .overlay, alignment: .center) {
+								if month.hours >= 110 {
+									ParticlesView()
+								}
+							}
 							.shadow(radius: 5, x: 2.0, y: 2.0)
 						}
 						.chartYAxis(.hidden)
