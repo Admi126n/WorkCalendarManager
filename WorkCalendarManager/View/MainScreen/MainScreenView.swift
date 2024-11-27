@@ -31,10 +31,11 @@ struct MainScreenView: View {
 							BarMark(
 								x: .value("Month", month.month),
 								y: .value("Hours", month.hours))
+							.foregroundStyle(vm.getColorFor(hours: month.hours))
 							.annotation {
 								Text("\(month.hours, format: .number)")
 									.font(.footnote)
-									.foregroundStyle(month.hours != 0 ? .primary : .secondary)
+									.foregroundStyle(month.hours != 0 ? Color.primary : Color.clear)
 							}
 							.shadow(radius: 5, x: 2.0, y: 2.0)
 						}
@@ -57,10 +58,11 @@ struct MainScreenView: View {
 								BarMark(
 									x: .value("Salary", vm.salary(in: month)),
 									y: .value("Hours", month.month))
+								.foregroundStyle(vm.getColorFor(hours: month.hours))
 								.annotation(position: .trailing) {
 									Text("\(Int(vm.salary(in: month)))")
 										.font(.footnote)
-										.foregroundStyle(month.hours != 0 ? .primary : .secondary)
+										.foregroundStyle(month.hours != 0 ? Color.primary : Color.clear)
 								}
 								.shadow(radius: 5, x: 2.0, y: 2.0)
 							}

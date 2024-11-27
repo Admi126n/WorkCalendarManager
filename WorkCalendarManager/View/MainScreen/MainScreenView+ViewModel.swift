@@ -106,5 +106,19 @@ extension MainScreenView {
 		func salary(in month: WorkTime) -> Float {
 			month.hours * localState.salaryPerHour
 		}
+		
+		func getColorFor(hours: Float, between: Color = .yellow, and: Color = .green) -> Color {
+			let hoursGoal: CGFloat = 100
+			let ratio = min(1, CGFloat(hours) / hoursGoal)
+			
+			let (r1, g1, b1) = between.conponents
+			let (r2, g2, b2) = and.conponents
+			
+			let red = r1 - r2
+			let green = g1 - g2
+			let blue = b1 - b2
+			
+			return Color(red: r1 - red * ratio, green: g1 - green * ratio, blue: b1 - blue * ratio)
+		}
 	}
 }
