@@ -44,7 +44,7 @@ struct MainScreenView: View {
 					ChartContainer(title: "Salary per month", 150) {
 						HStack {
 							VStack {
-								ForEach(vm.salaryPerMonth) { month in
+								ForEach(vm.workTime) { month in
 									Spacer()
 									Text(month.month)
 									Spacer()
@@ -52,14 +52,15 @@ struct MainScreenView: View {
 							}
 							.font(.caption2)
 							.foregroundStyle(.secondary)
-							Chart(vm.salaryPerMonth) { month in
+							
+							Chart(vm.workTime) { month in
 								BarMark(
-									x: .value("Salary", month.salary),
+									x: .value("Salary", vm.salary(in: month)),
 									y: .value("Hours", month.month))
 								.annotation(position: .trailing) {
-									Text("\(Int(month.salary))")
+									Text("\(Int(vm.salary(in: month)))")
 										.font(.footnote)
-										.foregroundStyle(month.salary != 0 ? .primary : .secondary)
+										.foregroundStyle(month.hours != 0 ? .primary : .secondary)
 								}
 								.shadow(radius: 5, x: 2.0, y: 2.0)
 							}

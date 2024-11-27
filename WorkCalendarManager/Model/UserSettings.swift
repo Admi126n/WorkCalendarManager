@@ -56,8 +56,8 @@ enum UserSettings {
 		set { UserDefaults.standard.set(newValue, forKey: K.magrinAfter) }
 	}
 	
-	static var salaryPerHour: Double {
-		get { UserDefaults.standard.double(forKey: K.salaryPerHour) }
+	static var salaryPerHour: Float {
+		get { UserDefaults.standard.float(forKey: K.salaryPerHour) }
 		set { UserDefaults.standard.set(newValue, forKey: K.salaryPerHour) }
 	}
 

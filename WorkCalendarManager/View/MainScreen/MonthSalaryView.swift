@@ -11,7 +11,7 @@ struct MonthSalaryView: View {
 	
 	let currencyCode: String
 	let month: String
-	let salary: Double
+	let salary: Float
 	
     var body: some View {
 		VStack {
@@ -30,7 +30,7 @@ struct MonthSalaryView: View {
 		.padding(.bottom)
     }
 	
-	init(salary: Double, month: String, currencyCode: String) {
+	init(salary: Float, month: String, currencyCode: String) {
 		self.currencyCode = currencyCode
 		self.month = month
 		self.salary = salary

@@ -17,7 +17,7 @@ class LocalState: ObservableObject {
 		didSet { UserSettings.setIgnoredCalendarsIdentifiers(ignoredCalendars) }
 	}
 	
-	@Published var salaryPerHour: Double {
+	@Published var salaryPerHour: Float {
 		didSet { UserSettings.salaryPerHour = salaryPerHour }
 	}
 	

@@ -20,7 +20,6 @@
 		668E06272BAF769F009C6C06 /* EKEvent+duration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E06262BAF769F009C6C06 /* EKEvent+duration.swift */; };
 		668E06292BAF7AE6009C6C06 /* CalendarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E06282BAF7AE6009C6C06 /* CalendarCalculator.swift */; };
 		668E062B2BB0889C009C6C06 /* WorkTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E062A2BB0889C009C6C06 /* WorkTime.swift */; };
-		669E8EEF2C23280B00476AD2 /* SalaryPerMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669E8EEE2C23280B00476AD2 /* SalaryPerMonth.swift */; };
 		669E8EF12C234E5400476AD2 /* ChartContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669E8EF02C234E5400476AD2 /* ChartContainer.swift */; };
 		66BEA7802B813B710051D68B /* WorkCalendarManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BEA77F2B813B710051D68B /* WorkCalendarManagerApp.swift */; };
 		66BEA7822B813B710051D68B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BEA7812B813B710051D68B /* ContentView.swift */; };
@@ -47,7 +46,6 @@
 		668E06262BAF769F009C6C06 /* EKEvent+duration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EKEvent+duration.swift"; sourceTree = "<group>"; };
 		668E06282BAF7AE6009C6C06 /* CalendarCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCalculator.swift; sourceTree = "<group>"; };
 		668E062A2BB0889C009C6C06 /* WorkTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkTime.swift; sourceTree = "<group>"; };
-		669E8EEE2C23280B00476AD2 /* SalaryPerMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryPerMonth.swift; sourceTree = "<group>"; };
 		669E8EF02C234E5400476AD2 /* ChartContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartContainer.swift; sourceTree = "<group>"; };
 		66BEA77C2B813B710051D68B /* WorkCalendarManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorkCalendarManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66BEA77F2B813B710051D68B /* WorkCalendarManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkCalendarManagerApp.swift; sourceTree = "<group>"; };
@@ -85,7 +83,6 @@
 		661686632C4E666400122233 /* DataStructs */ = {
 			isa = PBXGroup;
 			children = (
-				669E8EEE2C23280B00476AD2 /* SalaryPerMonth.swift */,
 				668E062A2BB0889C009C6C06 /* WorkTime.swift */,
 			);
 			path = DataStructs;
@@ -258,7 +255,6 @@
 				668E06212BADDDB7009C6C06 /* Date+utilities.swift in Sources */,
 				661556602C21ED9F00155ACB /* MonthSalaryView.swift in Sources */,
 				668E062B2BB0889C009C6C06 /* WorkTime.swift in Sources */,
-				669E8EEF2C23280B00476AD2 /* SalaryPerMonth.swift in Sources */,
 				66BEA7822B813B710051D68B /* ContentView.swift in Sources */,
 				6615565E2C21C59400155ACB /* Locale+CurrncySymbol.swift in Sources */,
 				66BEA7802B813B710051D68B /* WorkCalendarManagerApp.swift in Sources */,
