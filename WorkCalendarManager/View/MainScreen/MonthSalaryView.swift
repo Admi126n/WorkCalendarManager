@@ -15,6 +15,9 @@ struct MonthSalaryView: View {
 	
     var body: some View {
 		VStack {
+			Text("Next salary")
+				.foregroundStyle(.secondary)
+			
 			Text(salary, format: .currency(code: currencyCode))
 				.fontDesign(.rounded)
 				.bold()
@@ -23,7 +26,7 @@ struct MonthSalaryView: View {
 				.minimumScaleFactor(0.01)
 				.padding(.horizontal, 32)
 			
-			Text("Salary for \(month)")
+			Text("for \(month)")
 				.foregroundStyle(.secondary)
 		}
 		.background(.background)
