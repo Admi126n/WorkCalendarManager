@@ -19,10 +19,10 @@ struct MainScreenView: View {
 		NavigationStack {
 			ZStack {
 				ScrollView {
-					if vm.currentMonthSalary != 0 {
+					if vm.nextSalary.salary != 0 {
 						MonthSalaryView(
-							salary: vm.currentMonthSalary,
-							month: Date.now.monthLongName,
+							salary: vm.nextSalary.salary,
+							month: vm.nextSalary.month,
 							currencyCode: vm.currencyCode)
 					}
 					

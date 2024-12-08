@@ -23,12 +23,20 @@ extension MainScreenView {
 		
 		private(set) var eventStore = EKEventStore()
 		
-		/// Calculated salary for current month
-		var currentMonthSalary: Float {
+		/// Calculated next salary
+		///
+		/// Returns salary for next month if current day is less than 11. If day is greater
+		/// or equal to 11 salary for current month is returned.
+		var nextSalary: (salary: Float, month: String) {
 			// when app is opened first time there is no data because of no access
-			guard workTime.count == 5 else { return 0 }
+			guard workTime.count == 5 else { return (0, "") }
 			
-			return localState.salaryPerHour * workTime[2].hours
+			if Calendar.current.component(.day, from: .now) < 11 {
+				let tempDate = Calendar.current.date(byAdding: .month, value: -1, to: .now)!
+				return (localState.salaryPerHour * workTime[1].hours, tempDate.monthLongName)
+			} else {
+				return (localState.salaryPerHour * workTime[2].hours, Date.now.monthLongName)
+			}
 		}
 		
 		var currencyCode: String {

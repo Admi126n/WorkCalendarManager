@@ -68,7 +68,7 @@ enum UserSettings {
 	}
 	
 	static var monthlyHoursGoal: Int {
-		get { UserDefaults.standard.integer(forKey: K.monthlyHoursGoal) }
+		get { UserDefaults.standard.value(forKey: K.monthlyHoursGoal) as? Int ?? 100 }
 		set { UserDefaults.standard.set(newValue, forKey: K.monthlyHoursGoal) }
 	}
 	
