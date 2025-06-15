@@ -30,6 +30,7 @@
 		66BEA7842B813B730051D68B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66BEA7832B813B730051D68B /* Assets.xcassets */; };
 		66BEA7872B813B730051D68B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66BEA7862B813B730051D68B /* Preview Assets.xcassets */; };
 		66D2AFB12BBC20FF001B884E /* CalendarsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2AFB02BBC20FF001B884E /* CalendarsPicker.swift */; };
+		66DE6BBE2D05E33200B228D0 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 66DE6BBD2D05E33200B228D0 /* Localizable.xcstrings */; };
 		66F28FAA2CEA113E009571AB /* EventsCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F28FA92CEA113E009571AB /* EventsCreator.swift */; };
 		66F28FAC2CEA711D009571AB /* EKEventStore+utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F28FAB2CEA711D009571AB /* EKEventStore+utilities.swift */; };
 		66F6F8862BBFE51A00B8281C /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F6F8852BBFE51A00B8281C /* UserDefaultsKeys.swift */; };
@@ -61,6 +62,7 @@
 		66BEA7832B813B730051D68B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		66BEA7862B813B730051D68B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		66D2AFB02BBC20FF001B884E /* CalendarsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarsPicker.swift; sourceTree = "<group>"; };
+		66DE6BBD2D05E33200B228D0 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		66F28FA92CEA113E009571AB /* EventsCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsCreator.swift; sourceTree = "<group>"; };
 		66F28FAB2CEA711D009571AB /* EKEventStore+utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EKEventStore+utilities.swift"; sourceTree = "<group>"; };
 		66F6F8852BBFE51A00B8281C /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				668E06242BAF7650009C6C06 /* Utilities */,
 				66BEA7852B813B730051D68B /* Preview Content */,
 				66BEA77F2B813B710051D68B /* WorkCalendarManagerApp.swift */,
+				66DE6BBD2D05E33200B228D0 /* Localizable.xcstrings */,
 				668E06232BAF763B009C6C06 /* View */,
 				668E06252BAF7663009C6C06 /* Model */,
 			);
@@ -233,6 +236,7 @@
 			knownRegions = (
 				en,
 				Base,
+				pl,
 			);
 			mainGroup = 66BEA7732B813B710051D68B;
 			productRefGroup = 66BEA77D2B813B710051D68B /* Products */;
@@ -251,6 +255,7 @@
 			files = (
 				66BEA7872B813B730051D68B /* Preview Assets.xcassets in Resources */,
 				66BEA7842B813B730051D68B /* Assets.xcassets in Resources */,
+				66DE6BBE2D05E33200B228D0 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +355,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -406,6 +412,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

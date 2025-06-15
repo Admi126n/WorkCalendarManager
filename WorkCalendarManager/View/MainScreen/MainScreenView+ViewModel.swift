@@ -19,7 +19,7 @@ extension MainScreenView {
 		}
 		
 		@Published private(set) var localState: LocalState
-		@Published private(set) var workTime: [WorkTime] = []
+		@Published var workTime: [WorkTime] = []
 		
 		private(set) var eventStore = EKEventStore()
 		
@@ -27,17 +27,20 @@ extension MainScreenView {
 		///
 		/// Returns salary for next month if current day is less than 11. If day is greater
 		/// or equal to 11 salary for current month is returned.
-		var nextSalary: (salary: Float, month: String) {
-			// when app is opened first time there is no data because of no access
-			guard workTime.count == 5 else { return (0, "") }
-			
-			if Calendar.current.component(.day, from: .now) < 11 {
-				let tempDate = Calendar.current.date(byAdding: .month, value: -1, to: .now)!
-				return (localState.salaryPerHour * workTime[1].hours, tempDate.monthLongName)
-			} else {
-				return (localState.salaryPerHour * workTime[2].hours, Date.now.monthLongName)
-			}
-		}
+//		var nextSalary: (salary: Float, month: String) {
+//			// when app is opened first time there is no data because of no access
+//			guard workTime.count == 5 else { return (0, "") }
+//			
+//			if Calendar.current.component(.day, from: .now) < 11 {
+//				let tempDate = Calendar.current.date(byAdding: .month, value: -1, to: .now)!
+//				return (localState.salaryPerHour * workTime[1].hours, tempDate.monthLongName)
+//			} else {
+//				return (localState.salaryPerHour * workTime[2].hours, Date.now.monthLongName)
+//			}
+//		}
+		
+		@Published private(set) var nextSalary: Float = 0
+		@Published private(set) var nextSalaryMonth: String = ""
 		
 		var currencyCode: String {
 			Locale.currencySymbol ?? "PLN"
@@ -102,6 +105,7 @@ extension MainScreenView {
 		func refresh() {
 			getWorkTimePerMonth()
 			getUserCalendars()
+			setNextSalary()
 		}
 		
 		/// Gets local calendars and sets `localState.allCalendars`
@@ -126,6 +130,24 @@ extension MainScreenView {
 			let blue = b1 - b2
 			
 			return Color(red: r1 - red * ratio, green: g1 - green * ratio, blue: b1 - blue * ratio)
+		}
+		
+		private func setNextSalary() {
+			guard workTime.count == 5 else {
+				nextSalary = 0
+				nextSalaryMonth = ""
+				
+				return
+			}
+			
+			if Calendar.current.component(.day, from: .now) < 11 {
+				let tempDate = Calendar.current.date(byAdding: .month, value: -1, to: .now)!
+				nextSalary = localState.salaryPerHour * workTime[1].hours
+				nextSalaryMonth = tempDate.monthLongName
+			} else {
+				nextSalary = localState.salaryPerHour * workTime[2].hours
+				nextSalaryMonth = Date.now.monthLongName
+			}
 		}
 	}
 }

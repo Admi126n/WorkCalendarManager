@@ -12,25 +12,36 @@ struct MainScreenView: View {
 	
 	@State private var showingAddWork = false
 	@State private var showingSettings = false
-	
+	@State private var isAnimated = false
+	@State private var trigger = false
+	@State private var value = 10.0
 	@StateObject var vm = ViewModel()
 	
 	var body: some View {
 		NavigationStack {
 			ZStack {
 				ScrollView {
-					if vm.nextSalary.salary != 0 {
+					if vm.nextSalary != 0 {
 						MonthSalaryView(
-							salary: vm.nextSalary.salary,
-							month: vm.nextSalary.month,
+							salary: vm.nextSalary,
+							month: vm.nextSalaryMonth,
 							currencyCode: vm.currencyCode)
+//					Slider(value: $value, in: 0...5000)
+//					Button("Tap") {
+//						if value == 10 {
+//							value = 4000
+//						} else {
+//							value = 10
+//						}
+//					}
+//					Text("\(vm.nextSalary)")
 					}
 					
-					ChartContainer(title: "Hours per month", 300) {
+					ChartContainer(title: String(localized: "Hours per month"), 300) {
 						Chart(vm.workTime) { month in
 							BarMark(
 								x: .value("Month", month.month),
-								y: .value("Hours", month.hours))
+								y: .value("Hours", month.isAnimated ? month.hours : 0))
 							.foregroundStyle(vm.getColorFor(hours: month.hours))
 							.annotation {
 								Text("\(month.hours, format: .number)")
@@ -43,11 +54,13 @@ struct MainScreenView: View {
 								}
 							}
 							.shadow(radius: 5, x: 2.0, y: 2.0)
+							.opacity(month.isAnimated ? 1 : 0)
 						}
+						.chartYScale(domain: 0...(vm.workTime.max(by: { $0.hours < $1.hours })!.hours + 10))
 						.chartYAxis(.hidden)
 					}
 					
-					ChartContainer(title: "Salary per month", 150) {
+					ChartContainer(title: String(localized: "Salary per month"), 150) {
 						HStack {
 							VStack {
 								ForEach(vm.workTime) { month in
@@ -83,6 +96,7 @@ struct MainScreenView: View {
 				.padding(.horizontal)
 				.refreshable {
 					vm.refresh()
+					trigger.toggle()
 				}
 				
 				VStack {
@@ -103,12 +117,45 @@ struct MainScreenView: View {
 				}
 			}
 		}
-		.sheet(isPresented: $showingSettings, onDismiss: vm.refresh, content: SettingsView.init)
-		.sheet(isPresented: $showingAddWork, onDismiss: vm.refresh) { AddWorkView(eventStore: vm.eventStore) }
+		.sheet(isPresented: $showingSettings, onDismiss: refreshAndAnimate, content: SettingsView.init)
+		.sheet(isPresented: $showingAddWork, onDismiss: refreshAndAnimate) { AddWorkView(eventStore: vm.eventStore) }
 		.environmentObject(vm.localState)
+		.onChange(of: trigger, initial: false) { oldValue, newValue in
+			reset()
+		}
 		.onAppear {
 			vm.getUserCalendars()
 			vm.refresh()
+			animate()
+		}
+	}
+	
+	private func refreshAndAnimate() {
+		vm.refresh()
+		reset()
+	}
+	
+	private func reset() {
+		$vm.workTime.forEach { element in
+			element.wrappedValue.isAnimated = false
+		}
+		
+		isAnimated = false
+		animate()
+	}
+	
+	private func animate(with constDelay: Double = 0.5) {
+		guard !isAnimated else { return }
+		
+		isAnimated = true
+		
+		$vm.workTime.enumerated().forEach { index, element in
+			let delay = Double(index) * 0.4 + constDelay
+			DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+				withAnimation(.bouncy) {
+					element.wrappedValue.isAnimated = true
+				}
+			}
 		}
 	}
 }

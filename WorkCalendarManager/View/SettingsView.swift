@@ -34,7 +34,7 @@ struct SettingsView: View {
 						.keyboardType(.decimalPad)
 						.focused($focused)
 				} header: {
-					Text("Salary")
+					Text("Salary per hour")
 				} footer: {
 					Text("Based on it app can calculate your month salary")
 				}

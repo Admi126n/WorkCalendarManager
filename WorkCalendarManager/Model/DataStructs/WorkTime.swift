@@ -13,4 +13,6 @@ struct WorkTime: Identifiable {
 	let id = UUID()
 	let month: String
 	let hours: Float
+	
+	var isAnimated = false
 }
